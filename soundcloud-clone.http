@@ -1,0 +1,6 @@
+@soundcloud_clone_HostAddress = http://localhost:5092
+
+GET {{soundcloud_clone_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
