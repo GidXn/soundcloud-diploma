@@ -4,7 +4,11 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>soundcloud_clone</RootNamespace>
+    <RootNamespace>soundcloud_back</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.0" />
+  </ItemGroup>
 
 </Project>

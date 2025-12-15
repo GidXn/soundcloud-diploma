@@ -1,0 +1,6 @@
+@soundcloud_back_HostAddress = http://localhost:5187
+
+GET {{soundcloud_back_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

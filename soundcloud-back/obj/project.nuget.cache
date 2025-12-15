@@ -1,0 +1,28 @@
+{
+  "version": 2,
+  "dgSpecHash": "H0m2JHMhyQk=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mykhailo\\Documents\\soundcloud-dimploma\\soundcloud-back\\soundcloud-back.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mykhailo\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
+    "C:\\Users\\Mykhailo\\.nuget\\packages\\microsoft.openapi\\1.6.14\\microsoft.openapi.1.6.14.nupkg.sha512",
+    "C:\\Users\\Mykhailo\\.nuget\\packages\\swashbuckle.aspnetcore\\6.6.1\\swashbuckle.aspnetcore.6.6.1.nupkg.sha512",
+    "C:\\Users\\Mykhailo\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.6.1\\swashbuckle.aspnetcore.swagger.6.6.1.nupkg.sha512",
+    "C:\\Users\\Mykhailo\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.6.1\\swashbuckle.aspnetcore.swaggergen.6.6.1.nupkg.sha512",
+    "C:\\Users\\Mykhailo\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.6.1\\swashbuckle.aspnetcore.swaggerui.6.6.1.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "soundcloud-back depends on Swashbuckle.AspNetCore (>= 6.6.0) but Swashbuckle.AspNetCore 6.6.0 was not found. Swashbuckle.AspNetCore 6.6.1 was resolved instead.",
+      "projectPath": "C:\\Users\\Mykhailo\\Documents\\soundcloud-dimploma\\soundcloud-back\\soundcloud-back.csproj",
+      "warningLevel": 1,
+      "filePath": "C:\\Users\\Mykhailo\\Documents\\soundcloud-dimploma\\soundcloud-back\\soundcloud-back.csproj",
+      "libraryId": "Swashbuckle.AspNetCore",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
+}
