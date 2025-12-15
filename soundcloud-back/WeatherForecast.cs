@@ -1,4 +1,4 @@
-namespace soundcloud_clone
+namespace soundcloud_back
 {
     public class WeatherForecast
     {
