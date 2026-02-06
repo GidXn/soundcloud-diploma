@@ -18,18 +18,12 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpPost("register")]
-        [SwaggerOperation(
-            OperationId = "Register",
-            Summary = "Створити користувача")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
         {
             var response = await _authService.RegisterAsync(model);
             return Ok(response);
         }
 
-        [SwaggerOperation(
-            OperationId = "Login",
-            Summary = "Вхід користувача")]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
@@ -38,9 +32,6 @@ namespace soundcloud_back.Controllers
         }
 
         [Authorize]
-        [SwaggerOperation(
-            OperationId = "Profile",
-            Summary = "Отримати дані поточного користувача [Authorize]")]
         [HttpGet("profile")]
         public async Task<IActionResult> Profile()
         {

@@ -42,6 +42,7 @@ namespace soundcloud_back.Data.Entities
 
         public AuthProvider AuthProvider { get; set; } = AuthProvider.Local;
         public string? GoogleSubject { get; set; }
+        public string? FacebookSubject { get; set; }
         public bool IsLocalPasswordSet { get; set; } = true;
     }
 }

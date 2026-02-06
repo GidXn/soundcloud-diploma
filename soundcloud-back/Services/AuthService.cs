@@ -41,9 +41,9 @@ namespace soundcloud_back.Services
 
             if (existing != null)
             {
-                if (existing.AuthProvider == AuthProvider.Google && existing.IsLocalPasswordSet == false)
+                if ((existing.AuthProvider == AuthProvider.Google || existing.AuthProvider == AuthProvider.Facebook) && existing.IsLocalPasswordSet == false)
                     throw new InvalidOperationException(
-                        "Цей email вже прив'язано до Google-акаунта. Увійдіть через Google і у профілі встановіть локальний пароль.");
+                        $"Цей email вже прив'язано до {existing.AuthProvider}-акаунта. Увійдіть через {existing.AuthProvider} і у профілі встановіть локальний пароль.");
 
                 throw new InvalidOperationException("Користувач з таким email вже існує.");
             }
@@ -87,12 +87,12 @@ namespace soundcloud_back.Services
             if (user == null)
                 throw new UnauthorizedAccessException("Неправильний email або пароль.");
 
-            if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
-                throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+            if ((user.AuthProvider == AuthProvider.Google || user.AuthProvider == AuthProvider.Facebook) && user.IsLocalPasswordSet == false)
+                throw new UnauthorizedAccessException($"Акаунт створено через {user.AuthProvider}. Увійдіть через {user.AuthProvider} або спершу встановіть локальний пароль.");
 
             if (user.PasswordHash == null || user.PasswordSalt == null ||
                 user.PasswordHash.Length == 0 || user.PasswordSalt.Length == 0)
-                throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+                throw new UnauthorizedAccessException($"Акаунт створено через {user.AuthProvider}. Увійдіть через {user.AuthProvider} або спершу встановіть локальний пароль.");
 
             if (!VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
                 throw new UnauthorizedAccessException("Неправильний email або пароль.");
