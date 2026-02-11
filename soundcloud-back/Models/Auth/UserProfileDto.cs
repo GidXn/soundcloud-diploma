@@ -1,6 +1,5 @@
 using soundcloud_back.Data.Entities;
 
-namespace soundcloud_back.Models.Auth
 {
     public class UserProfileDto
     {
