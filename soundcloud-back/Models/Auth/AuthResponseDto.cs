@@ -1,4 +1,4 @@
-namespace soundcloud_back.Models.Auth
+﻿namespace soundcloud_back.Models.Auth
 {
     public class AuthResponseDto
     {
@@ -6,4 +6,5 @@ namespace soundcloud_back.Models.Auth
         public DateTime ExpiresAt { get; set; }
         public string Username { get; set; }
     }
+
 }

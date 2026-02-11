@@ -1,4 +1,4 @@
-namespace soundcloud_back.Models.Auth
+﻿namespace soundcloud_back.Models.Auth
 {
     public class RegisterRequestDto
     {
@@ -7,4 +7,5 @@ namespace soundcloud_back.Models.Auth
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
     }
+
 }

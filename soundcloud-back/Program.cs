@@ -26,7 +26,6 @@ builder.Services.Configure<FacebookAuthOptions>(
 
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
-builder.Services.AddTransient<IFacebookTokenValidator, FacebookTokenValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 
