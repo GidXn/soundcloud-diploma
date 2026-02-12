@@ -10,5 +10,6 @@ namespace soundcloud_back.Data
         {
         }
         public DbSet<GenreEntity> Genres { get; set; }
+        public DbSet<UserEntity> Users { get; set; }
     }
 }
