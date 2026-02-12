@@ -1,8 +1,10 @@
-using Google.Apis.Auth;
-
-namespace soundcloud_back.Services.Interfaces;
-
-public interface IGoogleTokenValidator
+﻿namespace soundcloud_back.Interfaces
 {
-    Task<GoogleJsonWebSignature.Payload> ValidateAsync(string idToken);
+    using System.Threading.Tasks;
+    using Google.Apis.Auth;
+
+    public interface IGoogleTokenValidator
+    {
+        Task<GoogleJsonWebSignature.Payload> ValidateAsync(string idToken);
+    }
 }
