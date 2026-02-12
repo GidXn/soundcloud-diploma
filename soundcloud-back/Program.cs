@@ -21,9 +21,6 @@ builder.Services.AddDbContext<SoundCloudDbContext>(options =>
 builder.Services.Configure<GoogleAuthOptions>(
     builder.Configuration.GetSection("GoogleAuth"));
 
-builder.Services.Configure<FacebookAuthOptions>(
-    builder.Configuration.GetSection("FacebookAuth"));
-
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
