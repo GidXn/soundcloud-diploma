@@ -1,0 +1,10 @@
+﻿namespace soundcloud_back.Models.Auth
+{
+    public class UpdateUserRequestDto
+    {
+        public string? Username { get; set; }
+        public string? Email { get; set; }
+        public IFormFile? Avatar { get; set; }
+        public string? Bio {  get; set; }
+    }
+}

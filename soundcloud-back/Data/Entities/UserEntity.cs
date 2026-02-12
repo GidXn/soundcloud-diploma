@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace soundcloud_back.Data.Entities
 {
@@ -33,7 +33,7 @@ namespace soundcloud_back.Data.Entities
         public bool IsBlocked { get; set; } = false;
         public string? AvatarUrl { get; set; }
         
-        public string? BannerUrl {  get; set; }
+        public string? BannerUrl { get; set; }
 
         [MaxLength(500)]
         public string? Bio { get; set; }
