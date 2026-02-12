@@ -1,4 +1,4 @@
-﻿namespace soundcloud_back.Interfaces
+﻿namespace soundcloud_back.Services.Interfaces
 {
     using System.Threading.Tasks;
     using Google.Apis.Auth;
