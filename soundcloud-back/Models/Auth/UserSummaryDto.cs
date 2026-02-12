@@ -1,4 +1,4 @@
-﻿namespace soundcloud_back.Models.Auth
+namespace soundcloud_back.Models.Auth
 {
     public class UserSummaryDto
     {
