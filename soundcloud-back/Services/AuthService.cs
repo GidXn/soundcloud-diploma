@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using soundcloud_back.Data;
@@ -11,6 +11,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+
+using soundcloud_back.Services.Abstractions;
 
 namespace soundcloud_back.Services
 {
@@ -35,31 +37,48 @@ namespace soundcloud_back.Services
             var emailNorm = dto.Email.Trim().ToLower();
             var usernameNorm = dto.Username.Trim();
 
+            ///// Перевірка, чи користувач з таким email вже існує, більш точна перевірка
+
+            ////if (await _db.Users.AnyAsync(u => u.Email == dto.Email.ToLower()))
+            ////{
+            ////    throw new InvalidOperationException("Користувач з таким email вже існує.");
+            ////}
+            //if (await _db.Users.AnyAsync(u => u.Email.ToLower() == emailNorm))
+            //    throw new InvalidOperationException("Користувач з таким email вже існує.");
+            // 1) спершу шукаємо, чи існує користувач з таким email
+            
             var existing = await _db.Users
                 .AsNoTracking()
                 .FirstOrDefaultAsync(u => u.Email.ToLower() == emailNorm);
 
             if (existing != null)
             {
-                if ((existing.AuthProvider == AuthProvider.Google || existing.AuthProvider == AuthProvider.Facebook) && existing.IsLocalPasswordSet == false)
+                // якщо це Google-акаунт без локального пароля — підказка
+                if (existing.AuthProvider == AuthProvider.Google && existing.IsLocalPasswordSet == false)
                     throw new InvalidOperationException(
-                        $"Цей email вже прив'язано до {existing.AuthProvider}-акаунта. Увійдіть через {existing.AuthProvider} і у профілі встановіть локальний пароль.");
+                        "Цей email вже прив’язано до Google-акаунта. Увійдіть через Google і у профілі встановіть локальний пароль.");
 
+                // інакше — стандартне повідомлення
                 throw new InvalidOperationException("Користувач з таким email вже існує.");
             }
 
+            // 2) перевірка username як і було
             if (await _db.Users.AnyAsync(u => u.Username.ToLower() == usernameNorm.ToLower()))
                 throw new InvalidOperationException("Користувач з таким ім'ям вже існує.");
 
+            // Хешування пароля
             CreatePasswordHash(dto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var user = new UserEntity
             {
+                //Username = dto.Username,
+                //Email = dto.Email,
                 Username = usernameNorm,
                 Email = emailNorm,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 CreatedAt = DateTime.UtcNow,
+                //new
                 AuthProvider = AuthProvider.Local,
                 IsLocalPasswordSet = true,
                 GoogleSubject = null
@@ -68,6 +87,7 @@ namespace soundcloud_back.Services
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
+            // Генерація JWT-токена
             var token = GenerateJwtToken(user);
 
             return new AuthResponseDto
@@ -82,18 +102,28 @@ namespace soundcloud_back.Services
         {
             var emailNorm = dto.Email.Trim().ToLower();
 
+            //var user = await _db.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == emailNorm);
+            //if (user == null || !VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
+            //{
+            //    throw new UnauthorizedAccessException("Неправильний email або пароль.");
+            //}
+
+            //if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
+            //    throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
 
             if (user == null)
                 throw new UnauthorizedAccessException("Неправильний email або пароль.");
 
-            if ((user.AuthProvider == AuthProvider.Google || user.AuthProvider == AuthProvider.Facebook) && user.IsLocalPasswordSet == false)
-                throw new UnauthorizedAccessException($"Акаунт створено через {user.AuthProvider}. Увійдіть через {user.AuthProvider} або спершу встановіть локальний пароль.");
+            if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
+                throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
 
+            // Додатковий захист від “старих”/неконсистентних даних (порожній хеш/сіль)
             if (user.PasswordHash == null || user.PasswordSalt == null ||
                 user.PasswordHash.Length == 0 || user.PasswordSalt.Length == 0)
-                throw new UnauthorizedAccessException($"Акаунт створено через {user.AuthProvider}. Увійдіть через {user.AuthProvider} або спершу встановіть локальний пароль.");
+                throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
 
+            // Перевірка пароля
             if (!VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
                 throw new UnauthorizedAccessException("Неправильний email або пароль.");
 
@@ -169,7 +199,7 @@ namespace soundcloud_back.Services
                    u.BannerUrl,
                    u.IsBlocked,
                    u.UpdatedAt,
-                   u.AuthProvider,
+                   u.AuthProvider,//new
                    u.IsLocalPasswordSet
                 })
                 .FirstOrDefaultAsync(); 
@@ -191,6 +221,7 @@ namespace soundcloud_back.Services
                 BannerUrl=user.BannerUrl,
                 Role = user.Role,
                 UpdatedAt   = user.UpdatedAt,
+                    // new:
                 AuthProvider = user.Role != null ? user.AuthProvider.ToString() : "Local",
                 IsLocalPasswordSet = user.IsLocalPasswordSet
             };
@@ -204,7 +235,7 @@ namespace soundcloud_back.Services
             CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            user.IsLocalPasswordSet = true;
+            user.IsLocalPasswordSet = true;// тепер локальний логін дозволено / критично
             user.UpdatedAt = DateTime.UtcNow;
             await _db.SaveChangesAsync();
         }

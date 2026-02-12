@@ -1,10 +1,41 @@
+﻿using soundcloud_back.Data.Entities;
+using soundcloud_back.Models.Auth;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Google.Apis.Auth;
-using soundcloud_back.Data.Entities;
+using soundcloud_back.Models.Track;
 
-namespace soundcloud_back.Services.Interfaces;
 
-public interface IUserService
+namespace soundcloud_back.Services.Interfaces
 {
-    Task<UserEntity> FindOrCreateFromGoogleAsync(GoogleJsonWebSignature.Payload payload);
-    Task<UserEntity> FindOrCreateFromFacebookAsync(string facebookId, string email, string name, string? pictureUrl);
+    public interface IUserService
+    {
+        // Отримати всіх користувачів (може включати колекції треків, альбомів, плейлистів)
+        Task<IEnumerable<UserProfileDto>> GetAllAsync();
+
+        // Отримати користувача за ID
+        Task<UserProfileDto> GetByIdAsync(int id);
+
+        // Оновити дані користувача (ім'я, email, аватар)
+        Task<UserProfileDto> UpdateAsync(int id, UpdateUserRequestDto dto);
+
+        //Оновити банер користувача
+        Task<string?> UpdateBannerAsync(int userId, IFormFile? bannerFile);
+
+
+        // Видалити користувача
+        Task DeleteAsync(int id);
+
+        // Блокування/розблокування користувача
+        Task BlockAsync(int id);
+        Task UnblockAsync(int id);
+
+        // Зміна ролі користувача
+        Task ChangeRoleAsync(int userId, UserRole newRole);
+
+        Task SetAvatarAsync(int userId, string url);
+        Task<UserEntity> FindOrCreateFromGoogleAsync(GoogleJsonWebSignature.Payload payload);
+        Task<IEnumerable<AuthorStatsDto>> GetTopUsersAsync(int take);
+
+    }
 }

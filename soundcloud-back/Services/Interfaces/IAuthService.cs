@@ -1,4 +1,4 @@
-using soundcloud_back.Models.Auth;
+﻿using soundcloud_back.Models.Auth;
 using System.Threading.Tasks;
 using soundcloud_back.Data.Entities;
 
