@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using soundcloud_back.Data;
@@ -11,9 +12,11 @@ using soundcloud_back.Data;
 namespace soundcloud_back.Migrations
 {
     [DbContext(typeof(SoundCloudDbContext))]
-    partial class SoundCloudDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260213175847_database")]
+    partial class database
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
