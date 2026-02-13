@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SoundCloudWebApi.Models.Track;
-using SoundCloudWebApi.Services.Interfaces;
+using soundcloud_back.Models.Track;
+using soundcloud_back.Services.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
 
-namespace SoundCloudWebApi.Controllers
+namespace soundcloud_back.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

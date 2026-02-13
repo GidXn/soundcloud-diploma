@@ -1,16 +1,23 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using soundcloud_back.Data;
+using soundcloud_back.Filters;
+using soundcloud_back.Validators.Auth;
 using soundcloud_back.Services;
 using soundcloud_back.Services.Interfaces;
-using soundcloud_back.Services.Implementations;
-using soundcloud_back.Validators.Auth;
-using soundcloud_back.Options;
+using soundcloud_back.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 using System.Text;
+using System.Threading.Tasks;
+using Swashbuckle.AspNetCore.Annotations;
+using soundcloud_back.Services.Implementations;
+using soundcloud_back.Options;
+using soundcloud_back.Services.Abstractions;
+
 
 var builder = WebApplication.CreateBuilder(args);
 

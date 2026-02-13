@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SoundCloudWebApi.Data.Entities;  
-using SoundCloudWebApi.Models.Auth;
-using SoundCloudWebApi.Services.Interfaces;
+using soundcloud_back.Data.Entities;  
+using soundcloud_back.Models.Auth;
+using soundcloud_back.Services.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace SoundCloudWebApi.Controllers
+namespace soundcloud_back.Controllers
 {
     [Authorize(Roles = "Admin")]
     [ApiController]
