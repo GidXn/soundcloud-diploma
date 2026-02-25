@@ -1,0 +1,103 @@
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using soundcloud_back.Data.Entities;  
+using soundcloud_back.Models.Auth;
+using soundcloud_back.Services.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace soundcloud_back.Controllers
+{
+    [Authorize(Roles = "Admin")]
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AdminController : ControllerBase
+    {
+        private readonly IUserService _userService;
+
+        public AdminController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        [HttpGet("users")]
+        [SwaggerOperation(
+            OperationId = "Admin_GetAllUsers",
+            Summary = "Отримати всіх користувачів (Admin)")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllAsync();
+            return Ok(users);
+        }
+
+        [HttpGet("users/{id:int}")]
+        [SwaggerOperation(
+            OperationId = "Admin_GetUserById",
+            Summary = "Отримати користувача за ID (Admin)")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var user = await _userService.GetByIdAsync(id);
+            return Ok(user);
+        }
+
+        [HttpPut("users/{id:int}/role")]
+        [SwaggerOperation(
+            OperationId = "Admin_ChangeUserRole",
+            Summary = "Змінити роль користувача (Admin)")]
+        public async Task<IActionResult> ChangeRole(int id, [FromBody] ChangeRoleRequestDto dto)
+        {
+            await _userService.ChangeRoleAsync(id, dto.Role);
+            return NoContent();
+        }
+
+        [HttpPatch("users/{id:int}/block")]
+        [SwaggerOperation(
+            OperationId = "Admin_BlockUser",
+            Summary = "Заблокувати користувача (Admin)")]
+        public async Task<IActionResult> Block(int id)
+        {
+            var me = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (me == id.ToString())
+                return BadRequest("Admin cannot block self.");
+
+            await _userService.BlockAsync(id);
+            return NoContent();
+        }
+
+        [HttpPatch("users/{id:int}/unblock")]
+        [SwaggerOperation(
+            OperationId = "Admin_UnblockUser",
+            Summary = "Розблокувати користувача (Admin)")]
+        public async Task<IActionResult> Unblock(int id)
+        {
+            await _userService.UnblockAsync(id);
+            return NoContent();
+        }
+
+        [HttpDelete("users/{id:int}")]
+        [SwaggerOperation(
+            OperationId = "Admin_DeleteUser",
+            Summary = "Видалити користувача (Admin)")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var me = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (me == id.ToString())
+                return BadRequest("Admin cannot delete self.");
+
+            await _userService.DeleteAsync(id);
+            return NoContent();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("users/{id:int}")]
+        [SwaggerOperation(
+        OperationId = "Admin_UpdateUser",
+        Summary = "Оновити будь-якого користувача (Admin)")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequestDto dto)
+        {
+            var updated = await _userService.UpdateAsync(id, dto);
+            return Ok(updated);
+        }
+    }
+}

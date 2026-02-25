@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using soundcloud_back.Data;
 using soundcloud_back.Data.Entities;
-using soundcloud_back.Migrations;
 using soundcloud_back.Models.Auth;
 using soundcloud_back.Services.Interfaces;
 
