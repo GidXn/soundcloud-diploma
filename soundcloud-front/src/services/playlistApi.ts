@@ -1,0 +1,66 @@
+import { IPlaylist } from "../types/playlist";
+import api from "../utilities/axiosInstance.ts";
+import { ITrack } from "../types/track"; // шлях підкоригуй під свій проект
+
+// Новий інтерфейс для створення плейліста
+export interface ICreatePlaylist {
+    name: string;
+    ownerId: number;
+    cover?:string;
+    coverUrl?: string; // додали опційне поле
+}
+
+export const playlistService = {
+    getAll: async (): Promise<IPlaylist[]> => {
+        const res = await api.get("/Playlist");
+        return res.data;
+    },
+
+
+    create: async (dto: ICreatePlaylist): Promise<IPlaylist> => {
+        const { data } = await api.post("/Playlist", dto);
+        return data;
+    },
+
+    getById: async (id: number): Promise<IPlaylist> => {
+        const { data } = await api.get(`/Playlist/${id}`);
+        return data;
+    },
+
+    update: async (id: number, dto: { name: string; coverUrl?: string }): Promise<void> => {
+        await api.put(`/Playlist/${id}`, dto);
+    },
+
+    delete: async (id: number): Promise<void> => {
+        await api.delete(`/Playlist/${id}`);
+    },
+    removeTrack: async (playlistId: number, trackId: number): Promise<void> => {
+        try {
+            await api.delete(`/Playlist/${playlistId}/tracks/${trackId}`);
+        } catch (err) {
+            console.error(`Failed to remove track ${trackId} from playlist ${playlistId}:`, err);
+            throw err;
+        }
+    },
+    // --- нові методи для треків у плейліст ---
+    addTrack: async (playlistId: number, trackId: number): Promise<void> => {
+        await api.post(`/Playlist/${playlistId}/tracks/${trackId}`);
+    },
+
+    removeTrack: async (playlistId: number, trackId: number): Promise<void> => {
+        await api.delete(`/Playlist/${playlistId}/tracks/${trackId}`);
+    },
+
+    // playlistApi.ts
+    getTracks: async (playlistId: number): Promise<ITrack[]> => {
+        const { data } = await api.get(`/Playlist/${playlistId}/tracks`);
+        return data;
+    },
+
+    // Отримати всі плейлисти конкретного користувача
+    getAllByUser: async (userId: number): Promise<IPlaylist[]> => {
+        const res = await api.get<IPlaylist[]>(`/playlist/user/${userId}`);
+        return res.data;
+    },
+
+};
