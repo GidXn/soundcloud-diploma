@@ -5,7 +5,7 @@ import { store } from './store/store';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 const queryClient = new QueryClient();
-const googleClientId = '986105905707-gn40n3fflbopald38eletrf8vf7i58i7.apps.googleusercontent.com';
+const googleClientId = '755285320747-7qnfgviqbgooq0vasjbeoisetkklkn69.apps.googleusercontent.com';
 console.log('GIS clientId:', googleClientId);
 console.log('Origin:', window.location.origin);
 // console.log('[GIS] clientId from app:', googleClientId);
