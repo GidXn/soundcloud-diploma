@@ -155,12 +155,12 @@ const LoginSignup: React.FC = () => {
 
         let res: Response;
         try {
-            console.log("token", "idToken", idToken);
-            // res = await fetch("http://localhost:5122/auth/google", {
-            //     method: "POST",
-            //     headers: { "Content-Type": "application/json" },
-            //     body: JSON.stringify({ token: idToken }),
-            // });
+            // console.log("token", "idToken", idToken);
+            res = await fetch("http://localhost:5122/auth/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ token: idToken }),
+            });
         } catch (e: unknown) {                // CHANGED: було (e: any) → стало (e: unknown)
             alert("Network error: " + msgFromError(e));   // NEW: без any, коректний вивід
             return;
