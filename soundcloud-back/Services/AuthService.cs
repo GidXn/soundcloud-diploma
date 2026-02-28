@@ -20,11 +20,13 @@ namespace soundcloud_back.Services
     {
         private readonly SoundCloudDbContext _db;
         private readonly IConfiguration _config;
+        private readonly IEmailSender _emailSender;
 
-        public AuthService(SoundCloudDbContext db, IConfiguration config)
+        public AuthService(SoundCloudDbContext db, IConfiguration config, IEmailSender emailSender)
         {
             _db = db;
             _config = config;
+            _emailSender = emailSender;
         }
 
         public string IssueJwtForUser(UserEntity user)
@@ -283,7 +285,22 @@ namespace soundcloud_back.Services
             if (user.IsBlocked)
                 throw new InvalidOperationException("Користувач заблокований.");
 
-            return GeneratePasswordResetToken(user);
+            var token = GeneratePasswordResetToken(user);
+
+            var frontendBaseUrl = _config["Email:FrontendBaseUrl"] ?? "";
+            var resetLink = string.IsNullOrWhiteSpace(frontendBaseUrl)
+                ? token
+                : $"{frontendBaseUrl.TrimEnd('/')}/reset-password?token={Uri.EscapeDataString(token)}";
+
+            var subject = "Скидання паролю";
+            var body = $@"<p>Ви запросили скидання паролю.</p>
+<p>Для встановлення нового паролю перейдіть за посиланням:</p>
+<p><a href=""{resetLink}"">Скинути пароль</a></p>
+<p>Якщо ви не робили цей запит, просто проігноруйте цей лист.</p>";
+
+            await _emailSender.SendEmailAsync(user.Email, subject, body);
+
+            return token;
         }
 
         public async Task ResetPasswordAsync(string token, string newPassword)

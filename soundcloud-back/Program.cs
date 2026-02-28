@@ -17,6 +17,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using soundcloud_back.Services.Implementations;
 using soundcloud_back.Options;
 using soundcloud_back.Services.Abstractions;
+using soundcloud_back.Services.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,10 +29,14 @@ builder.Services.AddDbContext<SoundCloudDbContext>(options =>
 builder.Services.Configure<GoogleAuthOptions>(
     builder.Configuration.GetSection("GoogleAuth"));
 
+builder.Services.Configure<EmailOptions>(
+    builder.Configuration.GetSection("Email"));
+
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 // JWT Configuration
 var jwtSection = builder.Configuration.GetSection("Jwt");

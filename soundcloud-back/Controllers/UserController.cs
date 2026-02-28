@@ -48,8 +48,8 @@ namespace soundcloud_back.Controllers
         [HttpPost("forgot-password")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto model)
         {
-            var token = await _authService.GeneratePasswordResetTokenAsync(model.Email);
-            return Ok(new { token });
+            await _authService.GeneratePasswordResetTokenAsync(model.Email);
+            return Ok();
         }
 
         [AllowAnonymous]
