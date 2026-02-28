@@ -43,5 +43,21 @@ namespace soundcloud_back.Controllers
             var profile = await _authService.GetUserProfileAsync(userId);
             return Ok(profile);
         }
+
+        [AllowAnonymous]
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequestDto model)
+        {
+            var token = await _authService.GeneratePasswordResetTokenAsync(model.Email);
+            return Ok(new { token });
+        }
+
+        [AllowAnonymous]
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequestDto model)
+        {
+            await _authService.ResetPasswordAsync(model.Token, model.NewPassword);
+            return Ok();
+        }
     }
 }

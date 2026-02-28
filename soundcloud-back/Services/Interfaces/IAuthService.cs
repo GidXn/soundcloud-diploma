@@ -1,4 +1,4 @@
-﻿using soundcloud_back.Models.Auth;
+using soundcloud_back.Models.Auth;
 using System.Threading.Tasks;
 using soundcloud_back.Data.Entities;
 
@@ -11,5 +11,7 @@ namespace soundcloud_back.Services.Interfaces
         Task<UserProfileDto> GetUserProfileAsync(string userId);
         string IssueJwtForUser(UserEntity user);
         Task SetLocalPasswordAsync(int userId, string newPassword);
+        Task<string> GeneratePasswordResetTokenAsync(string email);
+        Task ResetPasswordAsync(string token, string newPassword);
     }
 }

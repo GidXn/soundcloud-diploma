@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using soundcloud_back.Data;
@@ -238,6 +238,107 @@ namespace soundcloud_back.Services
             user.IsLocalPasswordSet = true;// тепер локальний логін дозволено / критично
             user.UpdatedAt = DateTime.UtcNow;
             await _db.SaveChangesAsync();
+        }
+
+        private string GeneratePasswordResetToken(UserEntity user)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Email, user.Email),
+                new Claim("token_type", "password_reset")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = creds,
+                Issuer = _config["Jwt:Issuer"],
+                Audience = _config["Jwt:Audience"]
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+        public async Task<string> GeneratePasswordResetTokenAsync(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                throw new ArgumentException("Email обов'язковий.", nameof(email));
+
+            var emailNorm = email.Trim().ToLower();
+
+            var user = await _db.Users
+                .FirstOrDefaultAsync(u => u.Email.ToLower() == emailNorm)
+                ?? throw new InvalidOperationException("Користувача з таким email не знайдено.");
+
+            if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
+                throw new InvalidOperationException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+
+            if (user.IsBlocked)
+                throw new InvalidOperationException("Користувач заблокований.");
+
+            return GeneratePasswordResetToken(user);
+        }
+
+        public async Task ResetPasswordAsync(string token, string newPassword)
+        {
+            if (string.IsNullOrWhiteSpace(token))
+                throw new ArgumentException("Token обов'язковий.", nameof(token));
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+
+            try
+            {
+                var principal = tokenHandler.ValidateToken(
+                    token,
+                    new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = key,
+                        ValidateIssuer = true,
+                        ValidIssuer = _config["Jwt:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = _config["Jwt:Audience"],
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero
+                    },
+                    out var validatedToken);
+
+                if (validatedToken is not JwtSecurityToken jwt ||
+                    !jwt.Claims.Any(c => c.Type == "token_type" && c.Value == "password_reset"))
+                {
+                    throw new SecurityTokenException("Невалідний тип токена.");
+                }
+
+                var userIdStr = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                if (!int.TryParse(userIdStr, out var userId))
+                    throw new SecurityTokenException("Невалідний токен.");
+
+                var user = await _db.Users.FindAsync(userId)
+                    ?? throw new KeyNotFoundException("Користувача не знайдено.");
+
+                if (user.IsBlocked)
+                    throw new UnauthorizedAccessException("Користувач заблокований.");
+
+                CreatePasswordHash(newPassword, out var passwordHash, out var passwordSalt);
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
+                user.IsLocalPasswordSet = true;
+                user.UpdatedAt = DateTime.UtcNow;
+
+                await _db.SaveChangesAsync();
+            }
+            catch (SecurityTokenException)
+            {
+                throw new UnauthorizedAccessException("Токен для скидання паролю недійсний або прострочений.");
+            }
         }
     }
 }
