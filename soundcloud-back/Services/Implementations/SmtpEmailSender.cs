@@ -18,23 +18,23 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task SendEmailAsync(string toEmail, string subject, string htmlBody)
         {
-            using var message = new MailMessage
-            {
-                From = new MailAddress(_options.FromAddress, _options.FromName),
-                Subject = subject,
-                Body = htmlBody,
-                IsBodyHtml = true
-            };
+            //using var message = new MailMessage
+            //{
+            //    From = new MailAddress(_options.FromAddress, _options.FromName),
+            //    Subject = subject,
+            //    Body = htmlBody,
+            //    IsBodyHtml = true
+            //};
 
-            message.To.Add(new MailAddress(toEmail));
+            //message.To.Add(new MailAddress(toEmail));
 
-            using var client = new SmtpClient(_options.SmtpHost, _options.SmtpPort)
-            {
-                EnableSsl = _options.UseSsl,
-                Credentials = new NetworkCredential(_options.Username, _options.Password)
-            };
+            //using var client = new SmtpClient(_options.SmtpHost, _options.SmtpPort)
+            //{
+            //    EnableSsl = _options.UseSsl,
+            //    Credentials = new NetworkCredential(_options.Username, _options.Password)
+            //};
 
-            await client.SendMailAsync(message);
+            //await client.SendMailAsync(message);
         }
     }
 }

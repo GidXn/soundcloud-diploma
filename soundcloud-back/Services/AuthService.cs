@@ -1,18 +1,18 @@
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using soundcloud_back.Data;
-using soundcloud_back.Data.Entities;
-using soundcloud_back.Models.Auth;
-using soundcloud_back.Services.Interfaces;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using soundcloud_back.Data;
+using soundcloud_back.Data.Entities;
+using soundcloud_back.Interfaces;
+using soundcloud_back.Models.Auth;
 using soundcloud_back.Services.Abstractions;
+using soundcloud_back.Services.Interfaces;
 
 namespace soundcloud_back.Services
 {
@@ -21,12 +21,15 @@ namespace soundcloud_back.Services
         private readonly SoundCloudDbContext _db;
         private readonly IConfiguration _config;
         private readonly IEmailSender _emailSender;
+        private readonly ISmtpService _smtpService;
 
-        public AuthService(SoundCloudDbContext db, IConfiguration config, IEmailSender emailSender)
+        public AuthService(SoundCloudDbContext db, IConfiguration config, IEmailSender emailSender,
+            ISmtpService smtpService)
         {
             _db = db;
             _config = config;
             _emailSender = emailSender;
+            _smtpService = smtpService;
         }
 
         public string IssueJwtForUser(UserEntity user)
@@ -298,7 +301,13 @@ namespace soundcloud_back.Services
 <p><a href=""{resetLink}"">Скинути пароль</a></p>
 <p>Якщо ви не робили цей запит, просто проігноруйте цей лист.</p>";
 
-            await _emailSender.SendEmailAsync(user.Email, subject, body);
+            //await _emailSender.SendEmailAsync(user.Email, subject, body);
+            await _smtpService.SendEmailAsync(new EmailMessage
+            {
+                To = user.Email,
+                Subject = subject,
+                Body = body
+            });
 
             return token;
         }

@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using soundcloud_back.Models.Auth;
 using soundcloud_back.Services.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+//using soundcloud_back.SMTP
 
 namespace soundcloud_back.Controllers
 {

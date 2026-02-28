@@ -18,6 +18,7 @@ using soundcloud_back.Services.Implementations;
 using soundcloud_back.Options;
 using soundcloud_back.Services.Abstractions;
 using soundcloud_back.Services.Interfaces;
+using soundcloud_back.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -35,6 +36,7 @@ builder.Services.Configure<EmailOptions>(
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISmtpService, SmtpService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
