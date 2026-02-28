@@ -28,6 +28,7 @@ import AdminPage from "./pages/admin/AdminPage.tsx";
 import SearchPage from "./pages/main_pages/SearchPage.tsx";
 import {usePlayerStore} from "./store/player_store.tsx";
 import UserProfilePage from "./pages/profile/UserProfilePage.tsx";
+import ForgotPasswordPage from "./pages/ForgotPassword";
 
 
 export default function App() {
@@ -54,7 +55,9 @@ export default function App() {
                 {/* Сторінка логіну */}
                 <Route element={<Layout_login_page/>}>
                     <Route path="/" element={<LoginSignup/>}/>
+                    <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
                 </Route>
+
                 {/* Головний Layout_LS */}
                 <Route element={<Layout />}>
                     <Route path="/home" element={<HomePage />} />

@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import "../../styles/login_signup/background.css";
 import {useDispatch} from "react-redux";
 import {setUser} from "../../store/slices/userSlice";
-import {useNavigate,useOutletContext} from "react-router-dom";
+import {Link, useNavigate, useOutletContext} from "react-router-dom";
 import {normalizeUser} from "../../utilities/normalizeUser.ts";
 import {AxiosError} from "axios";
 import {login, register} from "../../services/authApi.ts";
@@ -428,9 +428,9 @@ const LoginSignup: React.FC = () => {
 
                                         {isLogin && (
                                             <div className="login_fifth_forgot_password_container">
-                                                <a href="#" className="baloo2">
+                                                <Link to="/forgot-password" className="baloo2">
                                                     Forgot your Password?
-                                                </a>
+                                                </Link>
                                             </div>
                                         )}
 
