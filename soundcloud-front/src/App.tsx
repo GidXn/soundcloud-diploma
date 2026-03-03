@@ -3,7 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./components/main_page/Layout.tsx";
 import Layout_login_page from "./components/login_signup_components/Layout_login_page.tsx";
 import HomePage from "./pages/main_pages/HomePage";
-import LoginSignup from "./pages/login_signup/Login_Signup";
+import Login from "./pages/login_signup/Login";
+import Signup from "./pages/login_signup/Signup";
 import LibraryPage from "./pages/main_pages/LibraryPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
 import PlayAlbumPage from "./pages/play_album/PlayAlbumPage.tsx";
@@ -15,6 +16,7 @@ import {useEffect} from "react";
 import {setUser} from "./store/slices/userSlice.ts";
 import {normalizeUser} from "./utilities/normalizeUser.ts";
 import SetPassword from "./pages/login_signup/SetPassword";
+import { Navigate } from "react-router-dom";
 
 //імпорти для адмінки
 
@@ -54,7 +56,9 @@ export default function App() {
             <Routes>
                 {/* Сторінка логіну */}
                 <Route element={<Layout_login_page/>}>
-                    <Route path="/" element={<LoginSignup/>}/>
+                    <Route path="/" element={<Navigate to="/login" replace />} />
+                    <Route path="/login" element={<Login/>} />
+                    <Route path="/signup" element={<Signup/>} />
                     <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
                 </Route>
 

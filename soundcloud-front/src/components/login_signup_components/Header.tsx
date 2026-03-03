@@ -1,11 +1,10 @@
 
 import '../../styles/General.css';
 import '../../styles/login_signup/header.css';
-type HeaderProps = {
-    setShowForm: (val: boolean) => void;
-    setIsLogin: (val: boolean) => void;
-};
-const Header: React.FC<HeaderProps> = ({setShowForm,setIsLogin }) => {
+import {useNavigate} from "react-router-dom";
+
+const Header: React.FC = () => {
+    const navigate = useNavigate();
 
     return (
         <>
@@ -19,14 +18,11 @@ const Header: React.FC<HeaderProps> = ({setShowForm,setIsLogin }) => {
                         </div>
                             <div className="header_buttons">
                                 <button className="header_button_sign_up baloo2 text-white text-[20px] font-bold"
-                                    onClick={() => setShowForm(true)}
+                                    onClick={() => navigate('/login')}
                                 >Sign in
                                 </button>
                                 <button className="header_button_create_account baloo2 text-white text-[20px] font-bold"
-                                        onClick={() =>{
-                                            setShowForm(true);
-                                            setIsLogin(false);
-                                        }}
+                                        onClick={() => navigate('/signup')}
                                 >Create account
                                 </button>
                             </div>
