@@ -106,132 +106,74 @@ const Signup: React.FC = () => {
     };
 
     return (
-        <div className="background_style min-h-screen flex items-center justify-center px-4">
-            <div className="signup_wrapper max-w-5xl w-full flex gap-8 items-center">
-                {/* Ліва колонка - форма */}
-                <div className="signup_form_section flex-1">
-                    <div className="signup_header mb-6">
-                        <h2 className="baloo2 text-3xl font-bold text-white mb-2">Allure</h2>
-                        <h1 className="baloo2 text-2xl font-bold text-white mb-2">Join Allure</h1>
-                        <p className="text-gray-300 text-sm">Join the community Allure.</p>
-                    </div>
-
-                    <form onSubmit={onFinish} noValidate autoComplete="off">
-                        {/* Username */}
-                        <div className="mb-4">
-                            <input 
-                                type="text" 
-                                id="username" 
-                                name="username" 
-                                className="baloo2 w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" 
-                                placeholder="Name" 
-                                autoComplete="off" 
-                                required 
-                            />
-                        </div>
-
-                        {/* Email */}
-                        <div className="mb-4 relative">
-                            <input 
-                                type="email" 
-                                id="email" 
-                                name="email" 
-                                className="baloo2 w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" 
-                                placeholder="EMail" 
-                                required 
-                                autoComplete="off" 
-                            />
-                            <img src="/user.png" alt="user" className="absolute right-4 top-3 w-5 h-5 opacity-60" />
-                        </div>
-
-                        {/* Password */}
-                        <div className="mb-4 relative">
-                            <input 
-                                type={showPassword ? "text" : "password"} 
-                                id="password" 
-                                name="password" 
-                                className="baloo2 w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" 
-                                placeholder="Enter password" 
-                                required 
-                                autoComplete="new-password" 
-                            />
-                            <img src="/show_password.png" alt="show" className="absolute right-4 top-3 w-5 h-5 opacity-60 cursor-pointer" />
-                        </div>
-
-                        {/* Confirm Password */}
-                        <div className="mb-6 relative">
-                            <input 
-                                type={showConfirmPassword ? "text" : "password"} 
-                                id="confirmPassword" 
-                                name="confirmPassword" 
-                                className="baloo2 w-full px-4 py-3 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" 
-                                placeholder="Repeat the password" 
-                                required 
-                                autoComplete="off" 
-                            />
-                            <img src="/show_password.png" alt="show" className="absolute right-4 top-3 w-5 h-5 opacity-60 cursor-pointer" />
-                        </div>
-
-                        {/* Sign Up Button */}
-                        <button 
-                            type="submit" 
-                            className="baloo2 w-full py-3 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 text-white font-bold hover:opacity-90 transition mb-6"
-                        >
-                            Sign Up
-                        </button>
-
-                        {/* Divider */}
-                        <div className="flex items-center gap-4 mb-6">
-                            <div className="flex-1 h-px bg-gray-600"></div>
-                            <span className="text-gray-400 text-sm">or</span>
-                            <div className="flex-1 h-px bg-gray-600"></div>
-                        </div>
-
-                        {/* Social Buttons */}
-                        <div className="flex gap-4 mb-6">
-                            {/* Facebook */}
-                            <button 
-                                type="button" 
-                                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-blue-700 text-white hover:bg-blue-800 transition"
-                            >
-                                <img src="/facebook.png" alt="facebook" className="w-5 h-5" />
+        <div className="background_style min-h-screen flex items-center justify-center">
+            <div className="signin_form_container">
+                <div className="login_second_container_text baloo2">
+                    <h1>Sign Up</h1>
+                </div>
+                <div className="login_third_google_facebook_container">
+                    <div className="login_third_google_button baloo2">
+                        <div className="oauth-wrap">
+                            <button type="button" className="oauth-btn">
+                                <img src="src/images/icons/google_icon.png" alt="" className="oauth-btn__icon " />
+                                <span>Sign up with Google</span>
                             </button>
-
-                            {/* Google - with overlay */}
-                            <div className="flex-1 relative">
-                                <button 
-                                    type="button" 
-                                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-lg bg-red-600 text-white hover:bg-red-700 transition"
-                                >
-                                    <img src="/google.png" alt="google" className="w-5 h-5" />
-                                </button>
-                                <div className="absolute inset-0 opacity-0">
-                                    <GoogleLogin
-                                        onSuccess={handleGoogleSuccess}
-                                        onError={handleGoogleError}
-                                        theme="filled_blue"
-                                        size="large"
-                                        text="signin_with"
-                                        shape="pill"
-                                        width="100%"
-                                    />
-                                </div>
+                            <div className="oauth-overlay text-white">
+                                <GoogleLogin
+                                    onSuccess={handleGoogleSuccess}
+                                    onError={handleGoogleError}
+                                    theme="filled_blue"
+                                    size="large"
+                                    text="signin_with"
+                                    shape="pill"
+                                    width="100%"
+                                />
                             </div>
                         </div>
+                    </div>
 
-                        {/* Google Login Overlay - REMOVED */}
-
-                        {/* Sign In Link */}
-                        <p className="baloo2 text-center text-gray-400 text-sm">
-                            Already have an account? <a href="/login" className="text-purple-400 hover:text-purple-300 underline">Sign in</a>
-                        </p>
-                    </form>
+                    <button className="login_third_google_button baloo2 text-white"><img
+                        src="src/images/icons/facebook_icon.png" alt="facebook"/> Sign up with
+                        Facebook
+                    </button>
                 </div>
+                <form onSubmit={onFinish} className="login_fourth_login_container" noValidate autoComplete="off">
+                    <div className="login_fourth_text_or baloo2">
+                        <label>OR</label>
+                    </div>
+                    <div className="login_fourth_emailLogin_container">
+                        <label className="baloo2" htmlFor="username">Username</label>
+                        <input type="text" id="username" name="username" className="baloo2 login_fourth_emailLogin_input" placeholder="Enter your username" autoComplete="off" required />
+                    </div>
 
-                {/* Права колонка - Банер */}
-                <div className="signup_banner_section flex-1 hidden lg:block">
-                    <img src="/auth_banner.png" alt="banner" className="w-full h-auto rounded-3xl shadow-2xl" />
-                </div>
+                    <div className="login_fourth_emailLogin_container">
+                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="email">Email</label>
+                        <input type="email" id="email" name="email" className="login_fourth_emailLogin_input baloo2" placeholder="Enter your email" required autoComplete="off" />
+                    </div>
+
+                    <div className="login_fourth_emailLogin_container">
+                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="password">Password</label>
+                        <input type={showPassword ? "text" : "password"} id="password" name="password" className="login_fourth_emailLogin_input baloo2" placeholder="Enter your password" required autoComplete="new-password" />
+                        <button type="button" className="eye_icon_position_signin" onClick={() => setShowPassword(!showPassword)}>
+                            <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
+                        </button>
+                    </div>
+
+                    <div className="form_group">
+                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="confirmPassword">Confirm Password</label>
+                        <input type={showConfirmPassword ? "text" : "password"} id="confirmPassword" name="confirmPassword" className="login_fourth_emailLogin_input baloo2" placeholder="Confirm your password" required autoComplete="off" />
+                        <button type="button" className="eye_icon_position_signin_confirm" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
+                            <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
+                        </button>
+                    </div>
+
+                    <div className="sixth_login_button_container">
+                        <button type="submit" className="baloo2 login_sixth_button">Sign Up</button>
+                    </div>
+                    <div className="login_seventh_container">
+                        <label className="baloo2">Already have an account? <a href="/login" className="text-purple underline login_signup_button">Sign in</a></label>
+                    </div>
+                </form>
             </div>
         </div>
     );
