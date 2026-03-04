@@ -24,8 +24,23 @@ const Signup: React.FC = () => {
         const password = formData.get("password") as string;
         const confirmPassword = formData.get("confirmPassword") as string;
 
+        // client-side validations
+        if (username.length < 3 || username.length > 40) {
+            alert("Invalid name length. The login cannot be less than 3 characters and more than 40 characters!");
+            return;
+        }
+
+        // password requirements
+        const passwordRequirements = [] as string[];
+        if (password.length < 8) passwordRequirements.push("Be at least 8 characters long");
+        if (!/[A-Z]/.test(password)) passwordRequirements.push("Contain at least one uppercase letter");
+        if (!/[0-9]/.test(password)) passwordRequirements.push("Contain at least one number");
+        if (passwordRequirements.length > 0) {
+            alert(passwordRequirements.map(item => `- ${item}`).join("\n"));
+            return;
+        }
         if (password !== confirmPassword) {
-            alert("Паролі не співпадають!");
+            alert("Passwords do not match.");
             return;
         }
 
@@ -51,6 +66,19 @@ const Signup: React.FC = () => {
                 alert(
                     "Цей email вже прив'язаний до Google. Увійдіть через Google, а потім у профілі встановіть локальний пароль (Меню → Профіль → Встановити пароль)."
                 );
+                return;
+            }
+            // custom server messages
+            if (apiMsg.includes("This name is already registered")) {
+                alert("This name is already registered");
+                return;
+            }
+            if (apiMsg.includes("Invalid name length")) {
+                alert("Invalid name length. The login cannot be less than 3 characters and more than 40 characters!");
+                return;
+            }
+            if (apiMsg.includes("User with this email address already exists")) {
+                alert("User with this email address already exists.");
                 return;
             }
             if ((status === 400 || status === 409) && apiMsg) {
@@ -108,72 +136,123 @@ const Signup: React.FC = () => {
     return (
         <div className="background_style min-h-screen flex items-center justify-center">
             <div className="signin_form_container">
-                <div className="login_second_container_text baloo2">
-                    <h1>Sign Up</h1>
-                </div>
-                <div className="login_third_google_facebook_container">
-                    <div className="login_third_google_button baloo2">
-                        <div className="oauth-wrap">
-                            <button type="button" className="oauth-btn">
-                                <img src="src/images/icons/google_icon.png" alt="" className="oauth-btn__icon " />
-                                <span>Sign up with Google</span>
-                            </button>
-                            <div className="oauth-overlay text-white">
-                                <GoogleLogin
-                                    onSuccess={handleGoogleSuccess}
-                                    onError={handleGoogleError}
-                                    theme="filled_blue"
-                                    size="large"
-                                    text="signin_with"
-                                    shape="pill"
-                                    width="100%"
-                                />
-                            </div>
+                {/* Left side - Input fields */}
+                <div className="signup_left_container">
+                    {/* Logo and heading */}
+                    <div className="signup_header">
+                        <img src="public/logo_Allurew.png" alt="Allure Logo" className="signup_logo" />
+                        <h1 className="signup_heading_main">Join Allure</h1>
+                        <p className="signup_heading_sub">Join the community Allure.</p>
+                        <p className="signup_login_prompt">Already have an account? <a href="/login" className="signup_login_link">Sign In</a></p>
+                    </div>
+
+                    <form onSubmit={onFinish} className="signup_form" noValidate autoComplete="off">
+                        {/* Name field */}
+                        <div className="signup_input_group">
+                            <input 
+                                type="text" 
+                                id="username" 
+                                name="username" 
+                                className="signup_input" 
+                                placeholder="Name" 
+                                autoComplete="off" 
+                                required 
+                            />
                         </div>
-                    </div>
 
-                    <button className="login_third_google_button baloo2 text-white"><img
-                        src="src/images/icons/facebook_icon.png" alt="facebook"/> Sign up with
-                        Facebook
-                    </button>
+                        {/* Email field */}
+                        <div className="signup_input_group">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                className="signup_input" 
+                                placeholder="EMail" 
+                                required 
+                                autoComplete="off" 
+                            />
+                        </div>
+
+                        {/* Password field */}
+                        <div className="signup_input_group">
+                            <input 
+                                type={showPassword ? "text" : "password"} 
+                                id="password" 
+                                name="password" 
+                                className="signup_input" 
+                                placeholder="Enter Password" 
+                                required 
+                                autoComplete="new-password" 
+                            />
+                            <button 
+                                type="button" 
+                                className="signup_eye_icon" 
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
+                            </button>
+                        </div>
+
+                        {/* Confirm Password field */}
+                        <div className="signup_input_group">
+                            <input 
+                                type={showConfirmPassword ? "text" : "password"} 
+                                id="confirmPassword" 
+                                name="confirmPassword" 
+                                className="signup_input" 
+                                placeholder="Repeat the Password" 
+                                required 
+                                autoComplete="off" 
+                            />
+                            <button 
+                                type="button" 
+                                className="signup_eye_icon" 
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            >
+                                <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
+                            </button>
+                        </div>
+
+                        {/* Sign Up button */}
+                        <button type="submit" className="signup_button">Sign Up</button>
+
+                        {/* OR separator */}
+                        <div className="signup_or_separator">
+                            <span>or</span>
+                        </div>
+
+                        {/* Social login buttons */}
+                        <div className="signup_social_buttons">
+                            {/* Google button */}
+                            <div className="signup_oauth_wrap">
+                                <button type="button" className="signup_oauth_btn">
+                                    <img src="public/google.png" alt="Google" />
+                                </button>
+                                <div className="signup_oauth_overlay">
+                                    <GoogleLogin
+                                        onSuccess={handleGoogleSuccess}
+                                        onError={handleGoogleError}
+                                        theme="filled_blue"
+                                        size="large"
+                                        text="signin_with"
+                                        shape="pill"
+                                        width="100%"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Facebook button */}
+                            <button type="button" className="signup_oauth_btn signup_facebook_btn">
+                                <img src="public/facebook.png" alt="Facebook"/>
+                            </button>
+                        </div>
+                    </form>
                 </div>
-                <form onSubmit={onFinish} className="login_fourth_login_container" noValidate autoComplete="off">
-                    <div className="login_fourth_text_or baloo2">
-                        <label>OR</label>
-                    </div>
-                    <div className="login_fourth_emailLogin_container">
-                        <label className="baloo2" htmlFor="username">Username</label>
-                        <input type="text" id="username" name="username" className="baloo2 login_fourth_emailLogin_input" placeholder="Enter your username" autoComplete="off" required />
-                    </div>
 
-                    <div className="login_fourth_emailLogin_container">
-                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" className="login_fourth_emailLogin_input baloo2" placeholder="Enter your email" required autoComplete="off" />
-                    </div>
-
-                    <div className="login_fourth_emailLogin_container">
-                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="password">Password</label>
-                        <input type={showPassword ? "text" : "password"} id="password" name="password" className="login_fourth_emailLogin_input baloo2" placeholder="Enter your password" required autoComplete="new-password" />
-                        <button type="button" className="eye_icon_position_signin" onClick={() => setShowPassword(!showPassword)}>
-                            <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
-                        </button>
-                    </div>
-
-                    <div className="form_group">
-                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="confirmPassword">Confirm Password</label>
-                        <input type={showConfirmPassword ? "text" : "password"} id="confirmPassword" name="confirmPassword" className="login_fourth_emailLogin_input baloo2" placeholder="Confirm your password" required autoComplete="off" />
-                        <button type="button" className="eye_icon_position_signin_confirm" onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
-                            <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
-                        </button>
-                    </div>
-
-                    <div className="sixth_login_button_container">
-                        <button type="submit" className="baloo2 login_sixth_button">Sign Up</button>
-                    </div>
-                    <div className="login_seventh_container">
-                        <label className="baloo2">Already have an account? <a href="/login" className="text-purple underline login_signup_button">Sign in</a></label>
-                    </div>
-                </form>
+                {/* Right side - Banner */}
+                <div className="signup_right_container">
+                    <img src="public/auth_banner.png" alt="Allure Banner" className="signup_banner" />
+                </div>
             </div>
         </div>
     );

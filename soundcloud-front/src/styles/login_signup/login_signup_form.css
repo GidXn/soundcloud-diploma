@@ -24,9 +24,11 @@
     left: 683px;
     top: 85px;
 
-    background: #101010;
+    background: rgba(16, 16, 16, 0.8);
     border-radius: 32px;
     z-index: 9999;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
 }
 .login_first_close_container{
 
@@ -55,11 +57,13 @@
     background: url("../../images/icons/close_icon.png");
     background-repeat: no-repeat;
     background-position: center;
-
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 .login_first_close_button:hover{
     border: 2px solid #937fda;
     cursor: pointer;
+    background-color: rgba(147, 127, 218, 0.15);
 }
 .login_second_container_text{
     width: 482px;
@@ -78,14 +82,14 @@
 
 .login_third_google_facebook_container{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     padding: 0px;
     gap: 24px;
 
-    width: 482px;
-    height: 136px;
+    width: 100%;
+    height: 48px;
 
     flex: none;
     order: 2;
@@ -97,44 +101,43 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 12px 94px;
-    gap: 16px;
+    padding: 0;
+    gap: 0;
 
-    /*width: 482px;*/
-    width: 100%;
-    max-width: 720px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
 
-    background: #5241B3;
-    border-radius: 100px;
+    background: rgba(75, 53, 131, 0.14);
+    border-radius: 50%;
+    border: none;
 
     flex: none;
     order: 0;
-    align-self: stretch;
+    align-self: center;
     flex-grow: 0;
-    /* label-text */
-
 
     font-style: normal;
     font-weight: 500;
     font-size: 20px;
     line-height: 32px;
-    /* identical to box height */
-
 }
 
-:root { --oauth-h: 56px; } /* одна точка вх */
+:root { --oauth-h: 48px; } /* одна точка вх */
 
 /* зовнішній фіолетовий овал */
 .login_third_google_button{
     position: relative;
     height: var(--oauth-h);
+    width: var(--oauth-h);
     padding: 0;                 /* без внутрішніх відступів */
-    background: #5241B3;
-    border-radius: 100px;
+    background: rgba(75, 53, 131, 0.14);
+    border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
 }
 
 /* обгортка */
@@ -142,20 +145,51 @@
 
 /* видима “красива” кнопка */
 .oauth-btn{
-    width: 100%;
+    width: var(--oauth-h);
     height: var(--oauth-h);
     line-height: calc(var(--oauth-h) - 2px);
-    border-radius: 100px;
-    background: #5241B3;   /* той самий фіолетовий */
-    border: 0;
-    /*color: #fff;*/
+    border-radius: 50%;
+    background: rgba(75, 53, 131, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
     color:#FFFFFF;
     font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
+    gap: 0;
     cursor: pointer;
+    padding: 0;
+    backdrop-filter: blur(5px);
+
+    transition: all 0.3s ease;
+}
+
+.oauth-btn__icon {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.oauth-btn-icon-only {
+    width: 48px;
+    height: 48px;
+}
+
+.oauth-btn-facebook-only {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(75, 53, 131, 0.14);
+}
+
+.oauth-btn-facebook-only img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) saturate(100%) invert(100%);
 }
 
 /* прозорий шар із GoogleLogin поверх — рівно в розміри контейнера */
@@ -207,8 +241,21 @@
 
 
 .login_third_google_button:hover{
-    background: #4231a0;
+    background: rgba(75, 53, 131, 0.24);
     cursor: pointer;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.oauth-btn:hover {
+    background: rgba(75, 53, 131, 0.24);
+    cursor: pointer;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.oauth-btn-facebook-only:hover {
+    background: rgba(75, 53, 131, 0.24);
+    cursor: pointer;
+    border-color: rgba(255, 255, 255, 0.4);
 }
 .login_fourth_login_container{
     display: flex;
@@ -326,7 +373,7 @@ input:-webkit-autofill:active {
     order: 1;
     align-self: stretch;
     flex-grow: 0;
-    background: transparent !important;
+    background: rgba(255, 255, 255, 0.05) !important;
 
     font-style: normal;
     font-weight: 400;
@@ -336,6 +383,8 @@ input:-webkit-autofill:active {
     color: #C9D4FF !important;
     text-align: left !important;
     z-index:0;
+    backdrop-filter: blur(5px);
+    transition: all 0.3s ease;
 }
 .eye_icon_position{
     position: absolute;
@@ -355,28 +404,30 @@ input:-webkit-autofill:active {
     cursor: pointer;
 }
 .login_fourth_emailLogin_input:-webkit-autofill {
-    background-color: transparent !important; /* твій фон */
-    -webkit-box-shadow: 0 0 0 1000px #101010 inset;
-    -webkit-text-fill-color:  #C9D4FF; /* колір тексту */
-    font-family:"Baloo 2", sans-serif;
+    background-color: rgba(16, 16, 16, 0.8) !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(16, 16, 16, 0.8) inset;
+    -webkit-text-fill-color:  #C9D4FF;
+    font-family:"Space Grotesk", sans-serif;
     font-size: 18px !important;
     font-style: normal !important;
     border: 2px solid #5241B3;
     border-radius: 50px;
+    backdrop-filter: blur(5px);
 }
 .login_fourth_emailLogin_input:-webkit-autofill:focus {
-    background-color: transparent !important;
-    -webkit-box-shadow: 0 0 0 1000px #101010 inset ;
-    font-family:"Baloo 2", sans-serif;
+    background-color: rgba(16, 16, 16, 0.9) !important;
+    -webkit-box-shadow: 0 0 0 1000px rgba(16, 16, 16, 0.9) inset ;
+    font-family:"Space Grotesk", sans-serif;
     font-size: 18px !important;
     font-style: normal !important;
     border: 2px solid #5241B3;
     border-radius: 50px;
+    backdrop-filter: blur(5px);
 }
 .login_fourth_emailLogin_input:-webkit-autofill:focus-within {
     background-color: transparent !important;
     -webkit-box-shadow: 0 0 0 1000px #101010 inset ;
-    font-family:"Baloo 2", sans-serif;
+    font-family:"Space Grotesk", sans-serif;
     font-size: 18px !important;
     font-style: normal !important;
     border: 2px solid #5241B3;
@@ -465,8 +516,9 @@ input:-webkit-autofill:active {
     height: 62px;
     margin-bottom: 5px;
 
-    background: #5241B3;
+    background: rgba(82, 65, 179, 0.3);
     border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
     flex: none;
     order: 0;
     flex-grow: 0;
@@ -477,11 +529,14 @@ input:-webkit-autofill:active {
     text-align: center;
 
     color: #FFFFFF;
-
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 .login_sixth_button:hover{
-    background: #4231a0;
+    background: rgba(82, 65, 179, 0.5);
     cursor: pointer;
+    border-color: rgba(255, 255, 255, 0.4);
 }
 .login_seventh_container{
     /* Don’t have an account? Sign up */
@@ -506,24 +561,23 @@ input:-webkit-autofill:active {
 
 
 .signin_form_container{
-    /* Sign up */
-
-    /* Auto layout.css */
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    padding: 32px 36px;
-    gap: 24px;
+    padding: 80px 80px;
+    gap: 128px;
 
     position: absolute;
-    width: 554px;
-    height: 920px;
-    left: 683px;
-    top: 20px;
+    width: 1235px;
+    height: 775px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 
-    background: #101010;
-    border-radius: 32px;
-
+    background: rgba(185, 185, 185, 0.14);
+    border-radius: 76px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
 }
 .eye_icon_position_signin{
     position: absolute;
@@ -561,4 +615,246 @@ input:-webkit-autofill:active {
 }
 .login_signup_button:hover{
     cursor: pointer;
+}
+/* ===== NEW SIGNUP PAGE STYLES ===== */
+
+.signup_left_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 345px;
+    height: 584px;
+    gap: 24px;
+}
+
+.signup_header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+}
+
+.signup_logo {
+    width: 86px;
+    height: 54px;
+    object-fit: contain;
+}
+
+.signup_heading_main {
+    font-size: 24px;
+    font-weight: 500; /* Space Grotesk Medium substitute */
+    color: #FFFFFF;
+    text-align: left;
+    margin: 0;
+    line-height: 1.2;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.signup_heading_sub {
+    font-size: 14px;
+    font-weight: 400; /* Regular */
+    color: #FFFFFF;
+    text-align: left;
+    margin: 0;
+    line-height: 1.2;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.signup_login_prompt {
+    font-size: 14px;
+    font-weight: 400;
+    color: #B382FF;
+    margin: 8px 0 0 0;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.signup_login_link {
+    color: #B382FF;
+    text-decoration: underline;
+}
+
+.signup_form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 100%;
+}
+
+.signup_input_group {
+    position: relative;
+    width: 345px;
+    height: 43px;
+    display: flex;
+    align-items: center;
+}
+
+.signup_input {
+    width: 100%;
+    height: 100%;
+    padding: 18px 12px;
+    gap: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.24);
+    color: #FFFFFF;
+    font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none;
+    transition: background 0.3s ease, border 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.signup_input::placeholder {
+    color: #B0B0B0;
+}
+
+.signup_input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.signup_eye_icon {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+.signup_eye_icon img {
+    width: 100%;
+    height: 100%;
+}
+
+.signup_button {
+    width: 345px;
+    height: 45px;
+    /* remove inner padding so flex centering works */
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+    background: rgba(48, 51, 112, 0.5); /* 50% opacity */
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    font-family: 'Space Grotesk', sans-serif;
+    transition: background 0.3s ease, border 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.signup_button:hover {
+    background: rgba(48, 51, 112, 0.34);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.signup_or_separator {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-size: 14px;
+    gap: 12px;
+}
+
+.signup_or_separator::before,
+.signup_or_separator::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #FFFFFF;
+    opacity: 0.5;
+    margin: 0 12px;
+}  
+/* increased line length means flex:1 */
+
+.signup_social_buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.signup_oauth_wrap {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup_oauth_btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 24px;
+    padding: 12px 12px;
+    background: rgba(75, 53, 131, 0.14);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease, border 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+
+.signup_oauth_btn img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: brightness(0) saturate(100%) invert(100%);
+}
+
+.signup_oauth_btn:hover {
+    background: rgba(75, 53, 131, 0.24);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.signup_facebook_btn {
+    width: 48px;
+    height: 48px;
+}
+
+.signup_oauth_overlay {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+}
+
+.signup_oauth_overlay > div,
+.signup_oauth_overlay iframe {
+    width: 100% !important;
+    height: 100% !important;
+    margin: 0 !important;
+}
+
+.signup_right_container {
+    width: 603px;
+    height: 540px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.signup_banner {
+    width: 100%;
+    height: 100%;
+    border-radius: 60px;
+    object-fit: cover;
+    /* border removed per request */
 }
