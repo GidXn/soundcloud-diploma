@@ -37,7 +37,12 @@ const Login: React.FC = () => {
             dispatch(setUser({ user, token: data.token }));
             navigate("/home");
         } catch (err) {
-            alert("Помилка логіну: " + (err as AxiosError).message);
+            // show friendly message when credentials are wrong
+            if (err instanceof AxiosError && err.response?.status === 401) {
+                alert("The username or password you entered is incorrect.");
+            } else {
+                alert("Помилка логіну: " + (err as AxiosError).message);
+            }
         }
     };
 
