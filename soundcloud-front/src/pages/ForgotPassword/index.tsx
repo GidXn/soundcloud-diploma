@@ -1,63 +1,66 @@
-// import { useNavigate } from 'react-router-dom';
-import { Form, type FormProps, Input } from 'antd';
-import {IForgotPasswordRequest} from "./types.ts";
-import {useState} from "react";
+import React, {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import axios from "axios";
-// import {useForgotPasswordMutation} from "../../../services/apiAccount.ts";
-// import LoadingOverlay from "../../../components/ui/loading/LoadingOverlay.tsx";
-
+import "../../styles/login_signup/background.css";
+import "../../styles/login_signup/forgot_password.css";
 
 const ForgotPasswordPage: React.FC = () => {
-    // const [forgot, { isLoading }] = useForgotPasswordMutation();
-    const [isLoading, setIsLoading] = useState<boolean>()
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-    // const navigate = useNavigate();
-
-    const onFinish: FormProps<IForgotPasswordRequest>["onFinish"] = async (values) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         try {
-            console.log("forgot password", values);
             setIsLoading(true);
-            await axios.post("http://localhost:5122/api/user/forgot-password", values);
-            //await forgot(values).unwrap();
-
-            //navigate('/forgot-success');
+            await axios.post("http://localhost:5122/api/user/forgot-password", { email });
             setIsLoading(false);
-
+            alert("If the address is registered, you will receive an email with further instructions.");
+            navigate("/login");
         } catch (err) {
             setIsLoading(false);
-            console.log("error", err);
+            console.error(err);
             alert("Помилка відновлення");
         }
     };
 
-
     return (
-        <div className="min-h-[565px] flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-md">
-                {/*{(isLoading)  && <LoadingOverlay />}*/}
+        <div className="background_style min-h-screen flex items-center justify-center">
+            <div className="forgot_password_container">
+                <div className="forgot_password_header">
+                    <img src="public/logo_Allurew.png" alt="Allure Logo" className="forgot_password_logo" />
+                    <h1 className="forgot_password_title">Recover password</h1>
+                    <p className="forgot_password_subtitle">Enter your email address to receive a password reset link.</p>
+                </div>
 
-                <h2 className="text-2xl font-semibold mb-6 text-center">Віднолвення паролю</h2>
-                <Form<IForgotPasswordRequest>
-                    layout="vertical"
-                    onFinish={onFinish}
-                >
-                    <Form.Item<IForgotPasswordRequest>
-                        name="email"
-                        label="Вкажіть пошту для віднолвення паролю"
-                        rules={[{ required: true, message: "Enter your email" }]}
-                    >
-                        <Input type="email" placeholder="you@example.com" />
-                    </Form.Item>
+                <form onSubmit={onSubmit} className="forgot_password_form" noValidate autoComplete="off">
+                    <div className="forgot_password_input_group">
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            className="forgot_password_input"
+                            placeholder="EMail"
+                            required
+                            autoComplete="off"
+                        />
+                        <img src="public/user.png" alt="user icon" className="forgot_password_icon" />
+                    </div>
 
-
+                    <button type="submit" className="forgot_password_button forgot_password_button_primary">
+                        {isLoading ? "Sending..." : "Send Reset Link"}
+                    </button>
 
                     <button
-                        type="submit"
-                        className="bg-orange-500 hover:bg-orange-600 transition text-white font-semibold px-4 py-2 rounded w-full mt-4"
+                        type="button"
+                        className="forgot_password_button forgot_password_button_secondary"
+                        onClick={() => navigate("/login")}
                     >
-                        {isLoading ? 'Logging in...' : 'Відновити пароль'}
+                        Back to Login
                     </button>
-                </Form>
+                </form>
             </div>
         </div>
     );

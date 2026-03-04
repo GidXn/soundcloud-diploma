@@ -224,6 +224,11 @@ const Signup: React.FC = () => {
 
                         {/* Social login buttons */}
                         <div className="signup_social_buttons">
+                            {/* Facebook button */}
+                            <button type="button" className="signup_oauth_btn signup_facebook_btn">
+                                <img src="public/facebook.png" alt="Facebook"/>
+                            </button>
+
                             {/* Google button */}
                             <div className="signup_oauth_wrap">
                                 <button type="button" className="signup_oauth_btn">
@@ -241,11 +246,6 @@ const Signup: React.FC = () => {
                                     />
                                 </div>
                             </div>
-
-                            {/* Facebook button */}
-                            <button type="button" className="signup_oauth_btn signup_facebook_btn">
-                                <img src="public/facebook.png" alt="Facebook"/>
-                            </button>
                         </div>
                     </form>
                 </div>

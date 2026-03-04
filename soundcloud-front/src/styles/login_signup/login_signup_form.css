@@ -860,7 +860,7 @@ input:-webkit-autofill:active {
 /* semi‑transparent register variant for login page */
 .signup_button.login_secondary {
     background: rgba(255, 255, 255, 0.24);
-    color: #ffffff;
+    color: #FFFFFF;
 }
 
 .signup_button.login_secondary:hover {
