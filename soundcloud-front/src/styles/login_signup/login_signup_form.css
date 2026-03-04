@@ -627,12 +627,107 @@ input:-webkit-autofill:active {
     gap: 24px;
 }
 
+/* login page adjustments */
+.login_left {
+    height: 537px;
+}
+
+.login_email_group {
+    position: relative;
+    width: 345px;
+    height: 43px;
+}
+
+.login_email_group .signup_input {
+    padding-right: 36px;
+}
+.input_icon {
+    position: absolute;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    /* convert icon to solid white, shadows eliminated */
+    filter: brightness(0) saturate(100%) invert(100%);
+    box-shadow: none;
+}
+
+.signup_forgot_center {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 0px; /* half previous gap above forgot-password */
+}
+
+.login_primary {
+    width: 345px;
+    height: 45px;
+    padding: 17px 61px;
+    gap: 10px;
+    border-radius: 10px;
+    background: rgba(109, 40, 217, 0.5);
+    color: #FFFFFF;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-top: 24px; /* medium gap before login button */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login_secondary {
+    width: 345px;
+    height: 45px;
+    padding: 17px 61px;
+    gap: 10px;
+    border-radius: 10px;
+    background: #FFFFFF;
+    color: #000;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    margin-top: 2px; /* half previous gap between login and register */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* login_tertiary removed, no longer used */
+
+.signup_login_prompt {
+    font-size: 14px;
+    font-weight: 400;
+    color: #FFFFFF;
+    text-align: center;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
 .signup_header {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 0; /* manual margins below */
     width: 100%;
+}
+
+.signup_logo {
+    width: 86px;
+    height: 54px;
+    object-fit: contain;
+    margin-bottom: 48px; /* increased to 1.5x for larger gap to first text */
+}
+
+.signup_heading_main {
+    margin-bottom: 64px; /* doubled gap to second text */
+}
+
+.signup_heading_sub {
+    margin-bottom: 24px; /* medium gap before inputs */
 }
 
 .signup_logo {
@@ -677,7 +772,7 @@ input:-webkit-autofill:active {
 .signup_form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 12px; /* base small gap between elements */
     width: 100%;
 }
 
@@ -731,6 +826,9 @@ input:-webkit-autofill:active {
 .signup_eye_icon img {
     width: 100%;
     height: 100%;
+    /* solid white regardless of original shading */
+    filter: brightness(0) saturate(100%) invert(100%);
+    box-shadow: none;
 }
 
 .signup_button {
@@ -759,6 +857,16 @@ input:-webkit-autofill:active {
     border-color: rgba(255, 255, 255, 0.4);
 }
 
+/* semi‑transparent register variant for login page */
+.signup_button.login_secondary {
+    background: rgba(255, 255, 255, 0.24);
+    color: #ffffff;
+}
+
+.signup_button.login_secondary:hover {
+    background: rgba(255, 255, 255, 0.35);
+}
+
 .signup_or_separator {
     width: 100%;
     display: flex;
@@ -769,6 +877,9 @@ input:-webkit-autofill:active {
     gap: 12px;
 }
 
+.login_or {
+    margin-top: 3px; /* even smaller gap before OR on login */
+}
 .signup_or_separator::before,
 .signup_or_separator::after {
     content: "";

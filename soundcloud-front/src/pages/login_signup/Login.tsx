@@ -87,67 +87,89 @@ const Login: React.FC = () => {
 
     return (
         <div className="background_style min-h-screen flex items-center justify-center">
-            <div className="login_form_container">
-                <div className="login_second_container_text baloo2">
-                    <h1>Sign into your account</h1>
-                </div>
+            <div className="signin_form_container login_window">
+                {/* left side inputs */}
+                <div className="signup_left_container login_left">
+                    <div className="signup_header">
+                        <img src="public/logo_Allurew.png" alt="Allure Logo" className="signup_logo" />
+                        <h1 className="signup_heading_main">Log in to Allure</h1>
+                        <p className="signup_heading_sub">Login to access your favorite tracks.</p>
+                    </div>
 
-                <div className="login_third_google_facebook_container">
-                    <div className="login_third_google_button baloo2">
-                        <div className="oauth-wrap">
-                            <button type="button" className="oauth-btn">
-                                <img src="src/images/icons/google_icon.png" alt="" className="oauth-btn__icon" />
-                                Sign in with Google
+                    <form onSubmit={onFinish} className="signup_form" noValidate autoComplete="off">
+                        {/* email with user icon */}
+                        <div className="signup_input_group login_email_group">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                className="signup_input"
+                                placeholder="EMail"
+                                required
+                                autoComplete="off"
+                            />
+                            <img src="public/user.png" alt="user icon" className="input_icon" />
+                        </div>
+
+                        {/* password */}
+                        <div className="signup_input_group">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                name="password"
+                                className="signup_input"
+                                placeholder="Enter Password"
+                                required
+                                autoComplete="current-password"
+                            />
+                            <button
+                                type="button"
+                                className="signup_eye_icon"
+                                onClick={() => setShowPassword(!showPassword)}
+                            >
+                                <img src="public/show_password.png" alt="show_password_icon"/>
                             </button>
-                            <div className="oauth-overlay">
-                                <GoogleLogin
-                                    onSuccess={handleGoogleSuccess}
-                                    onError={handleGoogleError}
-                                    theme="filled_blue"
-                                    size="large"
-                                    text="signin_with"
-                                    shape="pill"
-                                    width="100%"
-                                />
+                        </div>
+
+                        {/* login buttons */}
+                        <button type="submit" className="signup_button login_primary">Log In</button>
+                        <button type="button" className="signup_button login_secondary" onClick={() => navigate('/signup')}>Register</button>
+
+                        <div className="signup_forgot_center">
+                            <a href="/forgot-password" className="signup_login_prompt">Forgot Password?</a>
+                        </div>
+
+                        <div className="signup_or_separator login_or">
+                            <span>or</span>
+                        </div>
+
+                        <div className="signup_social_buttons">
+                            <button type="button" className="signup_oauth_btn signup_facebook_btn">
+                                <img src="public/facebook.png" alt="Facebook"/>
+                            </button>
+                            <div className="signup_oauth_wrap">
+                                <button type="button" className="signup_oauth_btn">
+                                    <img src="public/google.png" alt="Google" />
+                                </button>
+                                <div className="signup_oauth_overlay">
+                                    <GoogleLogin
+                                        onSuccess={handleGoogleSuccess}
+                                        onError={handleGoogleError}
+                                        theme="filled_blue"
+                                        size="large"
+                                        text="signin_with"
+                                        shape="pill"
+                                        width="100%"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <button className="login_third_google_button baloo2 text-white"><img
-                        src="src/images/icons/facebook_icon.png" alt="facebook"/> Sign in with
-                        Facebook
-                    </button>
+                    </form>
                 </div>
-
-                <form onSubmit={onFinish} className="login_fourth_login_container" noValidate>
-                    <div className="login_fourth_text_or baloo2">
-                        <label>OR</label>
-                    </div>
-
-                    <div className="login_fourth_emailLogin_container">
-                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="email">Email</label>
-                        <input type="email" id="email" name="email" className="login_fourth_emailLogin_input baloo2" placeholder="Enter your email" required />
-                    </div>
-
-                    <div className="login_fourth_emailLogin_container">
-                        <label className="login_fourth_emailLogin_container_text baloo2" htmlFor="password">Password</label>
-                        <input type={showPassword ? "text" : "password"} id="password" name="password" className="login_fourth_emailLogin_input baloo2" placeholder="Enter your password" required />
-                        <button type="button" className="eye_icon_position" onClick={() => setShowPassword(!showPassword)}>
-                            <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
-                        </button>
-                    </div>
-
-                    <div className="login_fifth_forgot_password_container">
-                        <a href="/forgot-password" className="baloo2">Forgot your Password?</a>
-                    </div>
-
-                    <div className="sixth_login_button_container">
-                        <button type="submit" className="baloo2 login_sixth_button">Sign In</button>
-                    </div>
-                    <div className="login_seventh_container">
-                        <label className="baloo2">Don’t have an account? <a href="/signup" className="text-purple underline">Sign up</a></label>
-                    </div>
-                </form>
+                {/* right banner */}
+                <div className="signup_right_container">
+                    <img src="public/auth_banner.png" alt="Allure Banner" className="signup_banner" />
+                </div>
             </div>
         </div>
     );

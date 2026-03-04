@@ -161,7 +161,7 @@ const Signup: React.FC = () => {
                         </div>
 
                         {/* Email field */}
-                        <div className="signup_input_group">
+                        <div className="signup_input_group login_email_group">
                             <input 
                                 type="email" 
                                 id="email" 
@@ -171,6 +171,7 @@ const Signup: React.FC = () => {
                                 required 
                                 autoComplete="off" 
                             />
+                            <img src="public/user.png" alt="user icon" className="input_icon" />
                         </div>
 
                         {/* Password field */}
@@ -189,7 +190,7 @@ const Signup: React.FC = () => {
                                 className="signup_eye_icon" 
                                 onClick={() => setShowPassword(!showPassword)}
                             >
-                                <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
+                                <img src="public/show_password.png" alt="show_password_icon"/>
                             </button>
                         </div>
 
@@ -209,7 +210,7 @@ const Signup: React.FC = () => {
                                 className="signup_eye_icon" 
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                             >
-                                <img src="src/images/icons/eye_icon.png" alt="eye_icon"/>
+                                <img src="public/show_password.png" alt="show_password_icon"/>
                             </button>
                         </div>
 
