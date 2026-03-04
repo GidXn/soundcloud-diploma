@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 
@@ -25,7 +25,8 @@
 .html, body, #root {
     margin: 0;
     background-color: #101010;
+    font-family: 'Space Grotesk', sans-serif;
 }
 .baloo2{
-    font-family: 'Baloo 2', sans-serif;
+    font-family: 'Space Grotesk', sans-serif;
 }
