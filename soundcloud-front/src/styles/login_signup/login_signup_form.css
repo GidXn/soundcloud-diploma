@@ -841,7 +841,7 @@ input:-webkit-autofill:active {
     align-items: center;
     gap: 10px;
     border-radius: 10px;
-    background: rgba(48, 51, 112, 0.5); /* 50% opacity */
+    background: rgb(108, 41, 217, 0.6);
     color: #FFFFFF;
     font-size: 16px;
     font-weight: 600;
@@ -853,7 +853,7 @@ input:-webkit-autofill:active {
 }
 
 .signup_button:hover {
-    background: rgba(48, 51, 112, 0.34);
+    background: rgb(29, 78, 216, 0.6);
     border-color: rgba(255, 255, 255, 0.4);
 }
 
