@@ -561,11 +561,14 @@ input:-webkit-autofill:active {
 
 
 .signin_form_container{
-    display: flex;
-    flex-direction: row;
+    display: inline-flex;
+    height: 900px;
+    padding: 80px;
     align-items: center;
-    padding: 80px 80px;
     gap: 128px;
+
+    border-radius: 76px;
+    background: rgba(185, 185, 185, 0.14);
 
     position: absolute;
     width: 1235px;
@@ -574,8 +577,6 @@ input:-webkit-autofill:active {
     top: 50%;
     transform: translate(-50%, -50%);
 
-    background: rgba(185, 185, 185, 0.14);
-    border-radius: 76px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
 }
@@ -622,9 +623,8 @@ input:-webkit-autofill:active {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 345px;
-    height: 584px;
-    gap: 24px;
+    width: 346px;
+    gap: 32px;
 }
 
 /* login page adjustments */
