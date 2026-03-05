@@ -132,7 +132,7 @@ if (!Directory.Exists(imagesDir))
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(imagesDir),
-    RequestPath = "/uploads/albums"
+    RequestPath = ""
 });
 
 app.UseRouting();
