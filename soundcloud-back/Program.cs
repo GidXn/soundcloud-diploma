@@ -118,11 +118,11 @@ if (app.Environment.IsDevelopment())
 string imagesDir;
 if (app.Environment.IsDevelopment())
 {
-    imagesDir = Path.Combine(Directory.GetCurrentDirectory().ToString(), "wwwroot", "uploads", "albums");
+    imagesDir = Path.Combine(Directory.GetCurrentDirectory().ToString(), "wwwroot");
 }
 else
 {
-    imagesDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "albums");
+    imagesDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
 }
 if (!Directory.Exists(imagesDir))
 {
