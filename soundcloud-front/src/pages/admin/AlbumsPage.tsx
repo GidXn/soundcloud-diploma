@@ -28,7 +28,15 @@ const AlbumsPage = () => {
     const handleCreate = async () => {
         try {
             const values = await form.validateFields();
-            await adminApi.createAlbum(values);
+
+            const formData = new FormData();
+            formData.append("Title", values.title);
+            formData.append("Description", values.description);
+            formData.append("OwnerId", "1");
+            formData.append("IsPublic", "true");
+
+            await adminApi.createAlbum(formData);
+
             message.success("Альбом створено");
             setIsModalVisible(false);
             form.resetFields();

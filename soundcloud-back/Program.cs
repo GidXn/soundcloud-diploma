@@ -1,23 +1,24 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.EntityFrameworkCore;
-using soundcloud_back.Data;
-using soundcloud_back.Filters;
-using soundcloud_back.Validators.Auth;
-using soundcloud_back.Services;
-using soundcloud_back.Services.Interfaces;
-using soundcloud_back.Models.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using soundcloud_back.Data;
+using soundcloud_back.Filters;
+using soundcloud_back.Interfaces;
+using soundcloud_back.Models.Auth;
+using soundcloud_back.Options;
+using soundcloud_back.Services;
+using soundcloud_back.Services.Abstractions;
+using soundcloud_back.Services.Implementations;
+using soundcloud_back.Services.Interfaces;
+using soundcloud_back.Validators.Auth;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Text;
 using System.Threading.Tasks;
-using Swashbuckle.AspNetCore.Annotations;
-using soundcloud_back.Services.Implementations;
-using soundcloud_back.Options;
-using soundcloud_back.Services.Abstractions;
-using soundcloud_back.Interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,11 +35,12 @@ builder.Services.Configure<EmailOptions>(
 
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
-//builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IImageStorage, FileSystemImageStorage>();
 builder.Services.AddScoped<IEmailSender, SmtpEmailSender>();
 
 // JWT Configuration
@@ -72,13 +74,14 @@ builder.Services.AddAuthorization();
 // CORS
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", p =>
-    {
-        p.WithOrigins("http://localhost:5173")
-         .AllowAnyMethod()
-         .AllowAnyHeader()
-         .AllowCredentials();
-    });
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
 });
 
 // Controllers
@@ -111,6 +114,28 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+string imagesDir;
+if (app.Environment.IsDevelopment())
+{
+    imagesDir = Path.Combine(Directory.GetCurrentDirectory().ToString(), "wwwroot", "uploads", "albums");
+}
+else
+{
+    imagesDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "albums");
+}
+if (!Directory.Exists(imagesDir))
+{
+    Directory.CreateDirectory(imagesDir);
+}
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(imagesDir),
+    RequestPath = "/uploads/albums"
+});
+
+app.UseRouting();
 
 app.UseCors("AllowFrontend");
 
