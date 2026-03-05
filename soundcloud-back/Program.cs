@@ -36,6 +36,8 @@ builder.Services.Configure<EmailOptions>(
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ITrackService, TrackService>();
+builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
