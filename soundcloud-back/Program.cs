@@ -17,7 +17,6 @@ using Swashbuckle.AspNetCore.Annotations;
 using soundcloud_back.Services.Implementations;
 using soundcloud_back.Options;
 using soundcloud_back.Services.Abstractions;
-using soundcloud_back.Services.Interfaces;
 using soundcloud_back.Interfaces;
 
 
@@ -35,6 +34,8 @@ builder.Services.Configure<EmailOptions>(
 
 builder.Services.AddHttpClient();
 builder.Services.AddTransient<IGoogleTokenValidator, GoogleTokenValidator>();
+//builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
