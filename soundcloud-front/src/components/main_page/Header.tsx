@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 //
 import {useDispatch} from "react-redux";
 import {logout} from "../../store/slices/userSlice.ts";
@@ -7,8 +7,7 @@ import '../../styles/main_pages/header.css';
 import {IUser} from "../../types/user.ts";
 import {getCurrentUser} from "../../services/User/user_info.ts";
 
-import headerBehind from "../../images/header/header_behind.png";
-import headerAhead from "../../images/header/header_ahead.png";
+
 // import logoWave from "../../images/logo/logo_WaveCloud.png";
 import people from "../../images/search_bar/people.png";
 import white_arrow_down from "../../images/icons/white_arrow_down.png";
@@ -20,7 +19,6 @@ import logout2 from "../../images/icons/logout.png";
 
 
 const Header: React.FC = () => {
-    const [active, setActive] = useState<string>("home");
     const [user, setUser] = useState<IUser | null>(null);
 
     const [open, setOpen] = useState(false);
@@ -57,10 +55,7 @@ const Header: React.FC = () => {
     return (
         <>
             <div className="max-w-screen-full-xl">
-                <div>
-                    <img className="header_image_behind" src={headerBehind} alt="HeaderBehind"/>
-                    <img className="header_image_ahead" src={headerAhead} alt="HeaderBehind"/>
-                </div>
+
                 <header className="header_container_main">
                         <div className="header_logo">
                             <div className="w-[56px] h-[56px] xl:mr-[12px] lg:mr-[12px]">
@@ -68,27 +63,6 @@ const Header: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="baloo2 header_buttons_main">
-                            <Link to="/home"
-                                  onClick={() => setActive("home")}
-                                  className={`px-1 py-1 xl:text-[26px] font-medium 
-                                  ${active === "home"
-                                      ? "text-purple border-b-2 border-white" : "text-white"}`}>
-                                Home
-                            </Link>
-                            <Link to="/feed" onClick={() => setActive("feed")}
-                                  className={`px-1 py-1 xl:text-[26px] font-medium 
-                                  ${active === "feed"
-                                      ? "text-purple border-b-2 border-white" : "text-white"}`}>
-                                Feed
-                            </Link>
-                            <Link to="/library" onClick={() => setActive("library")}
-                                  className={`px-1 py-1 xl:text-[26px] font-medium 
-                                  ${active === "library"
-                                      ? "text-purple border-b-2 border-white" : "text-white"}`}>
-                                Library
-                            </Link>
-                        </div>
                         <div className="header_profile_container_main">
                             {isLogin ? (
                                 <div>

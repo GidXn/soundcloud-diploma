@@ -30,23 +30,25 @@ const ForgotPasswordPage: React.FC = () => {
                 <div className="forgot_password_header">
                     <img src="public/logo_Allurew.png" alt="Allure Logo" className="forgot_password_logo" />
                     <h1 className="forgot_password_title">Recover password</h1>
-                    <p className="forgot_password_subtitle">Enter your email address to receive a password reset link.</p>
                 </div>
 
                 <form onSubmit={onSubmit} className="forgot_password_form" noValidate autoComplete="off">
                     <div className="forgot_password_input_group">
-                        <input
-                            type="email"
-                            id="email"
-                            name="email"
-                            value={email}
-                            onChange={e => setEmail(e.target.value)}
-                            className="forgot_password_input"
-                            placeholder="EMail"
-                            required
-                            autoComplete="off"
-                        />
-                        <img src="public/user.png" alt="user icon" className="forgot_password_icon" />
+                        <p className="forgot_password_subtitle">Enter your email address to receive a password reset link.</p>
+                        <div className="forgot_password_input_wrapper">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                value={email}
+                                onChange={e => setEmail(e.target.value)}
+                                className="forgot_password_input"
+                                placeholder="EMail"
+                                required
+                                autoComplete="off"
+                            />
+                            <img src="public/user.png" alt="user icon" className="forgot_password_icon" />
+                        </div>
                     </div>
 
                     <button type="submit" className="forgot_password_button forgot_password_button_primary">
