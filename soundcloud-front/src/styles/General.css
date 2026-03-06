@@ -5,7 +5,6 @@ html, body {
     margin: 0;
     font-family: 'Space Grotesk', sans-serif;
     position: relative; /* needed for pseudo */
-    overflow: hidden;
 }
 
 /* global blurred background layer */
@@ -55,10 +54,12 @@ html::before, body::before {
 }
 
 .content_container {
-    flex-grow: 1;     /* замість height:auto */
+    flex-grow: 1;
     flex-shrink: 0;
-    flex-basis: auto; /* дозволяє брати висоту від вмісту */
-    margin-bottom: 220px;  /* щоб контент не ховався за Player */
+    flex-basis: auto;
+    margin-bottom: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .footer_container {
