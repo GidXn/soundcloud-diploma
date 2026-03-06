@@ -30,10 +30,9 @@ const PlaylistsPage = () => {
             const values = await form.validateFields();
 
             const formData = new FormData();
-            formData.append("Title", values.title);
+            formData.append("Name", values.title);
             formData.append("Description", values.description);
             formData.append("OwnerId", "1");
-            formData.append("IsPublic", "true");
 
             await adminApi.createPlaylist(formData);
 
@@ -65,7 +64,7 @@ const PlaylistsPage = () => {
 
     const columns = [
         { title: "ID", dataIndex: "id" },
-        { title: "Назва", dataIndex: "title" },
+        { title: "Назва", dataIndex: "name" },
         { title: "Опис", dataIndex: "description" },
         { title: "Власник", dataIndex: ["owner", "username"] },
         {
@@ -106,7 +105,7 @@ const PlaylistsPage = () => {
                 onCancel={() => setIsModalVisible(false)}
             >
                 <Form form={form} layout="vertical">
-                    <Form.Item name="title" label="Назва" rules={[{ required: true }]}>
+                    <Form.Item name="name" label="Назва" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item name="description" label="Опис">
