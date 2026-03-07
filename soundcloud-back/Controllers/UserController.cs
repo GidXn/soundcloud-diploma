@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using soundcloud_back.Models.Auth;
+using soundcloud_back.Services;
 using soundcloud_back.Services.Interfaces;
 using Swashbuckle.AspNetCore.Annotations;
+using System.Security.Claims;
 //using soundcloud_back.SMTP
 
 namespace soundcloud_back.Controllers
@@ -12,10 +14,12 @@ namespace soundcloud_back.Controllers
     public class UserController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public UserController(IAuthService authService)
+        public UserController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -43,6 +47,31 @@ namespace soundcloud_back.Controllers
             }
             var profile = await _authService.GetUserProfileAsync(userId);
             return Ok(profile);
+        }
+
+        [HttpPut("{id}/banner")]
+        [SwaggerOperation(Summary = "Оновити свій банер")]
+        public async Task<IActionResult> UpdateBanner(int id, [FromForm] UpdateUserBannerDto dto)
+        {
+            var bannerUrl = await _userService.UpdateBannerAsync(id, dto.Banner);
+            return Ok(new { BannerUrl = bannerUrl });
+        }
+
+        [Authorize]
+        [HttpPut("profile")]
+        [SwaggerOperation(
+    OperationId = "UpdateOwnProfile",
+    Summary = "Оновити власний профіль [Authorize]")]
+        public async Task<IActionResult> UpdateOwnProfile([FromForm] UpdateUserRequestDto dto)
+        {
+            // Дістаємо userId з токена
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userIdClaim == null)
+                return Unauthorized();
+
+            int userId = int.Parse(userIdClaim);
+            var updated = await _userService.UpdateAsync(userId, dto);
+            return Ok(updated);
         }
 
         [AllowAnonymous]

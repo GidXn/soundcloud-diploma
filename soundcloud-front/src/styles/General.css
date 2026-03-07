@@ -4,8 +4,40 @@ html, body {
     height: 100%;
     margin: 0;
     font-family: 'Space Grotesk', sans-serif;
+    position: relative; /* needed for pseudo */
 }
 
+/* global blurred background layer - only for main app content */
+.main_content_wrapper::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--page-bg, url('/inside/home-bg.png')) center center / cover no-repeat;
+    background-attachment: fixed;
+    filter: blur(10px);
+    z-index: -1;
+}
+
+/* force background on common containers in case other styles override */
+#root, .layout_container, .main_content_wrapper, .content_container {
+    background: transparent !important;
+}
+
+.layout_container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.main_content_wrapper {
+    flex: 1;
+    margin-left: 112.083px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
 .header_container_main{
     display: flex;
@@ -15,22 +47,19 @@ html, body {
     gap: 125px;
 
     position: relative;
-    width: 1568px;
+    width: calc(100% - 176px);
     height: 44px;
-    left:176px;
+    left: 176px;
     top: 50px;
-}
-.layout_container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
 }
 
 .content_container {
-    flex-grow: 1;     /* замість height:auto */
+    flex-grow: 1;
     flex-shrink: 0;
-    flex-basis: auto; /* дозволяє брати висоту від вмісту */
-    margin-bottom: 220px;  /* щоб контент не ховався за Player */
+    flex-basis: auto;
+    margin-bottom: 220px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .footer_container {
@@ -44,7 +73,7 @@ html, body {
     position: fixed;
     left: 176px;
     bottom: 20px;
-    width: 1568px;
+    width: calc(100% - 176px - 112.083px);
     height: 79px;
 
     display: flex;

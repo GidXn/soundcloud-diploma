@@ -31,6 +31,13 @@ import SearchPage from "./pages/main_pages/SearchPage.tsx";
 import {usePlayerStore} from "./store/player_store.tsx";
 import UserProfilePage from "./pages/profile/UserProfilePage.tsx";
 import ForgotPasswordPage from "./pages/ForgotPassword";
+import ResetPasswordPage from "./pages/login_signup/ResetPassword";
+import GenresPage from "./pages/main_pages/GenresPage";
+import AlbumsCollectionPage from "./pages/main_pages/AlbumsCollectionPage";
+import ArtistsPage from "./pages/main_pages/ArtistsPage";
+import ChartsPage from "./pages/main_pages/ChartsPage";
+import Top100Page from "./pages/main_pages/Top100Page";
+import RadioPage from "./pages/main_pages/RadioPage";
 
 
 export default function App() {
@@ -60,6 +67,7 @@ export default function App() {
                     <Route path="/login" element={<Login/>} />
                     <Route path="/signup" element={<Signup/>} />
                     <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
+                    <Route path="/reset-password" element={<ResetPasswordPage/>}/>
                 </Route>
 
                 {/* Головний Layout_LS */}
@@ -67,10 +75,15 @@ export default function App() {
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/feed" element={<FeedPage />} />
                     <Route path="/library" element={<LibraryPage />} />
+                    <Route path="/genres" element={<GenresPage />} />
+                    <Route path="/albums" element={<AlbumsCollectionPage />} />
+                    <Route path="/artists" element={<ArtistsPage />} />
+                    <Route path="/charts" element={<ChartsPage />} />
+                    <Route path="/top-100" element={<Top100Page />} />
+                    <Route path="/radio" element={<RadioPage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/play-album/:id" element={<PlayAlbumPage />} />
                     <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />  {/* для свого профілю */}
                     <Route path="/user/:id" element={<UserProfilePage />} /> {/* для інших користувачів */}
                     <Route path="/search-page" element={<SearchPage/>}/>
                     <Route path="/set-password" element={<SetPassword />} />
