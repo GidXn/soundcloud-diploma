@@ -12,8 +12,6 @@ import {getCurrentUser} from "../../services/User/user_info.ts";
 import people from "../../images/search_bar/people.png";
 import white_arrow_down from "../../images/icons/white_arrow_down.png";
 import profile from "../../images/icons/profile.png";
-import email from "../../images/icons/email.png";
-import information from "../../images/icons/information.png";
 import search from "../../images/search_bar/search.png";
 import logout2 from "../../images/icons/logout.png";
 
@@ -65,77 +63,8 @@ const Header: React.FC = () => {
 
                         <div className="header_profile_container_main">
                             {isLogin ? (
-                                <div>
-                                    <div className="header_profile_container_main">
-                                        <div className="baloo2 header_profile_image_container">
-                                            <div className="user_avatar">
-                                                {user?.avatar ? (
-                                                    <img className="image_container_user" src={getUserImageUrl(user)}
-                                                         alt="people" width="32" height="32"/>
-                                                ) : (
-
-                                                    <img className="image_container_user"
-                                                         src={people}
-
-                                                         alt="people" width="22" height="22"/>
-                                                )}
-                                            </div>
-                                            <div
-                                                className="user_drop_bar cursor-pointer"
-                                                onClick={() => setOpen((prev) => !prev)}
-                                            >
-                                                <img
-                                                    src={white_arrow_down}
-                                                    className="search_logo_home_page"
-                                                    alt="arrow"
-                                                />
-                                            </div>
-                                            {open && (
-                                                <div className="absolute right-16 top-full mt-2 w-40 bg-darkpurple rounded-lg shadow-lg z-50">
-                                                    <ul className="flex flex-col text-gray-800">
-                                                        <li className="flex flex-row items-center gap-2 px-4 py-2
-                                                        font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
-                                                            onClick={() => {
-                                                                navigate("/profile");
-                                                                setOpen(prev => !prev);
-                                                            }}>
-                                                            <img
-                                                                src={profile}
-                                                                width="20px"
-                                                                height="20px"
-                                                                alt="arrow"
-                                                            />
-                                                            Profile
-                                                        </li>
-                                                        <li className="flex flex-row items-center gap-2 px-4 py-2 px-4 py-2
-                                                        font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
-                                                        onClick={() => Logout()}
-                                                        >
-                                                            <img
-                                                                src={logout2}
-                                                                width="20px"
-                                                                height="20px"
-                                                                alt="arrow"
-                                                            />
-                                                            Logout
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <div className="message_information_container baloo2">
-                                            <div className="user_drop_bar">
-                                                <img src={email}
-                                                     className="search_logo_home_page"
-                                                     alt="search"/>
-                                            </div>
-                                            <div className="user_drop_bar">
-                                                <img src={information}
-                                                     className="search_logo_home_page"
-                                                     alt="search"/>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
+                                    {/* Search section on the left */}
                                     <div className="search_container_home_page">
                                         <div className="search_bar_home_page">
                                             <div>
@@ -148,8 +77,63 @@ const Header: React.FC = () => {
                                                        placeholder="Search for artists, bands, tracks or music"
                                                        className="search_input_home_page baloo2"/>
                                             </div>
-
                                         </div>
+                                    </div>
+
+                                    {/* User profile on the right */}
+                                    <div className="baloo2 header_profile_image_container">
+                                        <div className="user_avatar">
+                                            {user?.avatar ? (
+                                                <img className="image_container_user" src={getUserImageUrl(user)}
+                                                     alt="people" width="32" height="32"/>
+                                            ) : (
+                                                <img className="image_container_user"
+                                                     src={people}
+                                                     alt="people" width="22" height="22"/>
+                                            )}
+                                        </div>
+                                        <div
+                                            className="user_drop_bar cursor-pointer"
+                                            onClick={() => setOpen((prev) => !prev)}
+                                        >
+                                            <img
+                                                src={white_arrow_down}
+                                                className="search_logo_home_page"
+                                                alt="arrow"
+                                            />
+                                        </div>
+                                        {open && (
+                                            <div className="absolute right-16 top-full mt-2 w-40 bg-darkpurple rounded-lg shadow-lg z-50">
+                                                <ul className="flex flex-col text-gray-800">
+                                                    <li className="flex flex-row items-center gap-2 px-4 py-2
+                                                    font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
+                                                        onClick={() => {
+                                                            navigate("/profile");
+                                                            setOpen(prev => !prev);
+                                                        }}>
+                                                        <img
+                                                            src={profile}
+                                                            width="20px"
+                                                            height="20px"
+                                                            alt="arrow"
+                                                        />
+                                                        Profile
+                                                    </li>
+                                                    <li className="flex flex-row items-center gap-2 px-4 py-2 px-4 py-2
+                                                    font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
+                                                    onClick={() => Logout()}
+                                                    >
+                                                        <img
+                                                            src={logout2}
+                                                            width="20px"
+                                                            height="20px"
+                                                            alt="arrow"
+                                                        />
+                                                        Logout
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
 

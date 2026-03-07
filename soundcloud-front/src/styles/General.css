@@ -7,22 +7,22 @@ html, body {
     position: relative; /* needed for pseudo */
 }
 
-/* global blurred background layer */
-html::before, body::before {
+/* global blurred background layer - only for main app content */
+.main_content_wrapper::before {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: url('/inside/background.png') center center / cover no-repeat;
+    background: var(--page-bg, url('/inside/home-bg.png')) center center / cover no-repeat;
     background-attachment: fixed;
     filter: blur(10px);
     z-index: -1;
 }
 
 /* force background on common containers in case other styles override */
-#root, .layout_container, .main_content_wrapper, .content_container, .background_style {
+#root, .layout_container, .main_content_wrapper, .content_container {
     background: transparent !important;
 }
 
