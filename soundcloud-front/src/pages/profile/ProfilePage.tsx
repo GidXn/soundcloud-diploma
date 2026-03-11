@@ -19,7 +19,7 @@ import {useNavigate} from "react-router-dom";
 //import {useSelector} from "react-redux";
 //import {RootState} from "../../store/store.ts";
 
-const tabs = ["All","Tracks", "Albums", "Playlists"];
+const tabs = ["Tracks", "Albums", "Playlists"];
 
 const ProfilePage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>("All");

@@ -236,46 +236,26 @@ const HomePage: React.FC = () => {
     };
 
     return (
-        <main className="layout_container mb-[1750px]">
+        <main className="layout_container mb-[2050px]">
             <div className="first_first_container relative">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
                     Albums
                 </div>
-
-                {/* {showLeftMore && (
-                    <button
-                        className="button_side_bar_left_container"
-                        onClick={() => scrollLeft(scrollMore)}
-                    >
-                        <img src="src/images/icons/arrow_left_side_bar.png"
-                             alt="ArrowLeft"/>
-                    </button>
-                )}
-                {showRightMore && (
-                    <button
-                        className="button_side_bar_right_container"
-                        onClick={() => scrollRight(scrollMore)}
-                    >
-                        <img src="src/images/icons/arrow_right_side_bar.png"
-                             alt="ArrowRight"/>
-                    </button>
-                )} */}
                 <div
                     className="first_first_container_album flex overflow-x-auto gap-4 py-4"
                     ref={scrollMore}
                 >
-                    {albums.map(album => (
+                    {[...albums].reverse().slice(0, 7).map(album => (
                         <li className="first_first_album flex-shrink-0 w-40" key={album.id}>
                             <img
                                 className="album_image_home_page"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
-                                // onClick={() => playAlbum(album, albums)}
                             />
                             <div className="album_information_container">
-                    <span className="album_name baloo2">
-                        {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
-                    </span>
+                                <span className="album_name baloo2">
+                                    {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
+                                </span>
                                 <span className="album_author_home_page baloo2">{album.ownerName}</span>
                             </div>
                         </li>
@@ -298,7 +278,9 @@ const HomePage: React.FC = () => {
 
                     <div className="frame-359">
                         <div className="frame-349">
-                            <img className="rounded-rectangle" src={getTrackImageUrl(track)} alt=""/>
+                            <img className="rounded-rectangle" src={getTrackImageUrl(track)} alt={""}
+                                 onClick={() => playTrack(track, tracks)}
+                            />
                             <div className="frame-322">
                                 <div className="adore-you">{track.title}</div>
                             </div>
@@ -324,101 +306,27 @@ const HomePage: React.FC = () => {
                     </div></>))}
                 </div>
             </div>
-            {/* <div className="third_first_container">
-                <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
-                    ARTIST TO WATCH OUT FOR
-                </div>
-                {showLeftArtist && (
-                    <button
-                        className="button_side_bar_left_container"
-                        onClick={() => scrollLeft(scrollArtist)}
-                    >
-                        <img src="src/images/icons/arrow_left_side_bar.png" alt="ArrowLeft"/>
-                    </button>
-                )}
-                {showRightArtist && (
-                    <button
-                        className="button_side_bar_right_container"
-                        onClick={() => scrollRight(scrollArtist)}
-                    >
-                        <img src="src/images/icons/arrow_right_side_bar.png" alt="ArrowRight"/>
-                    </button>
-                )}
-                <div className="first_first_container_track" ref={scrollArtist}>
-                    {users.length === 0 ? (
-                        <div className="user_info_container">
-                            <span className="txt_style">You don`t have Followings</span>
-                        </div>
-                    ) : (
-                        users.map(u => (
-                            <li key={u.id} className="first_first_track">
-                                <img
-                                    className="following_img_style"
-                                    src={getUserAvatarUrl(u)}
-                                    alt="avatar"
-                                    onClick={() => goToUserProfile(u.id)}
-                                />
-                                <div className="track_information_container">
-                                    <span className="track_name baloo2">{u.username}</span>
-                                </div>
-                            </li>
-                        ))
-                    )}
-                </div>
-            </div> */}
-            {/* <div className="playlist_container">
-                <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
-                    PLAYLIST
-                </div>
-                <div className="first_first_container_track">
-                    <span
-                        className="text-white text-lightpurple font-size-2xl font-bold">You don`t have Playlists</span>
-                    {tracks.map(track => (
-                       <li className="first_first_track" key={track.id}>
-                           <img className="track_image" src={getTrackImageUrl(track)} alt={""}
-                                onClick={() => playTrack(track)}
-                           />
-                           <div className="track_information_container">
-                               <span className="track_name baloo2">{track.title}</span>
-                               <span className="track_author baloo2">{track.author}</span>
-                           </div>
-                       </li>
-                    ))}
-                </div>
-            </div> */}
             <div className="trending_by_genre_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
                     Popular albums
                 </div>
-                {showLeftGenre && (
-                    <button
-                        className="button_side_bar_left_container"
-                        onClick={() => scrollLeft(scrollGenre)}
-                    >
-                        <img src="src/images/icons/arrow_left_side_bar.png"
-                             alt="ArrowLeft"/>
-                    </button>
-                )}
-                {showRightGenre && (
-                    <button
-                        className="button_side_bar_right_container"
-                        onClick={() => scrollRight(scrollGenre)}
-                    >
-                        <img src="src/images/icons/arrow_right_side_bar.png"
-                             alt="ArrowRight"/>
-                    </button>
-                )}
-                <div className="first_first_container_track" ref={scrollGenre}>
-                    {tracks.map(track => (
-                        <li className="first_first_track" key={track.id}>
-                            <img className="track_image_home_page" src={getTrackImageUrl(track)} alt={""}
-                                 onClick={() => playTrack(track, tracks)}
+                <div
+                    className="first_first_container_palbum"
+                    ref={scrollMore}
+                >
+                    {albums.slice(0, 12).map(album => (
+                        <li className="first_first_album flex-shrink-0 w-40" key={album.id}>
+                            <img
+                                className="album_image_home_page"
+                                src={getAlbumImageUrl(album)}
+                                alt=""
+                                // onClick={() => playAlbum(album, albums)}
                             />
-                            <div className="track_information_container">
-                                <span className="track_name baloo2">
-                                    {track.title.length > 16 ? track.title.slice(0, 16) + "…" : track.title}
-                                </span>
-                                <span className="track_author_home_page baloo2">{track.author}</span>
+                            <div className="album_information_container">
+                    <span className="album_name baloo2">
+                        {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
+                    </span>
+                                <span className="album_author_home_page baloo2">{album.ownerName}</span>
                             </div>
                         </li>
                     ))}
@@ -426,7 +334,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="discover_new_songs_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
-                    Novelty
+                    Artists
                 </div>
                 {showLeftDiscover && (
                     <button
@@ -460,102 +368,6 @@ const HomePage: React.FC = () => {
                     ))}
                 </div>
             </div>
-            {/* <div className="top_creators_container">
-                <div className="top_creators_top_text_container baloo2 text-lightpurple  text-[24px] font-bold">
-                    TOP CREATORS
-                </div>
-                <div className="top_creators_creators_container">
-                    {users.slice(0, 4).map((user, index) => (
-                        <li key={user.id} className="top_creator_container baloo2 text-white text-[20px] font-bold">
-                            <div className="top_creators_numeration">{index + 1}.</div>
-                            <img className="top_creators_avatar_container"
-                                 src={getUserAvatarUrl(user)}
-                                 alt="userAvatar"
-                                 onClick={() => goToUserProfile(user.id)}
-                            />
-                            <div className="top_creators_author_container">{user.username}</div>
-                            <button
-                                className={user.isFollowing ? "top_creators_unfollow_button_container" : "top_creators_follow_button_container"}
-                                onClick={() => toggleFollow(user.id)}
-                            >
-                                            <span className="user_button_text_style">
-                                                {user.isFollowing ? "Unfollow" : "Follow"}
-                                            </span>
-                            </button>
-                        </li>
-                    ))}
-                </div>
-            </div>
-            <div className="recommended_for_you_container">
-                <div className="top_creators_top_text_container baloo2 text-lightpurple  text-[24px] font-bold">
-                    RECOMMENDED TO YOU
-                </div>
-                <div className="top_creators_creators_container">
-                    {users.slice(0,4).map((user) => (
-                        <li className="top_creator_container baloo2
-                     text-white text-[20px] font-bold"
-                            key={user.id}>
-                            <img className="top_creators_avatar_container" src={getUserAvatarUrl(user)}
-                                 alt={"userAvatar"}
-                                 onClick={() => goToUserProfile(user.id)}/>
-                            <div className="recommended_for_you_author_container">
-                                {user.username}
-                            </div>
-                            <button
-                                className={user.isFollowing ? "top_creators_unfollow_button_container" : "top_creators_follow_button_container"}
-                                onClick={() => toggleFollow(user.id)}
-                            >
-                                            <span className="user_button_text_style">
-                                                {user.isFollowing ? "Unfollow" : "Follow"}
-                                            </span>
-                            </button>
-                        </li>
-                    ))}
-                </div>
-            </div>
-            <div className="history_container">
-                <div className="top_creators_top_text_container baloo2 text-lightpurple  text-[24px] font-bold">
-                    HISTORY
-                </div>
-                <div className="top_creators_creators_container">
-                    {history.length === 0 ? (
-                        <p className="baloo2 text-lightpurple text-[24px] font-bold">You haven't listened to the music yet, but you can start right now!</p>
-                    ) : (
-                        history.slice(0,4).map((track) => (
-                            <li className="top_creator_container baloo2
-                     text-white text-[20px] font-bold"
-                                key={track.id}>
-                                <img className="history_track_image_container" src={getTrackImageUrl(track)}
-                                     alt={"userAvatar"}
-                                     onClick={() => playTrack(track, tracks)}
-                                />
-                                <div className="history_track_information_container">
-                                    <div className="history_track_author baloo2">
-                                        {track.author}
-                                    </div>
-                                    <div className="history_track_title baloo2">
-                                        {track.title.length > 16 ? track.title.slice(0, 16) + "…" : track.title}
-                                    </div>
-                                </div>
-                                <div className="history_buttons_container">
-                                    <div className="history_like">
-                                        <img
-                                            src={track.isLikedByCurrentUser ? "src/images/icons/like.png" : "src/images/icons/unlike.png"}
-                                            alt="like"
-                                            onClick={() => toggleLike(track)}
-                                            style={{cursor: "pointer"}}
-                                        />
-                                    </div>
-                                    <div className="history_add_info">
-                                        <img src="src/images/icons/more_info.png"
-                                             alt={"like"}/>
-                                    </div>
-                                </div>
-                            </li>
-                        ))
-                    )}
-                </div>
-            </div> */}
         </main>
     );
 };
