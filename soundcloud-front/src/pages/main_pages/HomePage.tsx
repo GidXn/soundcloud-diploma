@@ -3,16 +3,19 @@ import React, {useEffect, useRef, useState} from 'react';
 import "../../styles/main_pages/home_page/layout.css"
 import {trackService} from "../../services/trackApi.ts";
 import {ITrack} from "../../types/track.ts";
+import {IAlbum} from "../../types/album.ts";
 import {usePlayerStore} from "../../store/player_store.tsx";
 import {IUser} from "../../types/user.ts";
 import {getCurrentUser, getTopUsers} from "../../services/User/user_info.ts";
 import { followService } from "../../services/followApi.ts";
 import {useNavigate} from "react-router-dom";
+import { albumService } from '../../services/albumAPI.ts';
 //import { IUserFollow } from "../../types/follow.ts";
 
 
 const HomePage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
+    const [albums, setAlbums] = useState<IAlbum[]>([]);
 
 
     const addtoHistory = usePlayerStore(state => state.addToHistory);
@@ -105,6 +108,9 @@ const HomePage: React.FC = () => {
 
 
     useEffect(() => {
+        albumService.getAllAlbums()
+            .then((data) => setAlbums(data))
+            .catch((err) => console.error(err));
         trackService.getAll()
             .then((data) => setTracks(data))
             .catch((err) => console.error(err));
@@ -113,6 +119,10 @@ const HomePage: React.FC = () => {
     const getTrackImageUrl = (track?: ITrack | null) => {
         if (!track || !track.imageUrl) return "/default-cover.png"; // запасна картинка
         return `http://localhost:5122${track.imageUrl}`;
+    };
+    const getAlbumImageUrl = (album?: IAlbum | null) => {
+        if (!album || !album.coverUrl) return "/default-cover.png"; // запасна картинка
+        return `http://localhost:5122/${album.coverUrl}`;
     };
     const getUserAvatarUrl = (user: IUser) => {
         if (!user.avatar) return "/default-cover.png"; // запасна картинка
@@ -222,10 +232,10 @@ const HomePage: React.FC = () => {
         <main className="layout_container mb-[1750px]">
             <div className="first_first_container relative">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
-                    MORE OF WHAT YOU LIKE
+                    Albums
                 </div>
 
-                {showLeftMore && (
+                {/* {showLeftMore && (
                     <button
                         className="button_side_bar_left_container"
                         onClick={() => scrollLeft(scrollMore)}
@@ -242,24 +252,24 @@ const HomePage: React.FC = () => {
                         <img src="src/images/icons/arrow_right_side_bar.png"
                              alt="ArrowRight"/>
                     </button>
-                )}
+                )} */}
                 <div
-                    className="first_first_container_track flex overflow-x-auto gap-4 py-4"
+                    className="first_first_container_album flex overflow-x-auto gap-4 py-4"
                     ref={scrollMore}
                 >
-                    {tracks.map(track => (
-                        <li className="first_first_track flex-shrink-0 w-40" key={track.id}>
+                    {albums.map(album => (
+                        <li className="first_first_album flex-shrink-0 w-40" key={album.id}>
                             <img
-                                className="track_image_home_page"
-                                src={getTrackImageUrl(track)}
+                                className="album_image_home_page"
+                                src={getAlbumImageUrl(album)}
                                 alt=""
-                                onClick={() => playTrack(track, tracks)}
+                                // onClick={() => playAlbum(album, albums)}
                             />
-                            <div className="track_information_container">
-                    <span className="track_name baloo2">
-                        {track.title.length > 16 ? track.title.slice(0, 16) + "…" : track.title}
+                            <div className="album_information_container">
+                    <span className="album_name baloo2">
+                        {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
                     </span>
-                                <span className="track_author_home_page baloo2">{track.author}</span>
+                                <span className="album_author_home_page baloo2">{album.ownerName}</span>
                             </div>
                         </li>
                     ))}
@@ -267,9 +277,9 @@ const HomePage: React.FC = () => {
             </div>
             <div className="second_first_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
-                    RECENTLY PLAYED
+                    Novelty
                 </div>
-                {showLeftRecently && (
+                {/* {showLeftRecently && (
                     <button
                         className="button_side_bar_left_container"
                         onClick={() => scrollLeft(scrollRecently)}
@@ -286,7 +296,7 @@ const HomePage: React.FC = () => {
                         <img src="src/images/icons/arrow_right_side_bar.png"
                              alt="ArrowRight"/>
                     </button>
-                )}
+                )} */}
                 <div className="first_first_container_track" ref={scrollRecently}>
                     {history.length === 0 ? (
                         <p className="baloo2 text-lightpurple text-[24px] font-bold">You haven't listened to the music yet, but you can start right now!</p>
@@ -310,7 +320,7 @@ const HomePage: React.FC = () => {
                     )}
                 </div>
             </div>
-            <div className="third_first_container">
+            {/* <div className="third_first_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
                     ARTIST TO WATCH OUT FOR
                 </div>
@@ -351,27 +361,27 @@ const HomePage: React.FC = () => {
                         ))
                     )}
                 </div>
-            </div>
-            <div className="playlist_container">
+            </div> */}
+            {/* <div className="playlist_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
                     PLAYLIST
                 </div>
                 <div className="first_first_container_track">
                     <span
                         className="text-white text-lightpurple font-size-2xl font-bold">You don`t have Playlists</span>
-                    {/*{tracks.map(track => (*/}
-                    {/*    <li className="first_first_track" key={track.id}>*/}
-                    {/*        <img className="track_image" src={getTrackImageUrl(track)} alt={""}*/}
-                    {/*             onClick={() => playTrack(track)}*/}
-                    {/*        />*/}
-                    {/*        <div className="track_information_container">*/}
-                    {/*            <span className="track_name baloo2">{track.title}</span>*/}
-                    {/*            <span className="track_author baloo2">{track.author}</span>*/}
-                    {/*        </div>*/}
-                    {/*    </li>*/}
-                    {/*))}*/}
+                    {tracks.map(track => (
+                       <li className="first_first_track" key={track.id}>
+                           <img className="track_image" src={getTrackImageUrl(track)} alt={""}
+                                onClick={() => playTrack(track)}
+                           />
+                           <div className="track_information_container">
+                               <span className="track_name baloo2">{track.title}</span>
+                               <span className="track_author baloo2">{track.author}</span>
+                           </div>
+                       </li>
+                    ))}
                 </div>
-            </div>
+            </div> */}
             <div className="trending_by_genre_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
                     TRENDING BY GENRE
@@ -412,7 +422,7 @@ const HomePage: React.FC = () => {
             </div>
             <div className="discover_new_songs_container">
                 <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
-                    DISCOVER NEW SONGS
+                    Novelty
                 </div>
                 {showLeftDiscover && (
                     <button
@@ -446,7 +456,7 @@ const HomePage: React.FC = () => {
                     ))}
                 </div>
             </div>
-            <div className="top_creators_container">
+            {/* <div className="top_creators_container">
                 <div className="top_creators_top_text_container baloo2 text-lightpurple  text-[24px] font-bold">
                     TOP CREATORS
                 </div>
@@ -541,7 +551,7 @@ const HomePage: React.FC = () => {
                         ))
                     )}
                 </div>
-            </div>
+            </div> */}
         </main>
     );
 };

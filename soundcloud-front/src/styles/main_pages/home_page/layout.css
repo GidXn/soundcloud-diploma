@@ -9,7 +9,7 @@
     gap: 26px;
 
     position: absolute;
-    width: 1170px;
+    /* width: 1170px; */
     height: auto;
     left: 176px;
     top: 235px;
@@ -28,13 +28,37 @@
     width: 1170px;
     height: 40px;
 
-    background: linear-gradient(90deg, #5241B3 0%, #101010 50.48%);
+    /* background: linear-gradient(90deg, #5241B3 0%, #101010 50.48%); */
     border-radius: 30px;
     flex: none;
     order: 0;
     align-self: stretch;
     flex-grow: 0;
 
+    color: #FFF;
+    font-family: "Space Grotesk";
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+
+}
+.first_first_container_album{
+    display: flex;
+
+
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    padding: 0px;
+    isolation: isolate;
+    gap:24px;
+    width: 100%;
+    height: auto;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
 }
 .first_first_container_track{
     display: flex;
@@ -46,14 +70,21 @@
     padding: 0px;
     isolation: isolate;
     gap:24px;
-    width: 1170px;
+    width: 100%;
     height: auto;
     flex: none;
     order: 1;
     align-self: stretch;
     flex-grow: 0;
+}
+.first_first_container_album {
+    display: flex;
 
-
+    gap: 16px;
+    padding-bottom: 0px;
+    max-width: 100%;
+    overflow: hidden;
+    scroll-behavior: smooth;
 }
 /* Контейнер горизонтального скролу */
 .first_first_container_track {
@@ -84,6 +115,24 @@
     flex-grow: 0;
 
 }
+.first_first_album{
+    /* Frame 26080081 */
+    flex: 0 0 auto;
+    /* Auto layout */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 12px;
+
+    width: 210px;
+    height: auto;
+
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+
+}
 .track_image_home_page{
 
     width: 210px;
@@ -95,7 +144,31 @@
     order: 0;
     flex-grow: 0;
 }
+.album_image_home_page{
+
+    width: 210px;
+    height: 210px;
+    border-radius: 30px;
+
+    /* Inside auto layout */
+    flex: none;
+    order: 0;
+    flex-grow: 0;
+}
 .track_information_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    width: 210px;
+    height: 90px;
+
+    flex: none;
+    flex-grow: 0;
+}
+.album_information_container{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -129,7 +202,46 @@
     flex-grow: 0;
 }
 
+.album_name{
+    width: 210px;
+    height: 24px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 24px;
+    display: block;
+    align-items: center;
+    text-align: center;
+
+
+
+    color: #FFFFFF;
+
+    flex: none;
+    order: 0;
+    align-self: stretch;
+    flex-grow: 0;
+}
+
 .track_author_home_page{
+    /* Imagine Dragons */
+    width: 100%;
+    height: 18px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 20px;
+    /* identical to box height, or 100% */
+    display: block;
+    align-items: center;
+    text-align: center;
+    color: #C9D4FF;
+    flex: none;
+    order: 1;
+    align-self: stretch;
+    flex-grow: 0;
+}
+.album_author_home_page{
     /* Imagine Dragons */
     width: 100%;
     height: 18px;
