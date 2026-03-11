@@ -1,41 +1,40 @@
-import React from 'react';
-import "../../styles/footer.css"
-import "../../styles/General.css"
-
-
-import arrow_down from "../../images/icons/arrow_down.png";
-
+import React from "react";
+import "../../styles/footer.css";
+import "../../styles/General.css";
 
 const Footer: React.FC = () => {
     return (
-        <>
-            <footer className="footer_container">
-                <div className="relative w-full h-[306px]">
-
-
-                    {/* контент */}
-                    {/* <div className="relative left-0 w-full px-12 flex justify-between text-[24px] z-20">
-                        <div className="footer_text_first">
-                            <a href="#">Directory</a>
-                            <label>&#160;&#x2022;&#160;</label>
-                            <a href="#">About us</a>
-                            <label>&#160;&#x2022;&#160;</label>
-                            <a href="#">Artist Resources</a>
-                            <label>&#160;&#x2022;&#160;</label>
-                            <a href="#">Blog</a>
-                            <label>&#160;&#x2022;&#160;</label>
-                            <a href="#">Help</a>
-                            <label>&#160;&#x2022;&#160;</label>
-                            <a href="#">Privacy</a>
-                        </div>
-                        <div className="footer_text_second">
-                            Language: English
-                            <img src={arrow_down}/>
-                        </div>
-                    </div> */}
+        <footer className="footer_container allure-footer">
+            <div className="allure-footer-inner">
+                <div className="allure-footer-copy">
+                    <p>© 2026 Music online platform “Allure”.</p>
+                    <p>
+                        The service may contain content that is not intended for minors.
+                    </p>
                 </div>
-            </footer>
-        </>
+
+                <div className="allure-footer-divider" />
+
+                <div className="allure-footer-links-row">
+                    <div className="allure-footer-column">
+                        <a href="#">User agreement</a>
+                        <a href="#">Legal information</a>
+                    </div>
+                    <div className="allure-footer-column">
+                        <a href="#">To the performers</a>
+                        <a href="#">DMCA</a>
+                    </div>
+                    <div className="allure-footer-column">
+                        <a href="#">Privacy Policy</a>
+                        <a href="#">PRO Subscription</a>
+                    </div>
+                    <div className="allure-footer-column">
+                        <a href="#">Advertising</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
     );
 };
+
 export default Footer;
