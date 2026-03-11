@@ -54,129 +54,96 @@ const Header: React.FC = () => {
         <>
             <div className="max-w-screen-full-xl">
 
-                <header className="header_container_main">
+                <header className="header_container_main" style={{justifyContent: 'space-between'}}>
                         <div className="header_logo">
-                            <div className="w-[56px] h-[56px] xl:mr-[12px] lg:mr-[12px]">
-                                <img src="/logo_Vector.svg" alt="logo"/>
-                            </div>
+                            <img src="/logo_Allurew.png" alt="logo"/>
                         </div>
 
-                        <div className="header_profile_container_main">
-                            {isLogin ? (
-                                <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%'}}>
-                                    {/* Search section on the left */}
-                                    <div className="search_container_home_page">
-                                        <div className="search_bar_home_page">
-                                            <div>
-                                                <img src={search}
-                                                     className="search_logo_home_page"
-                                                     alt="search"/>
-                                            </div>
-                                            <div>
-                                                <input type="text"
-                                                       placeholder="Search for artists, bands, tracks or music"
-                                                       className="search_input_home_page baloo2"/>
-                                            </div>
-                                        </div>
+                        {isLogin ? (
+                            <>
+                                {/* Search section in the middle */}
+                                <div className="search_container_home_page">
+                                    <div className="search_bar_home_page">
+                                        <img src="/inside/material-symbols-search.svg"
+                                             className="search_logo_home_page"
+                                             alt="search"/>
+                                        <input type="text"
+                                               placeholder="Search"
+                                               className="search_input_home_page"/>
                                     </div>
+                                </div>
 
-                                    {/* User profile on the right */}
-                                    <div className="baloo2 header_profile_image_container">
-                                        <div className="user_avatar">
-                                            {user?.avatar ? (
-                                                <img className="image_container_user" src={getUserImageUrl(user)}
-                                                     alt="people" width="32" height="32"/>
-                                            ) : (
-                                                <img className="image_container_user"
-                                                     src={people}
-                                                     alt="people" width="22" height="22"/>
-                                            )}
-                                        </div>
-                                        <div
-                                            className="user_drop_bar cursor-pointer"
-                                            onClick={() => setOpen((prev) => !prev)}
-                                        >
-                                            <img
-                                                src={white_arrow_down}
-                                                className="search_logo_home_page"
-                                                alt="arrow"
-                                            />
-                                        </div>
-                                        {open && (
-                                            <div className="absolute right-16 top-full mt-2 w-40 bg-darkpurple rounded-lg shadow-lg z-50">
-                                                <ul className="flex flex-col text-gray-800">
-                                                    <li className="flex flex-row items-center gap-2 px-4 py-2
-                                                    font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
-                                                        onClick={() => {
-                                                            navigate("/profile");
-                                                            setOpen(prev => !prev);
-                                                        }}>
-                                                        <img
-                                                            src={profile}
-                                                            width="20px"
-                                                            height="20px"
-                                                            alt="arrow"
-                                                        />
-                                                        Profile
-                                                    </li>
-                                                    <li className="flex flex-row items-center gap-2 px-4 py-2 px-4 py-2
-                                                    font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
-                                                    onClick={() => Logout()}
-                                                    >
-                                                        <img
-                                                            src={logout2}
-                                                            width="20px"
-                                                            height="20px"
-                                                            alt="arrow"
-                                                        />
-                                                        Logout
-                                                    </li>
-                                                </ul>
-                                            </div>
+                                {/* User profile on the far right */}
+                                <div className="baloo2 header_profile_image_container" style={{position: 'relative'}}>
+                                    <div className="user_avatar">
+                                        {user?.avatar ? (
+                                            <img className="image_container_user" src={getUserImageUrl(user)}
+                                                 alt="people" width="48" height="48"/>
+                                        ) : (
+                                            <img className="image_container_user"
+                                                 src={people}
+                                                 alt="people" width="35" height="35"/>
                                         )}
                                     </div>
-                                </div>
-
-                            ) : (
-                                <div>
-                                    <div className="baloo2 header_profile_container_main">
-                                        <button className="baloo2 w-[124px] h-[56px]
-                        bg-lightpurple rounded-[50px] text-[20px] font-bold button_hover_signup text-black"
-                                                onClick={() => navigate("/")}
-                                        >Sign in
-                                        </button>
-                                        <button className="baloo2 w-[200px] h-[56px] text-white text-[20px]
-                         bg-purple rounded-[50px] font-bold button_hover_create_account"
-                                                onClick={() => navigate("/")}
-                                        >Create account
-                                        </button>
+                                    <div
+                                        className="user_drop_bar cursor-pointer"
+                                        onClick={() => setOpen((prev) => !prev)}
+                                    >
+                                        <img
+                                            src={white_arrow_down}
+                                            className="search_logo_home_page"
+                                            alt="arrow"
+                                            style={{width: '24px', height: '24px'}}
+                                        />
                                     </div>
-                                    <div className="search_container_home_page">
-                                        <div className="people_container">
-                                            <img className="image_container" src={people}
-                                                 alt="people"/>
+                                    {open && (
+                                        <div className="absolute right-0 top-full mt-2 w-40 bg-darkpurple rounded-lg shadow-lg z-50">
+                                            <ul className="flex flex-col text-gray-800">
+                                                <li className="flex flex-row items-center gap-2 px-4 py-2
+                                                font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
+                                                    onClick={() => {
+                                                        navigate("/profile");
+                                                        setOpen(prev => !prev);
+                                                    }}>
+                                                    <img
+                                                        src={profile}
+                                                        width="22px"
+                                                        height="22px"
+                                                        alt="arrow"
+                                                    />
+                                                    Profile
+                                                </li>
+                                                <li className="flex flex-row items-center gap-2 px-4 py-2
+                                                font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
+                                                onClick={() => Logout()}
+                                                >
+                                                    <img
+                                                        src={logout2}
+                                                        width="22px"
+                                                        height="22px"
+                                                        alt="arrow"
+                                                    />
+                                                    Logout
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div className="search_bar_home_page">
-                                            <div>
-                                                <img src={search}
-                                                     className="search_logo_home_page"
-                                                     alt="search"/>
-                                            </div>
-                                            <div>
-                                                <input type="text"
-                                                       placeholder="Search for artists, bands, tracks or music"
-                                                       className="search_input_home_page baloo2"/>
-                                            </div>
-
-                                        </div>
-                                    </div>
+                                    )}
                                 </div>
-
-                            )}
-                    </div>
-
-                    <div>
-                    </div>
+                            </>
+                        ) : (
+                            <div style={{display: 'flex', gap: '24px', alignItems: 'center'}}>
+                                <button className="baloo2 w-[124px] h-[56px]
+                                bg-lightpurple rounded-[50px] text-[20px] font-bold button_hover_signup text-black"
+                                        onClick={() => navigate("/")}
+                                >Sign in
+                                </button>
+                                <button className="baloo2 w-[200px] h-[56px] text-white text-[20px]
+                                bg-purple rounded-[50px] font-bold button_hover_create_account"
+                                        onClick={() => navigate("/")}
+                                >Create account
+                                </button>
+                            </div>
+                        )}
                 </header>
             </div>
         </>
