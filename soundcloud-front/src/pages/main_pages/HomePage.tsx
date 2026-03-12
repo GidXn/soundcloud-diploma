@@ -213,9 +213,9 @@ const HomePage: React.FC = () => {
                     </div>
                     <div className="artistCard">
                         <div className="artistImageContainer">
-                        <img className="artistImage" src="public\artists\Rammstein.png" />
+                        <img className="artistImage" src="public\artists\Skryabin.jpg" />
                         </div>
-                        <div className="artistName">Rammstein</div>
+                        <div className="artistName">Скрябін</div>
                     </div>
                     <div className="artistCard">
                         <div className="artistImageContainer">
