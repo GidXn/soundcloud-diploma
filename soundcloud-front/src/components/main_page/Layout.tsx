@@ -15,6 +15,7 @@ const Layout: React.FC = () => {
         const path = location.pathname;
 
         if (path.startsWith('/home')) return 'home-bg.png';
+        if (path.startsWith('/music')) return 'music-bg.png';
         if (path.startsWith('/feed')) return 'music-bg.png'; // Using music-bg.png for feed
         if (path.startsWith('/library')) return 'music-bg.png'; // Using music-bg.png for library
         if (path.startsWith('/profile')) return 'home-bg.png'; // Using home-bg.png for profile

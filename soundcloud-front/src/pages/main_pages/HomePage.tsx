@@ -1,14 +1,10 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import "../../styles/main_pages/home_page/layout.css"
 import {trackService} from "../../services/trackApi.ts";
 import {ITrack} from "../../types/track.ts";
 import {IAlbum} from "../../types/album.ts";
 import {usePlayerStore} from "../../store/player_store.tsx";
-import {IUser} from "../../types/user.ts";
-import {getCurrentUser, getTopUsers} from "../../services/User/user_info.ts";
-import { followService } from "../../services/followApi.ts";
-import {useNavigate} from "react-router-dom";
 import { albumService } from '../../services/albumAPI.ts';
 //import { IUserFollow } from "../../types/follow.ts";
 
@@ -17,95 +13,8 @@ const HomePage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const [albums, setAlbums] = useState<IAlbum[]>([]);
 
-
-    const addtoHistory = usePlayerStore(state => state.addToHistory);
-
-
-    const history = usePlayerStore(state => state.history);
-    const initHistory = usePlayerStore(state => state.initHistory);
-    useEffect(() => {
-        initHistory();
-    }, [initHistory]);
-
     const playTrack = usePlayerStore(state => state.playTrack);
     const playAlbum = usePlayerStore(state => state.playAlbum);
-
-    const scrollMore = useRef<HTMLDivElement>(null);
-    const scrollRecently = useRef<HTMLDivElement>(null);
-    const scrollArtist = useRef<HTMLDivElement>(null);
-    const scrollGenre = useRef<HTMLDivElement>(null);
-    const scrollDiscover = useRef<HTMLDivElement>(null);
-
-    const [showLeftMore, setShowLeftMore] = useState(false);
-    const [showRightMore, setShowRightMore] = useState(false);
-
-    const [showLeftRecently, setShowLeftRecently] = useState(false);
-    const [showRightRecently, setShowRightRecently] = useState(false);
-
-    const [showLeftArtist, setShowLeftArtist] = useState(false);
-    const [showRightArtist, setShowRightArtist] = useState(false);
-
-    const [showLeftGenre, setShowLeftGenre] = useState(false);
-    const [showRightGenre, setShowRightGenre] = useState(false);
-
-    const [showLeftDiscover, setShowLeftDiscover] = useState(false);
-    const [showRightDiscover, setShowRightDiscover] = useState(false);
-
-
-
-
-    useEffect(() => {
-        // функція для оновлення кнопок конкретного контейнера
-        const attachScrollListener = (
-            ref: React.RefObject<HTMLDivElement | null>,
-            setLeft: React.Dispatch<React.SetStateAction<boolean>>,
-            setRight: React.Dispatch<React.SetStateAction<boolean>>
-        ) => {
-            const container = ref.current;
-            if (!container) return () => {}; // повертаємо пустий cleanup
-
-            const updateButtons = () => {
-                setLeft(container.scrollLeft > 0);
-                setRight(container.scrollLeft + container.clientWidth < container.scrollWidth);
-            };
-
-            updateButtons();
-
-            container.addEventListener("scroll", updateButtons);
-            window.addEventListener("resize", updateButtons);
-
-            return () => {
-                container.removeEventListener("scroll", updateButtons);
-                window.removeEventListener("resize", updateButtons);
-            };
-        };
-
-        // підключаємо обидва контейнера
-        const cleanupMore = attachScrollListener(scrollMore, setShowLeftMore, setShowRightMore);
-        const cleanupRecently = attachScrollListener(scrollRecently, setShowLeftRecently, setShowRightRecently);
-        const cleanupArtist = attachScrollListener(scrollArtist, setShowLeftArtist, setShowRightArtist);
-        const cleanupGenre = attachScrollListener(scrollGenre, setShowLeftGenre, setShowRightGenre);
-        const cleanupDiscover = attachScrollListener(scrollDiscover, setShowLeftDiscover, setShowRightDiscover);
-
-        // повертаємо cleanup обох
-        return () => {
-            cleanupMore?.();
-            cleanupRecently?.();
-            cleanupArtist?.();
-            cleanupGenre?.();
-            cleanupDiscover?.();
-
-        };
-    }, [tracks]);
-
-
-    const scrollLeft = (ref: React.RefObject<HTMLDivElement | null>) => {
-        ref.current?.scrollBy({ left: -200, behavior: "smooth" });
-    };
-
-    const scrollRight = (ref: React.RefObject<HTMLDivElement | null>) => {
-        ref.current?.scrollBy({ left: 200, behavior: "smooth" });
-    };
 
 
     useEffect(() => {
@@ -125,57 +34,43 @@ const HomePage: React.FC = () => {
         if (!album || !album.coverUrl) return "/default-cover.png"; // запасна картинка
         return `http://localhost:5122/${album.coverUrl}`;
     };
-    const getUserAvatarUrl = (user: IUser) => {
-        if (!user.avatar) return "/default-cover.png"; // запасна картинка
-        return `http://localhost:5122${user.avatar}`;
-    };
-    const [users, setUsers] = useState<IUser[]>([]);
-    const topCount = 5;
-    useEffect(() => {
-        const fetchUsers = async () => {
-            const data = await getTopUsers(topCount);
-            setUsers(data);
-        };
-
-        fetchUsers();
-    }, []);
 
 
 
 
     //для лайків
-    const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
-    useEffect(() => {
-        trackService.getAll()
-            .then((data) => {
-                setTracks(data);
-                const likedIds = data.filter(t => t.isLikedByCurrentUser).map(t => t.id);
-                setLikedTracksIds(likedIds);
-            })
-            .catch((err) => console.error(err));
-    }, []);
+    // const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
+    // useEffect(() => {
+    //     trackService.getAll()
+    //         .then((data) => {
+    //             setTracks(data);
+    //             const likedIds = data.filter(t => t.isLikedByCurrentUser).map(t => t.id);
+    //             setLikedTracksIds(likedIds);
+    //         })
+    //         .catch((err) => console.error(err));
+    // }, []);
 
-    const toggleLike = async (track: ITrack) => {
-        try {
-            if (likedTracksIds.includes(track.id)) {
-                // анлайк
-                await trackService.unlike(track.id);
-                setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-                track.isLikedByCurrentUser = false; // оновлюємо локально
-                addtoHistory(track);
-                trackService.getAll()
-            } else {
-                // лайк
-                await trackService.like(track.id);
-                setLikedTracksIds(prev => [...prev, track.id]);
-                track.isLikedByCurrentUser = true; // оновлюємо локально
-                addtoHistory(track);
-                trackService.getAll()
-            }
-        } catch (err) {
-            console.error("Error liking track:", err);
-        }
-    };
+    // const toggleLike = async (track: ITrack) => {
+    //     try {
+    //         if (likedTracksIds.includes(track.id)) {
+    //             // анлайк
+    //             await trackService.unlike(track.id);
+    //             setLikedTracksIds(prev => prev.filter(id => id !== track.id));
+    //             track.isLikedByCurrentUser = false; // оновлюємо локально
+    //             addtoHistory(track);
+    //             trackService.getAll()
+    //         } else {
+    //             // лайк
+    //             await trackService.like(track.id);
+    //             setLikedTracksIds(prev => [...prev, track.id]);
+    //             track.isLikedByCurrentUser = true; // оновлюємо локально
+    //             addtoHistory(track);
+    //             trackService.getAll()
+    //         }
+    //     } catch (err) {
+    //         console.error("Error liking track:", err);
+    //     }
+    // };
 
     function formatTimeSpan(ts: string): string {
         const [h, m, s] = ts.split(":");
@@ -185,57 +80,6 @@ const HomePage: React.FC = () => {
         return `${totalMinutes}:${seconds}`;
     }
 
-    //для follow
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const topUsers = await getTopUsers(4); // беремо топ юзерів
-                const usersWithStatus = await Promise.all(
-                    topUsers.map(async (u) => {
-                        try {
-                            const status = await followService.getFollowStatus(u.id);
-                            return { ...u, isFollowing: status.isFollowing };
-                        } catch {
-                            return { ...u, isFollowing: false };
-                        }
-                    })
-                );
-                setUsers(usersWithStatus);
-            } catch (error) {
-                console.error("Error fetching users:", error);
-            }
-        };
-        fetchUsers();
-    }, []);
-
-    const toggleFollow = async (userId: number) => {
-        try {
-            setUsers(prev =>
-                prev.map(u =>
-                    u.id === userId ? { ...u, isFollowing: !u.isFollowing } : u
-                )
-            );
-
-            const user = users.find(u => u.id === userId);
-            if (!user) return;
-
-            if (user.isFollowing) {
-                await followService.unfollow(userId);
-            } else {
-                await followService.follow(userId);
-            }
-        } catch (error) {
-            console.error("Error toggling follow:", error);
-        }
-    };
-
-    // метод для переходу на профіль
-    const navigate = useNavigate();
-
-    const goToUserProfile = (userId: number) => {
-        navigate(`/user/${userId}`);
-    };
-
     return (
         <main className="layout_container mb-[2050px]">
             <img className="music_buddy_banner" src="\public\inside\homep_banner.png" />
@@ -244,9 +88,7 @@ const HomePage: React.FC = () => {
                     Albums
                 </div>
                 <div
-                    className="albumsScroll flex overflow-x-auto gap-4 py-4"
-                    ref={scrollMore}
-                >
+                    className="albumsScroll flex overflow-x-auto gap-4 py-4">
                     {albums.slice(0, 7).map(album => (
                         <li className="albumCard flex-shrink-0 w-40" key={album.id}>
                             <img
@@ -312,10 +154,7 @@ const HomePage: React.FC = () => {
                 <div className="sectionTitle">
                     Popular albums
                 </div>
-                <div
-                    className="scrollGrid"
-                    ref={scrollMore}
-                >
+                <div className="scrollGrid">
                     {[...albums].reverse().slice(0, 12).map(album => (
                         <li className="albumCard flex-shrink-0 w-40" key={album.id}>
                             <img

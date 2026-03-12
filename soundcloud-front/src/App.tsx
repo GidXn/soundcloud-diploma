@@ -11,6 +11,7 @@ import PlayAlbumPage from "./pages/play_album/PlayAlbumPage.tsx";
 import PlayPlaylistPage from "./pages/play_playlist/PlayPlaylistPage.tsx";
 import './index.css';
 import FeedPage from "./pages/main_pages/FeedPage.tsx";
+import MusicPage from "./pages/main_pages/MusicPage.tsx";
 import {useDispatch} from "react-redux";
 import {useEffect} from "react";
 import {setUser} from "./store/slices/userSlice.ts";
@@ -74,6 +75,7 @@ export default function App() {
                 <Route element={<Layout />}>
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/feed" element={<FeedPage />} />
+                    <Route path="/music" element={<MusicPage />} />
                     <Route path="/library" element={<LibraryPage />} />
                     <Route path="/genres" element={<GenresPage />} />
                     <Route path="/albums" element={<AlbumsCollectionPage />} />

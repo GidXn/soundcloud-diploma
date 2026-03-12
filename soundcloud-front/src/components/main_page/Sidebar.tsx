@@ -31,7 +31,7 @@ const Sidebar: React.FC = () => {
             id: "music",
             label: "Музика",
             icon: "/inside/mdi-light-music.svg",
-            path: "/feed",
+            path: "/music",
         },
         {
             id: "genres",
