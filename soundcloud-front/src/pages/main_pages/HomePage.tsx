@@ -237,108 +237,108 @@ const HomePage: React.FC = () => {
 
     return (
         <main className="layout_container mb-[2050px]">
-            <div className="first_first_container relative">
-                <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
+            <div className="albumsContainer relative">
+                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
                     Albums
                 </div>
                 <div
-                    className="first_first_container_album flex overflow-x-auto gap-4 py-4"
+                    className="albumsScroll flex overflow-x-auto gap-4 py-4"
                     ref={scrollMore}
                 >
                     {[...albums].reverse().slice(0, 7).map(album => (
-                        <li className="first_first_album flex-shrink-0 w-40" key={album.id}>
+                        <li className="albumCard flex-shrink-0 w-40" key={album.id}>
                             <img
-                                className="album_image_home_page"
+                                className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
                             />
-                            <div className="album_information_container">
-                                <span className="album_name baloo2">
+                            <div className="albumInfo">
+                                <span className="albumTitle baloo2">
                                     {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
                                 </span>
-                                <span className="album_author_home_page baloo2">{album.ownerName}</span>
+                                <span className="albumArtist baloo2">{album.ownerName}</span>
                             </div>
                         </li>
                     ))}
                 </div>
             </div>
-            <div className="second_first_container">
-                <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
+            <div className="noveltyContainer">
+                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
                     Novelty
                 </div>
-                <div className="frame-548">
+                <div className="noveltyList">
 
                     {tracks.map((track, index) => (
                     <>
                         {index !== 0 &&
-                    <svg className={"vector-9"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
+                    <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M0.5 0.5H1526.5" stroke="#64707C" stroke-linecap="round"/>
                     </svg>}
 
-                    <div className="frame-359">
-                        <div className="frame-349">
-                            <img className="rounded-rectangle" src={getTrackImageUrl(track)} alt={""}
+                    <div className="trackItem">
+                        <div className="trackImageWrapper">
+                            <img className="trackCover" src={getTrackImageUrl(track)} alt={""}
                                  onClick={() => playTrack(track, tracks)}
                             />
-                            <div className="frame-322">
-                                <div className="adore-you">{track.title}</div>
+                            <div className="trackHeader">
+                                <div className="trackName">{track.title}</div>
                             </div>
                         </div>
-                        <div className="frame-358">
-                            <div className="frame-356">
-                                <div className="harry-styles">{track.author}</div>
-                                <div className="pop-rock">{track.genre}</div>
+                        <div className="trackMeta">
+                            <div className="trackDetails">
+                                <div className="trackArtistNovelt">{track.author}</div>
+                                <div className="trackGenre">{track.genre}</div>
                                 <div className="frame-355">
                                 </div>
                             </div>
-                            <div className="frame-357">
-                                <svg className="icon-park-outline-like" width="22" height="20" viewBox="0 0 22 20" fill="none"
+                            <div className="trackActions">
+                                <svg className="likeIcon" width="22" height="20" viewBox="0 0 22 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M6.5 1C3.4625 1 1 3.4625 1 6.5C1 12 7.5 17 11 18.163C14.5 17 21 12 21 6.5C21 3.4625 18.5375 1 15.5 1C13.64 1 11.995 1.9235 11 3.337C10.4928 2.61469 9.81897 2.0252 9.03568 1.61841C8.25238 1.21162 7.38263 0.999502 6.5 1Z"
                                         stroke="#9E7FCF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
 
-                                <div className="_3-39">{formatTimeSpan(track.duration)}</div>
+                                <div className="trackDuration">{formatTimeSpan(track.duration)}</div>
                             </div>
                         </div>
                     </div></>))}
                 </div>
             </div>
-            <div className="trending_by_genre_container">
-                <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
+            <div className="trendingByGenreContainer">
+                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
                     Popular albums
                 </div>
                 <div
-                    className="first_first_container_palbum"
+                    className="scrollGrid"
                     ref={scrollMore}
                 >
                     {albums.slice(0, 12).map(album => (
-                        <li className="first_first_album flex-shrink-0 w-40" key={album.id}>
+                        <li className="albumCard flex-shrink-0 w-40" key={album.id}>
                             <img
-                                className="album_image_home_page"
+                                className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
                                 // onClick={() => playAlbum(album, albums)}
                             />
-                            <div className="album_information_container">
-                    <span className="album_name baloo2">
+                            <div className="albumInfo">
+                    <span className="albumTitle baloo2">
                         {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
                     </span>
-                                <span className="album_author_home_page baloo2">{album.ownerName}</span>
+                                <span className="albumArtist baloo2">{album.ownerName}</span>
                             </div>
                         </li>
                     ))}
                 </div>
             </div>
-            <div className="discover_new_songs_container">
-                <div className="first_first_container_text baloo2 text-lightpurple text-[24px] font-bold">
+            <div className="discoverNewSongsContainer">
+                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
                     Artists
                 </div>
                 {showLeftDiscover && (
                     <button
-                        className="button_side_bar_left_container"
+                        className="scrollButtonLeft"
                         onClick={() => scrollLeft(scrollDiscover)}
                     >
                         <img src="src/images/icons/arrow_left_side_bar.png"
@@ -347,22 +347,22 @@ const HomePage: React.FC = () => {
                 )}
                 {showRightDiscover && (
                     <button
-                        className="button_side_bar_right_container"
+                        className="scrollButtonRight"
                         onClick={() => scrollRight(scrollDiscover)}
                     >
                         <img src="src/images/icons/arrow_right_side_bar.png"
                              alt="ArrowRight"/>
                     </button>
                 )}
-                <div className="first_first_container_track" ref={scrollDiscover}>
+                <div className="tracksScroll" ref={scrollDiscover}>
                     {tracks.map(track => (
-                        <li className="first_first_track" key={track.id}>
-                            <img className="track_image_home_page" src={getTrackImageUrl(track)} alt={""}
+                        <li className="trackCard" key={track.id}>
+                            <img className="trackImage" src={getTrackImageUrl(track)} alt={""}
                                  onClick={() => playTrack(track, tracks)}
                             />
-                            <div className="track_information_container">
-                                <span className="track_name baloo2">{track.title.length > 16 ? track.title.slice(0, 16) + "…" : track.title}</span>
-                                <span className="track_author_home_page baloo2">{track.author}</span>
+                            <div className="trackInfo">
+                                <span className="trackTitle baloo2">{track.title.length > 16 ? track.title.slice(0, 16) + "…" : track.title}</span>
+                                <span className="trackArtist baloo2">{track.author}</span>
                             </div>
                         </li>
                     ))}
