@@ -140,7 +140,7 @@ const HomePage: React.FC = () => {
                 </div>
                 <div className="noveltyList">
 
-                    {[...tracks].reverse().slice(0, 20).map((track, index) => (
+                    {[...tracks].reverse().slice(0, 11).map((track, index) => (
                     <>
                         {index !== 0 &&
                     <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
