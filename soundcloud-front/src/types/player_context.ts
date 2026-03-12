@@ -1,4 +1,5 @@
 import { ITrack } from "./track";
+import { IAlbum } from "./album";
 import {RefObject} from "react";
 
 export interface PlayerContextType {
@@ -12,6 +13,7 @@ export interface PlayerContextType {
     volume: number; // нове поле
 
     playTrack: (track: ITrack, playlist?: ITrack[], albumId?: number | null) => void;
+    playAlbum: (album: IAlbum, tracks?: ITrack[]) => void;
     pauseTrack: () => void; // без аргументів
     togglePlay: () => void;
     addToHistory: (track: ITrack) => void;

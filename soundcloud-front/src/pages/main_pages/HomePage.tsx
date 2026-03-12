@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
     }, [initHistory]);
 
     const playTrack = usePlayerStore(state => state.playTrack);
+    const playAlbum = usePlayerStore(state => state.playAlbum);
 
     const scrollMore = useRef<HTMLDivElement>(null);
     const scrollRecently = useRef<HTMLDivElement>(null);
@@ -237,6 +238,7 @@ const HomePage: React.FC = () => {
 
     return (
         <main className="layout_container mb-[2050px]">
+            <img className="music_buddy_banner" src="\public\inside\homep_banner.png" />
             <div className="albumsContainer relative">
                 <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
                     Albums
@@ -245,12 +247,13 @@ const HomePage: React.FC = () => {
                     className="albumsScroll flex overflow-x-auto gap-4 py-4"
                     ref={scrollMore}
                 >
-                    {[...albums].reverse().slice(0, 7).map(album => (
+                    {albums.slice(0, 7).map(album => (
                         <li className="albumCard flex-shrink-0 w-40" key={album.id}>
                             <img
                                 className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
+                                onClick={() => playAlbum(album, album.tracks || tracks)}
                             />
                             <div className="albumInfo">
                                 <span className="albumTitle baloo2">
@@ -268,7 +271,7 @@ const HomePage: React.FC = () => {
                 </div>
                 <div className="noveltyList">
 
-                    {tracks.map((track, index) => (
+                    {[...tracks].reverse().slice(0, 20).map((track, index) => (
                     <>
                         {index !== 0 &&
                     <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
@@ -276,11 +279,9 @@ const HomePage: React.FC = () => {
                         <path d="M0.5 0.5H1526.5" stroke="#64707C" stroke-linecap="round"/>
                     </svg>}
 
-                    <div className="trackItem">
+                    <div className="trackItem" onClick={() => playTrack(track, tracks)}>
                         <div className="trackImageWrapper">
-                            <img className="trackCover" src={getTrackImageUrl(track)} alt={""}
-                                 onClick={() => playTrack(track, tracks)}
-                            />
+                            <img className="trackCover" src={getTrackImageUrl(track)} alt={""}/>
                             <div className="trackHeader">
                                 <div className="trackName">{track.title}</div>
                             </div>
@@ -289,8 +290,8 @@ const HomePage: React.FC = () => {
                             <div className="trackDetails">
                                 <div className="trackArtistNovelt">{track.author}</div>
                                 <div className="trackGenre">{track.genre}</div>
-                                <div className="frame-355">
-                                </div>
+                                {/* <div className="frame-355">
+                                </div> */}
                             </div>
                             <div className="trackActions">
                                 <svg className="likeIcon" width="22" height="20" viewBox="0 0 22 20" fill="none"
@@ -306,21 +307,22 @@ const HomePage: React.FC = () => {
                     </div></>))}
                 </div>
             </div>
-            <div className="trendingByGenreContainer">
-                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
+            <img className="hit_fm_banner" src="\public\inside\homep_banner2.png" />
+            <div className="popularAlbumsContainer">
+                <div className="sectionTitle">
                     Popular albums
                 </div>
                 <div
                     className="scrollGrid"
                     ref={scrollMore}
                 >
-                    {albums.slice(0, 12).map(album => (
+                    {[...albums].reverse().slice(0, 12).map(album => (
                         <li className="albumCard flex-shrink-0 w-40" key={album.id}>
                             <img
                                 className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
-                                // onClick={() => playAlbum(album, albums)}
+                                onClick={() => playAlbum(album, album.tracks || tracks)}
                             />
                             <div className="albumInfo">
                     <span className="albumTitle baloo2">
@@ -332,40 +334,49 @@ const HomePage: React.FC = () => {
                     ))}
                 </div>
             </div>
-            <div className="discoverNewSongsContainer">
+            <div className="artistsContainer">
                 <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
                     Artists
                 </div>
-                {showLeftDiscover && (
-                    <button
-                        className="scrollButtonLeft"
-                        onClick={() => scrollLeft(scrollDiscover)}
-                    >
-                        <img src="src/images/icons/arrow_left_side_bar.png"
-                             alt="ArrowLeft"/>
-                    </button>
-                )}
-                {showRightDiscover && (
-                    <button
-                        className="scrollButtonRight"
-                        onClick={() => scrollRight(scrollDiscover)}
-                    >
-                        <img src="src/images/icons/arrow_right_side_bar.png"
-                             alt="ArrowRight"/>
-                    </button>
-                )}
-                <div className="tracksScroll" ref={scrollDiscover}>
-                    {tracks.map(track => (
-                        <li className="trackCard" key={track.id}>
-                            <img className="trackImage" src={getTrackImageUrl(track)} alt={""}
-                                 onClick={() => playTrack(track, tracks)}
-                            />
-                            <div className="trackInfo">
-                                <span className="trackTitle baloo2">{track.title.length > 16 ? track.title.slice(0, 16) + "…" : track.title}</span>
-                                <span className="trackArtist baloo2">{track.author}</span>
-                            </div>
-                        </li>
-                    ))}
+                <div className="artistsGrid">
+                    <div className="artistCard">
+                        <div className="artistImageContainer">
+                        <img className="artistImage" src="public\artists\MaxBarskih.png" />
+                        </div>
+                        <div className="artistName">Max Barskih</div>
+                    </div>
+                    <div className="artistCard">
+                        <div className="artistImageContainer">
+                        <img className="artistImage" src="public\artists\Rammstein.png" />
+                        </div>
+                        <div className="artistName">Rammstein</div>
+                    </div>
+                    <div className="artistCard">
+                        <div className="artistImageContainer">
+                        <img className="artistImage" src="public\artists\KlavdiaPetrivna.png" />
+                        </div>
+                        <div className="artistName">Klavdia Petrivna</div>
+                    </div>
+                    <div className="artistCard">
+                        <div className="artistImageContainer">
+                        <img className="artistImage" src="public\artists\Yaktak.png" />
+                        </div>
+                        <div className="artistName">Yaktak</div>
+                    </div>
+                    <div className="artistCard">
+                        <div className="artistImageContainer">
+                        <img className="artistImage" src="public\artists\Volkanov.png" />
+                        </div>
+                        <div className="artistName">Volkanov</div>
+                    </div>
+                    <div className="artistCard">
+                        <div className="artistImageContainer">
+                        <div className="artistImageWrapper">
+                            <img className="artistImage" src="public\artists\Drevo.png" />
+                        </div>
+                        </div>
+                        <div className="artistName">Drevo</div>
+                    </div>
                 </div>
             </div>
         </main>

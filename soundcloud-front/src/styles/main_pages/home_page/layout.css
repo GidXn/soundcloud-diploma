@@ -1,4 +1,17 @@
 
+/* Banner */
+.music_buddy_banner{
+    display: flex;
+    height: 175px;
+    padding: 0px;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    left: 176px;
+    top: 185px;
+}
+
+/* Albums Section */
 .albumsContainer{
     display: flex;
     flex-direction: column;
@@ -8,7 +21,7 @@
     position: absolute;
     height: auto;
     left: 176px;
-    top: 235px;
+    top: 435px;
 }
 
 .sectionTitle{
@@ -51,39 +64,6 @@
     scroll-behavior: smooth;
 }
 
-.tracksScroll{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    padding: 0px;
-    isolation: isolate;
-    gap: 16px;
-    width: 100%;
-    height: auto;
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-    max-width: 100%;
-    overflow: hidden;
-    scroll-behavior: smooth;
-}
-
-.trackCard{
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 12px;
-    width: 210px;
-    height: auto;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
 .albumCard{
     flex: 0 0 auto;
     display: flex;
@@ -98,33 +78,12 @@
     flex-grow: 0;
 }
 
-.trackImage{
-    width: 210px;
-    height: 210px;
-    border-radius: 30px;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
 .albumImage{
     width: 210px;
     height: 210px;
     border-radius: 30px;
     flex: none;
     order: 0;
-    flex-grow: 0;
-}
-
-.trackInfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    width: 210px;
-    height: 90px;
-    flex: none;
     flex-grow: 0;
 }
 
@@ -137,23 +96,6 @@
     width: 210px;
     height: 90px;
     flex: none;
-    flex-grow: 0;
-}
-
-.trackTitle{
-    width: 210px;
-    height: 24px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 24px;
-    line-height: 24px;
-    display: block;
-    align-items: center;
-    text-align: center;
-    color: #FFFFFF;
-    flex: none;
-    order: 0;
-    align-self: stretch;
     flex-grow: 0;
 }
 
@@ -174,23 +116,6 @@
     flex-grow: 0;
 }
 
-.trackArtist{
-    width: 100%;
-    height: 18px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 20px;
-    display: block;
-    align-items: center;
-    text-align: center;
-    color: #C9D4FF;
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-}
-
 .albumArtist{
     width: 100%;
     height: 18px;
@@ -207,6 +132,21 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+}
+
+/* Novelty Section */
+.noveltyContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 26px;
+    position: absolute;
+    width: 1170px;
+    height: 338px;
+    left: 176px;
+    top: 870px;
+    font-family: "Baloo2", sans-serif;
 }
 
 .noveltyList,
@@ -281,12 +221,14 @@
 }
 
 .trackName {
-  color: #ffffff;
   text-align: left;
-  font-family: "SpaceGrotesk-Bold", sans-serif;
-  font-size: 16px;
-  font-weight: 700;
   position: relative;
+  color: #FFF;
+  font-family: "Space Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
 }
 
 .trackMeta {
@@ -311,23 +253,29 @@
 }
 
 .trackArtistNovelt {
-  color: #ffffff;
   text-align: left;
-  font-family: "SpaceGrotesk-Regular", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
   position: relative;
   width: 330px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: "Space Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .trackGenre {
-  color: #ffffff;
   text-align: left;
-  font-family: "SpaceGrotesk-Regular", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
   position: relative;
-  width: 83px;
+  width: 150px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: "Space Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
 .trackActions {
@@ -350,57 +298,30 @@
 }
 
 .trackDuration {
-  color: #ffffff;
   text-align: left;
-  font-family: "SpaceGrotesk-Regular", sans-serif;
-  font-size: 16px;
-  font-weight: 400;
   position: relative;
+  color: #FFF;
+  font-family: "Space Grotesk";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 
-.noveltyContainer{
+/* Banner */
+.hit_fm_banner{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 175px;
     padding: 0px;
-    gap: 26px;
+    justify-content: center;
     position: absolute;
-    width: 1170px;
-    height: 338px;
+    align-items: center;
     left: 176px;
-    top: 631px;
-    font-family: "Baloo2", sans-serif;
+    top: 1850px;
 }
 
-.thirdContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-    margin-top: 23px;
-    position: absolute;
-    width: 1170px;
-    height: 312px;
-    left: 176px;
-    top: 1001px;
-}
-
-.playlistContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-    margin-top: 48px;
-    position: absolute;
-    width: 1170px;
-    height: 732px;
-    left: 176px;
-    top: 1370px;
-}
-
-.trendingByGenreContainer{
+/* Popular Albums Section */
+.popularAlbumsContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -413,50 +334,6 @@
     top: 2109px;
 }
 
-.discoverNewSongsContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-    margin-top: 22px;
-    position: absolute;
-    width: 1170px;
-    height: 338px;
-    left: 176px;
-    top: 2820px;
-}
-
-.scrollButtonRight{
-    position: absolute;
-    height: 320px;
-    right: 0px;
-    top: 50px;
-    width: 210px;
-    align-items: flex-end;
-    justify-items: flex-end;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    z-index: 1;
-    background: linear-gradient(to right, transparent 0, #101010 70%);
-}
-
-.scrollButtonLeft{
-    position: absolute;
-    height: 320px;
-    top: 50px;
-    width: 210px;
-    left: 0px;
-    align-items: flex-start;
-    justify-items: flex-start;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    z-index: 1;
-    background: linear-gradient(to left, transparent 0, #101010 70%);
-}
-
 .scrollGrid{
     padding: 0px;
     isolation: isolate;
@@ -467,4 +344,96 @@
     grid-template-columns: repeat(6, 1fr);
     grid-template-rows: repeat(2, auto);
     gap: 10px;
+}
+
+/* Artists Section */
+.artistsContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 26px;
+    margin-top: 22px;
+    position: absolute;
+    width: 1570px;
+    height: 338px;
+    left: 176px;
+    top: 2820px;
+}
+
+.artistsGrid,
+.artistsGrid * {
+  box-sizing: border-box;
+}
+.artistsGrid {
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+  row-gap: 64px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
+}
+
+.artistCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 231px;
+  position: relative;
+}
+
+.artistImageContainer {
+  background: #ffffff;
+  border-radius: 130px;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 230px;
+  position: relative;
+  overflow: hidden;
+}
+
+.artistImageWrapper {
+  background: #ffffff;
+  border-radius: 130px;
+  width: 231px;
+  height: 230px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+
+.artistImage {
+  width: 231px;
+  height: 231px;
+  aspect-ratio: 1/1;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 1;
+}
+
+.artistName {
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Space Grotesk";
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
