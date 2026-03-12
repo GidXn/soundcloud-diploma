@@ -58,6 +58,30 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
         api.post(`http://localhost:5122/api/Track/${track.id}/play`).catch(console.error);
     },
 
+    playAlbum: (album, tracks = []) => {
+        if (tracks.length === 0) return;
+        
+        const firstTrack = tracks[0];
+        
+        set({
+            track: firstTrack,
+            isPlaying: true,
+            playlist: tracks,
+            currentIndex: 0,
+            currentAlbumId: album.id,
+        });
+
+        get().addToHistory(firstTrack);
+
+        const audio = get().audioRef.current;
+        if (audio) {
+            audio.src = `http://localhost:5122${firstTrack.url}`;
+            audio.play().catch(console.error);
+        }
+
+        api.post(`http://localhost:5122/api/Track/${firstTrack.id}/play`).catch(console.error);
+    },
+
     togglePlay: () => {
         set((state) => {
             const audio = state.audioRef.current;

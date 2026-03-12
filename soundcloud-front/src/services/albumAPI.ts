@@ -38,6 +38,16 @@ export const albumService = {
         return res.data;
     },
 
+    getMyAlbumsCount: async (): Promise<number> => {
+        try {
+            const albums: IAlbum[] = await albumService.getMyAlbums();
+            return albums.length;
+        } catch (err) {
+            console.error("Failed to fetch user's albums count:", err);
+            return 0;
+        }
+    },
+
     removeTrack: async (albumId: number, trackId: number): Promise<void> => {
         try {
             await api.delete(`/Album/${albumId}/tracks/${trackId}`);

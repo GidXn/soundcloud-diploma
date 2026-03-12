@@ -22,12 +22,13 @@ import {useNavigate} from "react-router-dom";
 const tabs = ["Tracks", "Albums", "Playlists"];
 
 const ProfilePage: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<string>("All");
+    const [activeTab, setActiveTab] = useState<string>("Tracks");
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const navigate = useNavigate();
     const [user, setUser] = useState<IUser | null>(null);
 
     const [userTracksCount, setUserTracksCount] = useState<number | null>(null);
+    const [userAlbumsCount, setUserAlbumsCount] = useState<number | null>(null);
 
     useEffect(() => {
         getCurrentUser()
@@ -193,6 +194,7 @@ const ProfilePage: React.FC = () => {
         albumService.getMyAlbums().then(setAlbums).catch(console.error);
         genreService.getGenres().then(setGenres).catch(console.error);
         trackService.getMyTracksCount().then(setUserTracksCount).catch(console.error);
+        albumService.getMyAlbumsCount().then(setUserAlbumsCount).catch(console.error);
     }, []);
 
     const handleUserUpdate = async (updateData: {
@@ -614,17 +616,11 @@ const ProfilePage: React.FC = () => {
             console.error("Error toggling follow:", error);
         }
     };
-    const getUserAvatarUrl = (user: IUserFollow) => {
-        if (!user.avatarUrl) return "/default-cover.png"; // запасна картинка
-        return `http://localhost:5122${user.avatarUrl}`;
-    };
 
 
     //лайки
     // окремо зберігаємо саме лайкнуті треки
     const [likedTracks, setLikedTracks] = useState<ITrack[]>([]);
-
-    const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
 
     useEffect(() => {
         const fetchLikedTracks = async () => {
@@ -684,7 +680,7 @@ const ProfilePage: React.FC = () => {
 
 
     return (
-        <div className="layout_container mb-[2900px] baloo2">
+        <div className="layout_container pb-[5000px] baloo2">
             <div className="banner_container">
                 <img className="banner_image_style" src={getUserBannerUrl(user)} alt="Banner"/>
             </div>
@@ -705,20 +701,20 @@ const ProfilePage: React.FC = () => {
             <div className="profile_page_following_tracks_info_container">
                 <div className="followers_container">
                     <div className="title">
-                        Followers
+                        Albums
                     </div>
                     <div className="number">
-                        <span>{followersCount}</span>
+                        <span>{userAlbumsCount}</span>
                     </div>
                 </div>
-                <div className="following_container">
+                {/* <div className="following_container">
                     <div className="title">
                         Following
                     </div>
                     <div className="number">
                         <span>{followingCount}</span>
                     </div>
-                </div>
+                </div> */}
                 <div className="tracks_container">
                     <div className="title">
                         Tracks
@@ -732,39 +728,6 @@ const ProfilePage: React.FC = () => {
             <div className="profile_page_right_sidebar">
                 <div className="profile_page_bio_container">
                     {user?.bio ? <span>{user.bio}</span> : <span>You don’t have bio :(</span>}
-                </div>
-
-                <div className="profile_page_following_users_container">
-                    <div className="container_title_container">
-                        <span className="header_txt_style">FOLLOWING</span>
-                    </div>
-
-                    {followingUsers.length === 0 ? (
-                        <div className="user_info_container">
-                            <span className="txt_style">You don`t have Followings</span>
-                        </div>
-                    ) : (
-                        <div className="user_info_container">
-                            {followingUsers.map(u => (
-                                <div key={u.id} className="user_container">
-                                    <div className="user_avatar_text_container">
-                                        <div className="user_avatar_container">
-                                            <img className="img_style" src={getUserAvatarUrl(u)} alt="avatar" />
-                                        </div>
-                                        <div className="user_text_container">{u.username}</div>
-                                    </div>
-                                        <button
-                                            className={u.isFollowing ? "unfollow_button_container cursor-pointer" : "follow_button_container cursor-pointer"}
-                                            onClick={() => toggleFollow(u.id)}
-                                        >
-                                            <span className="user_button_text_style">
-                                                {u.isFollowing ? "Unfollow" : "Follow"}
-                                            </span>
-                                        </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
                 <div className="profile_page_likes_users_container">
@@ -1050,7 +1013,7 @@ const ProfilePage: React.FC = () => {
                 {activeTab === "Tracks" && (
                     <>
                         {tracks.length ? (
-                                <div>
+                                <div className="profile_tracks_list_container">
                                 {tracks.map((t) => (
                                     <li key={t.id}>
                                         {t.imageUrl && (

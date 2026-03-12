@@ -16,6 +16,7 @@ const HomePage: React.FC = () => {
     const playTrack = usePlayerStore(state => state.playTrack);
     const playAlbum = usePlayerStore(state => state.playAlbum);
 
+    const [albumTracks, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({});
 
     useEffect(() => {
         albumService.getAllAlbums()
@@ -26,6 +27,34 @@ const HomePage: React.FC = () => {
             .catch((err) => console.error(err));
 
     }, []);
+
+    // Fetch tracks for each album
+    useEffect(() => {
+        const loadAllAlbumTracks = async () => {
+            try {
+                const results = await Promise.all(
+                    albums.map(async (a) => {
+                        const tracks = await albumService.getTracks(a.id);
+                        return { id: a.id, tracks };
+                    })
+                );
+
+                const tracksByAlbum = results.reduce(
+                    (acc, { id, tracks }) => ({ ...acc, [id]: tracks }),
+                    {} as Record<number, ITrack[]>
+                );
+
+                setAlbumTracks(tracksByAlbum);
+            } catch (err) {
+                console.error("Failed to load album tracks", err);
+            }
+        };
+
+        if (albums.length > 0) {
+            loadAllAlbumTracks();
+        }
+    }, [albums]);
+
     const getTrackImageUrl = (track?: ITrack | null) => {
         if (!track || !track.imageUrl) return "/default-cover.png"; // запасна картинка
         return `http://localhost:5122${track.imageUrl}`;
@@ -34,8 +63,6 @@ const HomePage: React.FC = () => {
         if (!album || !album.coverUrl) return "/default-cover.png"; // запасна картинка
         return `http://localhost:5122/${album.coverUrl}`;
     };
-
-
 
 
     //для лайків
@@ -95,7 +122,7 @@ const HomePage: React.FC = () => {
                                 className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
-                                onClick={() => playAlbum(album, album.tracks || tracks)}
+                                onClick={() => playAlbum(album, albumTracks[album.id] || [])}
                             />
                             <div className="albumInfo">
                                 <span className="albumTitle baloo2">
@@ -161,11 +188,11 @@ const HomePage: React.FC = () => {
                                 className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
-                                onClick={() => playAlbum(album, album.tracks || tracks)}
+                                onClick={() => playAlbum(album, albumTracks[album.id] || [])}
                             />
                             <div className="albumInfo">
                     <span className="albumTitle baloo2">
-                        {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
+                        {album.title.length > 20 ? album.title.slice(0, 16) + "…" : album.title}
                     </span>
                                 <span className="albumArtist baloo2">{album.ownerName}</span>
                             </div>
