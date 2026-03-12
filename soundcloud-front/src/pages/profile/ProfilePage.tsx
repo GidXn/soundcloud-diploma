@@ -49,6 +49,7 @@ const ProfilePage: React.FC = () => {
 
     const playTrack = usePlayerStore(state => state.playTrack);
     const pauseTrack = usePlayerStore((state) => state.pauseTrack);
+    const playAlbum = usePlayerStore(state => state.playAlbum);
 
 
     const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
@@ -263,6 +264,10 @@ const ProfilePage: React.FC = () => {
     const getTrackImageUrl = (track?: ITrack | null) => {
         if (!track || !track.imageUrl) return "/default-cover.png";
         return `http://localhost:5122/${track.imageUrl}`;
+    };
+    const getAlbumImageUrl = (album?: IAlbum | null) => {
+        if (!album || !album.coverUrl) return "/default-cover.png";
+        return `http://localhost:5122/${album.coverUrl}`;
     };
     const getUserImageUrl = (user?: IUser | null) => {
         if (!user || !user.avatar) return "/default-cover.png";
@@ -678,6 +683,35 @@ const ProfilePage: React.FC = () => {
         }
     };
 
+    const handleDeleteTrack = async (id: number) => {
+        if (!window.confirm("Delete this track? This action cannot be undone.")) return;
+        try {
+            await trackService.deleteTrack(id);
+            setTracks(prev => prev.filter(t => t.id !== id));
+            setUserTracksCount(prev => (prev !== null ? prev - 1 : prev));
+        } catch (err) {
+            console.error("Failed to delete track", err);
+            alert("Failed to delete track");
+        }
+    };
+
+    const handleDeleteAlbum = async (id: number) => {
+        if (!window.confirm("Delete this album? This action cannot be undone.")) return;
+        try {
+            await albumService.delete(id);
+            setAlbums(prev => prev.filter(a => a.id !== id));
+            setAlbumTracks(prev => {
+                const updated = { ...prev };
+                delete updated[id];
+                return updated;
+            });
+            setUserAlbumsCount(prev => (prev !== null ? prev - 1 : prev));
+        } catch (err) {
+            console.error("Failed to delete album", err);
+            alert("Failed to delete album");
+        }
+    };
+
     const formatTimeSpan = (ts: string): string => {
         const [h, m, s] = ts.split(":");
         const seconds = s.split(".")[0];
@@ -686,7 +720,7 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div className="layout_container pb-[5000px] baloo2">
+        <div className="layout_container pb-[1900px] baloo2">
             <div className="banner_container">
                 <img className="banner_image_style" src={getUserBannerUrl(user)} alt="Banner"/>
             </div>
@@ -1051,6 +1085,13 @@ const ProfilePage: React.FC = () => {
                                                     style={{ cursor: "pointer" }}
                                                 />
                                                 <span className="profile_track_duration">{formatTimeSpan(t.duration)}</span>
+                                                <img
+                                                    src="src/images/icons/close_icon.png"
+                                                    alt="delete"
+                                                    className="profile_like_icon"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleDeleteTrack(t.id)}
+                                                />
                                             </div>
                                         </div>
                                     </React.Fragment>
@@ -1177,107 +1218,57 @@ const ProfilePage: React.FC = () => {
                 {activeTab === "Albums" && (
                     <>
                         {albums.length ? (
-                            <ul className="text-white baloo2">
-                                {albums.map((a) => (
-                                    <li key={a.id} className="profile_track_container">
-                                        <div className="">
-                                            <img
-                                                src={a.coverUrl ? `http://localhost:5122/${a.coverUrl}` : "/default-cover.png"}
-                                                alt={a.title}
-                                                className="profile_page_playlist_image"
-                                                onClick={() => navigate(`/play-album/${a.id}`)}
-                                            />
-
+                            <div className="profile_tracks_list_container">
+                                {[...albums].map((album, index) => (
+                                    <React.Fragment key={album.id}>
+                                        {index !== 0 && <div className="profile_track_divider"></div>}
+                                        <div
+                                            className="profile_track_item"
+                                            onClick={() => playAlbum(album, albumTracks[album.id] || [])}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <div className="profile_track_image_wrapper">
+                                                <img
+                                                    src={getAlbumImageUrl(album)}
+                                                    alt={album.title}
+                                                    className="profile_track_cover"
+                                                />
+                                            </div>
+                                            <div className="profile_track_header">
+                                                <div className="profile_track_name">
+                                                    {album.title.length > 60 ? album.title.slice(0, 57) + "…" : album.title}
+                                                </div>
+                                            </div>
+                                            <div className="profile_track_meta">
+                                                <div className="profile_track_details">
+                                                    <div className="profile_track_artist">
+                                                        {album.description && album.description.length > 80
+                                                            ? album.description.slice(0, 77) + "…"
+                                                            : (album.description || "No description")}
+                                                    </div>
+                                                    <div className="profile_track_genre">
+                                                        {(() => {
+                                                            const count = (albumTracks[album.id] || []).length;
+                                                            if (count === 0) return "No tracks";
+                                                            if (count === 1) return "1 track";
+                                                            return `${count} tracks`;
+                                                        })()}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="profile_track_actions" onClick={(e) => e.stopPropagation()}>
+                                                <img
+                                                    src="src/images/icons/close_icon.png"
+                                                    alt="delete"
+                                                    className="profile_like_icon"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleDeleteAlbum(album.id)}
+                                                />
+                                            </div>
                                         </div>
-
-                                        {/* Треки конкретного альбому */}
-                                        <ul className="profile_page_track_information_container">
-                                            <div className="profile_page_track_play_button_container">
-                                                <div className="profile_page_play_button_background">
-                                                    {currentTrack &&
-                                                    albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === a.id &&  // <-- додано
-                                                    isPlaying ? (
-                                                        <img
-                                                            src="src/images/player/pause_icon.png"
-                                                            alt="pauseIcon"
-                                                            onClick={() => pauseTrack()}
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            src="src/images/player/play_icon.png"
-                                                            alt="playIcon"
-                                                            onClick={() => playTrack(albumTracks[a.id][0], albumTracks[a.id], a.id)}
-                                                        />
-                                                    )}
-                                                </div>
-                                                <div className="profile_page_track_title_style">
-                                                    {a.title}
-                                                </div>
-                                            </div>
-
-                                            <ul className="profile_page_tracks_in_playlist_container">
-                                                {(albumTracks[a.id] || []).map((t, index) => (
-                                                    <li key={t.id}>
-                                                        <div className="profile_page_tracks color">
-                                                            <img
-                                                                src={getTrackImageUrl(t)}
-                                                                alt={t.title}
-                                                                className="profile_page_tracks_image_style"
-                                                                onClick={() => playTrack(t, albumTracks[a.id])}
-                                                            />
-                                                            <div
-                                                                className={`profile_page_track_info_title_style txt_style 
-                                                                        ${currentTrack?.id === t.id && currentAlbumId === a.id
-                                                                    ? "profile_page_track_info_title_style txt_style_is_playing"
-                                                                    : ""}`}
-                                                            >
-                                                                <div>{index + 1}</div>
-                                                                <div>&#160;&#x2022;&#160;</div>
-                                                                <span>{t.author}</span>
-                                                                <div>&#160;&#x2022;&#160;</div>
-                                                                <span>{t.title}</span>
-                                                            </div>
-                                                            <img
-                                                                className="playlist_close_button_container cursor-pointer"
-                                                                src="src/images/icons/close_icon.png"
-                                                                onClick={() => handleRemoveTrackAlbum(a.id, t.id)}
-                                                            />
-                                                        </div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-
-                                            <div className="profile_page_track_controls_buttons">
-                                                <div className="track_more_controls_style">
-                                                <img src="src/images/icons/unlike.png" alt="unlike"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img
-                                                        src="/src/images/player/repeat_icon.png"
-                                                        alt="repeatIcon"
-                                                        id="hover_cursor_player"
-                                                    />
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/download.png" alt="download"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/share.png" alt="share"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/content_copy.png" alt="copy"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/information_white.png" alt="information_white"/>
-                                                </div>
-                                            </div>
-                                        </ul>
-
-                                    </li>
-
+                                    </React.Fragment>
                                 ))}
-                            </ul>
+                            </div>
                         ) : (
                             <p className="text-gray-400 py-4">No albums yet</p>
                         )}

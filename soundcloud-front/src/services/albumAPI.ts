@@ -22,6 +22,9 @@ export const albumService = {
         const res = await api.get(`/Album/${id}`);
         return res.data;
     },
+    delete: async (id: number): Promise<void> => {
+        await api.delete(`/Album/${id}`);
+    },
     create: async (dto: CreateAlbumDto): Promise<IAlbum> => {
         const formData = new FormData();
         formData.append("Title", dto.title);

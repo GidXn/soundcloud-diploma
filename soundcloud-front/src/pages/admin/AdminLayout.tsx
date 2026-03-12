@@ -25,7 +25,7 @@ const AdminLayout = () => {
                     <Menu.Item key="albums">
                         <Link to="/admin/albums">Albums</Link>
                     </Menu.Item>
-                    <Menu.Item key="categories">
+                    {/* <Menu.Item key="categories">
                         <Link to="/admin/categories">Categories</Link>
                     </Menu.Item>
                     <Menu.Item key="playlists">
@@ -33,7 +33,7 @@ const AdminLayout = () => {
                     </Menu.Item>
                     <Menu.Item key="admin">
                         <Link to="/admin/admin">Admin</Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
                 </Menu>
             </Sider>
             <Layout>
