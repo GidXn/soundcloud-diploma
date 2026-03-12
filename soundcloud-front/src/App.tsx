@@ -34,7 +34,7 @@ import UserProfilePage from "./pages/profile/UserProfilePage.tsx";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/login_signup/ResetPassword";
 import GenresPage from "./pages/main_pages/GenresPage";
-import AlbumsCollectionPage from "./pages/main_pages/AlbumsCollectionPage";
+import AlbumsCollectionPage from "./pages/main_pages/AlbumsCollectionPage.tsx";
 import ArtistsPage from "./pages/main_pages/ArtistsPage";
 import ChartsPage from "./pages/main_pages/ChartsPage";
 import Top100Page from "./pages/main_pages/Top100Page";

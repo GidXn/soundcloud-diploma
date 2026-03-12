@@ -1,8 +1,95 @@
 
-.profile_tracks_list_container {
+.profile_track_divider {
+    height: 2px;
+    background: linear-gradient(90deg, rgba(158, 127, 207, 0.3) 0%, rgba(158, 127, 207, 0) 100%);
+    margin: 12px 0;
+    width: 100%;
+}
+
+.profile_track_item {
     display: flex;
-    flex-direction: column;
-    gap: 32px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px 0;
+}
+
+.profile_track_image_wrapper {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    width: 50px;
+}
+
+.profile_track_cover {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.profile_track_header {
+    flex: 0 0 auto;
+    padding: 0;
+    width: 350px;
+}
+
+.profile_track_name {
+    font-size: 14px;
+    font-weight: 700;
+    color: #FFF;
+    font-family: "Space Grotesk";
+    text-align: left;
+}
+
+.profile_track_meta {
+    display: flex;
+    flex: 1;
+    min-width: 400px;
+}
+
+.profile_track_details {
+    display: flex;
+    gap: 120px;
+    align-items: center;
+    width: 100%;
+}
+
+.profile_track_artist {
+    font-size: 13px;
+    color: #FFF;
+    font-family: "Space Grotesk";
+    text-align: left;
+    width: 300px;
+}
+
+.profile_track_genre {
+    font-size: 13px;
+    color: #FFF;
+    font-family: "Space Grotesk";
+    text-align: left;
+    width: 100px;
+}
+
+.profile_track_actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
+
+.profile_like_icon {
+    width: 18px;
+    height: 18px;
+}
+
+.profile_track_duration {
+    font-size: 13px;
+    color: #FFF;
+    font-family: "Space Grotesk";
+    min-width: 35px;
 }
 
 .banner_avatar_container {

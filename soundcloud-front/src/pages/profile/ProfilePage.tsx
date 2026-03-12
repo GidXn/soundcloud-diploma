@@ -19,7 +19,7 @@ import {useNavigate} from "react-router-dom";
 //import {useSelector} from "react-redux";
 //import {RootState} from "../../store/store.ts";
 
-const tabs = ["Tracks", "Albums", "Playlists"];
+const tabs = ["Tracks", "Albums"];
 
 const ProfilePage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>("Tracks");
@@ -678,6 +678,12 @@ const ProfilePage: React.FC = () => {
         }
     };
 
+    const formatTimeSpan = (ts: string): string => {
+        const [h, m, s] = ts.split(":");
+        const seconds = s.split(".")[0];
+        const totalMinutes = Number(h) * 60 + Number(m);
+        return `${totalMinutes}:${seconds}`;
+    };
 
     return (
         <div className="layout_container pb-[5000px] baloo2">
@@ -1014,94 +1020,40 @@ const ProfilePage: React.FC = () => {
                     <>
                         {tracks.length ? (
                                 <div className="profile_tracks_list_container">
-                                {tracks.map((t) => (
-                                    <li key={t.id}>
-                                        {t.imageUrl && (
-                                            <div className="track_container">
-                                                <div className="profile_page_track_image_wrapper">
-                                                    <img
-                                                        src={getTrackImageUrl(t)}
-                                                        alt={t.title}
-                                                        className="profile_page_track_image"
-                                                    />
-                                                    <div className="profile_page_track_image_overlay cursor-pointer">
-                                                        <img src="src/images/icons/edit_pen.png" className="img_style"
-                                                             onClick={() => {
-                                                                 handleTrackClick(t)
-                                                             }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="track_controls_container">
-                                                    <div className="play_info_track_container">
-                                                        <div className="play_pause_track_container">
-                                                            {currentTrack?.id === t.id && isPlaying ? (
-                                                                <img src="src/images/player/pause_icon.png"
-                                                                     alt={"playIcon"}
-                                                                     onClick={() => pauseTrack()}
-                                                                />
-                                                            ) : (
-                                                                <img src="src/images/player/play_icon.png"
-                                                                     alt={"playIcon"}
-                                                                     onClick={() => playTrack(t,tracks)}
-                                                                />
-                                                            )}
-
-                                                        </div>
-                                                        <div className="track_title_author_container">
-                                                            <div className="track_title_container">
-                                                                {t.title.length > 80 ? t.title.slice(0, 50) + "…" : t.title}
-                                                            </div>
-                                                        </div>
-                                                        <div className="track_duration_range_container">
-                                                            <div className="track_author_container">
-                                                                {t.author.length > 80 ? t.author.slice(0, 50) + "…" : t.author}
-                                                            </div>
-                                                        </div>
-                                                        <div className="track_genre_container">
-                                                            {t.genre}
-                                                        </div>
-                                                        <div className="track_more_controls_container">
-                                                            <div className="track_more_controls_style">
-                                                                <img
-                                                                    src={t.isLikedByCurrentUser ? "src/images/icons/like.png" : "src/images/icons/unlike.png"}
-                                                                    alt="like"
-                                                                    onClick={() => toggleLike(t)}
-                                                                    style={{cursor: "pointer"}}
-                                                                />
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img
-                                                                    src="/src/images/player/repeat_icon.png"
-                                                                    alt="repeatIcon"
-                                                                    id="hover_cursor_player"
-                                                                />
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/download.png"
-                                                                     alt="download"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/share.png" alt="share"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/content_copy.png"
-                                                                     alt="copy"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/add_playlist.png"
-                                                                     id="add_playlist_icon"
-                                                                     alt="addPlaylist"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/reply.png" alt="reply"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                {tracks.map((t, index) => (
+                                    <React.Fragment key={t.id}>
+                                        {index !== 0 && <div className="profile_track_divider"></div>}
+                                        <div className="profile_track_item">
+                                            <div className="profile_track_image_wrapper">
+                                                <img 
+                                                    src={getTrackImageUrl(t)} 
+                                                    alt={t.title}
+                                                    className="profile_track_cover"
+                                                    onClick={() => playTrack(t, tracks)}
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+                                            </div>
+                                            <div className="profile_track_header">
+                                                <div className="profile_track_name">{t.title}</div>
+                                            </div>
+                                            <div className="profile_track_meta">
+                                                <div className="profile_track_details">
+                                                    <span className="profile_track_artist">{t.author}</span>
+                                                    <span className="profile_track_genre">{t.genre}</span>
                                                 </div>
                                             </div>
-                                        )}
-                                    </li>
+                                            <div className="profile_track_actions">
+                                                <img
+                                                    src={t.isLikedByCurrentUser ? "src/images/icons/like.png" : "src/images/icons/unlike.png"}
+                                                    alt="like"
+                                                    className="profile_like_icon"
+                                                    onClick={() => toggleLike(t)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                                <span className="profile_track_duration">{formatTimeSpan(t.duration)}</span>
+                                            </div>
+                                        </div>
+                                    </React.Fragment>
                                 ))}
                                 </div>
                         ) : (
