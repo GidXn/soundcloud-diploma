@@ -194,7 +194,7 @@ const HomePage: React.FC = () => {
                     <span className="albumTitle baloo2">
                         {album.title.length > 20 ? album.title.slice(0, 16) + "…" : album.title}
                     </span>
-                                <span className="albumArtist baloo2">{album.ownerName}</span>
+                                <span className="albumArtist baloo2">{album.description}</span>
                             </div>
                         </li>
                     ))}

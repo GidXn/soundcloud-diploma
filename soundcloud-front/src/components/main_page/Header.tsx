@@ -32,8 +32,11 @@ const Header: React.FC = () => {
     }, []);
 
     const getUserImageUrl = (user?: IUser | null) => {
-        if (!user || !user.avatar) return "/default-cover.png";
-        return `http://localhost:5122/${user.avatar}`;
+        if (!user?.avatar) return "/default-cover.png";
+
+        return user.avatar.startsWith("http")
+            ? user.avatar
+            : `http://localhost:5122/${user.avatar}`;
     };
     console.log("Avatar "+ user?.avatar);
 

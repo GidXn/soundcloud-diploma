@@ -270,9 +270,11 @@ const ProfilePage: React.FC = () => {
         return `http://localhost:5122/${album.coverUrl}`;
     };
     const getUserImageUrl = (user?: IUser | null) => {
-        if (!user || !user.avatar) return "/default-cover.png";
-        console.log(user)
-        return `http://localhost:5122/${user.avatar}`;
+        if (!user?.avatar) return "/default-cover.png";
+    
+        return user.avatar.startsWith("http")
+            ? user.avatar
+            : `http://localhost:5122/${user.avatar}`;
     };
     const getUserBannerUrl = (user?: IUser | null) => {
         if (!user || !user.banner) return "src/images/profile/banner.png";
