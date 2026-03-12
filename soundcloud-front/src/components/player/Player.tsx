@@ -183,30 +183,30 @@ export default function Player({ footerSelector }: PlayerProps) {
 
                         {/* блок інформації про трек: обкладинка + назва + автор */}
                         <div className="player_track_info_block">
-                            <div className="player_track_container">
-                                <div className="player_track_image">
+            <div className="player_track_container">
+                <div className="player_track_image">
                                     <img
                                         className="player_track_image"
                                         src={getTrackImageUrl(track)}
                                         alt={track.title}
                                     />
-                                </div>
-                                <div className="player_track_title_container ">
+                </div>
+                <div className="player_track_title_container ">
                                     <div
                                         className={`player_track_title ${
                                             track.title.length > 10 ? "scrolling" : ""
                                         }`}
                                     >
-                                        {track.title}
-                                    </div>
+                        {track.title}
+                    </div>
                                     <div
                                         className={`player_track_author ${
                                             track.author.length > 25 ? "scrolling" : ""
                                         }`}
                                     >
-                                        {track.author}
-                                    </div>
-                                </div>
+                        {track.author}
+                    </div>
+                </div>
                             </div>
                         </div>
                     </div>
@@ -222,65 +222,65 @@ export default function Player({ footerSelector }: PlayerProps) {
 
                         {/* дії: лайк, повтор, плейлист */}
                         <div className="player_actions_block">
-                            <div className="track_control_container">
-                                <div className="track_control_like_container">
-                                    <img
+                <div className="track_control_container">
+                    <div className="track_control_like_container">
+                        <img
                                         src={track.isLikedByCurrentUser ? like_icon : unlike_icon}
-                                        alt="like"
-                                        onClick={() => {
-                                            toggleLike(track);
-                                        }}
+                            alt="like"
+                            onClick={() => {
+                                toggleLike(track);
+                            }}
                                         style={{ cursor: "pointer" }}
-                                    />
-                                </div>
+                        />
+                    </div>
 
-                                <div className="track_control_repeat_container">
-                                    {!loop ? (
-                                        <img
-                                            src="/src/images/player/repeat_icon.png"
-                                            alt="repeatIcon"
-                                            id="hover_cursor_player"
+                    <div className="track_control_repeat_container">
+                        {!loop ? (
+                            <img
+                                src="/src/images/player/repeat_icon.png"
+                                alt="repeatIcon"
+                                id="hover_cursor_player"
                                             onClick={() => setLoop(true)} // 🔹 увімкнути
-                                        />
-                                    ) : (
-                                        <img
-                                            src="/src/images/player/repeat_cyan.png"
-                                            alt="repeatIcon"
-                                            id="hover_cursor_player"
+                            />
+                        ) : (
+                            <img
+                                src="/src/images/player/repeat_cyan.png"
+                                alt="repeatIcon"
+                                id="hover_cursor_player"
                                             onClick={() => setLoop(false)} // 🔹 вимкнути
-                                        />
-                                    )}
-                                </div>
+                            />
+                        )}
+                    </div>
                                 <div className="track_control_queue_container">
                                     <img
                                         src="/src/images/player/queue_icon.png"
-                                        id="hover_cursor_player"
+                             id="hover_cursor_player"
                                         alt={"queueIcon"}
                                         onClick={() => setModalOpen(true)}
-                                    />
-                                </div>
-                            </div>
-                        </div>
+                        />
                     </div>
+                    </div>
+                </div>
+                </div>
 
                     {/* блок гучності – іконка + повзунок */}
                     <div className="player_volume_block">
-                        <div className="track_loudness_container">
-                            <div className="track_loudness_image_container">
+                <div className="track_loudness_container">
+                    <div className="track_loudness_image_container">
                                 <img src="/src/images/player/volume_up_icon.png" alt="Volume" />
-                            </div>
-                            <div>
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    className="volume_input"
-                                    step={0.001}
-                                    value={volume}
-                                    onChange={handleVolumeChange}
+                    </div>
+                    <div>
+                        <input
+                            type="range"
+                            min={0}
+                            max={1}
+                            className="volume_input"
+                            step={0.001}
+                            value={volume}
+                            onChange={handleVolumeChange}
                                     style={{ "--val": `${(volume / max) * 100}%` } as React.CSSProperties}
-                                />
-                            </div>
+                        />
+                    </div>
                         </div>
                     </div>
                 </div>

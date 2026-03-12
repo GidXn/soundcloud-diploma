@@ -37,7 +37,8 @@ const UsersPage = () => {
         form.setFieldsValue({
             username: user.username,
             email: user.email,
-            role: user.role,
+            // у формі тримаємо читабельне значення, але на бек підемо з 0/2
+            role: user.role === 2 || user.role === "Admin" ? "Admin" : "User",
         });
         setModalVisible(true);
     };
@@ -47,8 +48,21 @@ const UsersPage = () => {
             const values = await form.validateFields();
 
             if (editingUser) {
-                const { password, confirmPassword, ...updateData } = values;
+                const { password, confirmPassword, role, ...updateData } = values;
+
+                // Оновлення основних даних
                 await adminApi.updateUser(editingUser.id, updateData);
+
+                // Мапимо текстову роль у код: 0 = User, 2 = Admin
+                const newRoleCode = role === "Admin" || role === 2 ? 2 : 0;
+                const currentRoleCode =
+                    editingUser.role === "Admin" || editingUser.role === 2 ? 2 : 0;
+
+                // Якщо змінилася роль — окремий виклик на бек
+                if (newRoleCode !== currentRoleCode) {
+                    await adminApi.changeUserRole(editingUser.id, newRoleCode);
+                }
+
                 message.success("Користувача оновлено");
             } else {
                 // Створення нового користувача: обов'язково password та confirmPassword
@@ -128,6 +142,17 @@ const UsersPage = () => {
                         rules={[{ required: true, message: "Введіть email" }]}
                     >
                         <Input />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Role"
+                        name="role"
+                        rules={[{ required: true, message: "Оберіть роль" }]}
+                    >
+                        <Select>
+                            <Option value="User">User</Option>
+                            <Option value="Admin">Admin</Option>
+                        </Select>
                     </Form.Item>
 
                     {!editingUser && (
