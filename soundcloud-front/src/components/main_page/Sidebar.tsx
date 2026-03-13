@@ -12,8 +12,7 @@ interface SidebarItem {
 const Sidebar: React.FC = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    // collapsed = icons only, expanded = 443px + labels + overlay
-    const [isExpanded, setIsExpanded] = React.useState(false);
+    const [isExpanded, setIsExpanded] = React.useState(true);
 
     const sidebarItems: SidebarItem[] = [
         {
@@ -79,65 +78,47 @@ const Sidebar: React.FC = () => {
 
     const handleNavigation = (item: SidebarItem): void => {
         if (item.id === "hide") {
-            setIsExpanded((prev) => !prev);
+            setIsExpanded(false);
             return;
         }
         if (item.path && item.path !== "#") {
             navigate(item.path);
-            setIsExpanded(false); // close drawer after navigation
         }
     };
 
     return (
         <>
-            {isExpanded && (
-                <div
-                    className="sidebar_overlay"
-                    onClick={() => setIsExpanded(false)}
-                    aria-label="Close sidebar overlay"
-                />
+            {!isExpanded && (
+                <button
+                    className="sidebar_toggle_btn"
+                    onClick={() => setIsExpanded(true)}
+                    title="Показати сайд бар"
+                >
+                    <img src="/inside/material-symbols-menu-rounded.svg" alt="Menu" />
+                </button>
             )}
 
-            <nav className={`sidebar_container ${isExpanded ? "expanded" : "collapsed"}`}>
-                {sidebarItems.map((item) => (
-                    <div
-                        key={item.id}
-                        className={`sidebar_item ${isActive(item.path) ? "active" : ""} ${
-                            item.id === "hide" ? "sidebar_item_menu" : ""
-                        }`}
-                        onClick={() => handleNavigation(item)}
-                        title={item.label}
-                    >
-                        <img
-                            src={item.icon}
-                            alt={item.label}
-                            className={`sidebar_icon ${
-                                isActive(item.path) ? "active" : ""
-                            } ${item.id === "hide" ? "sidebar_icon_menu" : ""}`}
-                        />
-                        {item.id === "hide" ? (
-                            <span className={`sidebar_label ${isExpanded ? "show" : ""}`}>
-                                <img
-                                    className="sidebar_logo"
-                                    src="/logo_Allurew.png"
-                                    alt="SoundCloud"
-                                />
-                            </span>
-                        ) : (
-                            <span className={`sidebar_label ${isExpanded ? "show" : ""}`}>
-                                {item.id === "home"
-                                    ? "Home"
-                                    : item.id === "albums"
-                                      ? "Albums"
-                                      : item.id === "music"
-                                        ? "Music"
-                                        : item.label}
-                            </span>
-                        )}
-                        {isActive(item.path) && <div className="sidebar_indicator"></div>}
-                    </div>
-                ))}
-            </nav>
+            {isExpanded && (
+                <nav className="sidebar_container">
+                    {sidebarItems.map((item) => (
+                        <div
+                            key={item.id}
+                            className={`sidebar_item ${isActive(item.path) ? "active" : ""}`}
+                            onClick={() => handleNavigation(item)}
+                            title={item.label}
+                        >
+                            <img
+                                src={item.icon}
+                                alt={item.label}
+                                className={`sidebar_icon ${
+                                    isActive(item.path) ? "active" : ""
+                                }`}
+                            />
+                            {isActive(item.path) && <div className="sidebar_indicator"></div>}
+                        </div>
+                    ))}
+                </nav>
+            )}
         </>
     );
 };

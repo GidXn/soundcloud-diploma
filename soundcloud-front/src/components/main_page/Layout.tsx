@@ -14,11 +14,11 @@ const Layout: React.FC = () => {
     const getBackgroundImage = useMemo(() => {
         const path = location.pathname;
 
-        if (path.startsWith('/home')) return 'home-bg.png';
+        if (path.startsWith('/home')) return 'music-bg.png';
         if (path.startsWith('/music')) return 'music-bg.png';
         if (path.startsWith('/feed')) return 'music-bg.png'; // Using music-bg.png for feed
         if (path.startsWith('/library')) return 'music-bg.png'; // Using music-bg.png for library
-        if (path.startsWith('/profile')) return 'home-bg.png'; // Using home-bg.png for profile
+        if (path.startsWith('/profile')) return 'music-bg.png'; // Using music-bg.png for profile
         if (path.startsWith('/genres')) return 'genres-bg.png';
         if (path.startsWith('/albums')) return 'albums-bg.png';
         if (path.startsWith('/artists')) return 'artist-bg.png';
@@ -38,12 +38,12 @@ const Layout: React.FC = () => {
         <>
             <Sidebar />
             <div className="layout_container">
-                <div className="main_content_wrapper">
+                <div className="main_content_wrapper" style={contentStyle}>
                     <div>
                         <Header/>
                     </div>
 
-                    <div className="content_container" style={contentStyle}>
+                    <div className="content_container">
                         <Outlet/>
                     </div>
                     <div className="footer_container">

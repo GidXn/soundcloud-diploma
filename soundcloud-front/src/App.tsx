@@ -13,7 +13,7 @@ import './index.css';
 import FeedPage from "./pages/main_pages/FeedPage.tsx";
 import MusicPage from "./pages/main_pages/MusicPage.tsx";
 import {useDispatch} from "react-redux";
-import {useEffect} from "react";
+import React, {useEffect} from "react";
 import {setUser} from "./store/slices/userSlice.ts";
 import {normalizeUser} from "./utilities/normalizeUser.ts";
 import SetPassword from "./pages/login_signup/SetPassword";
@@ -39,10 +39,13 @@ import ArtistsPage from "./pages/main_pages/ArtistsPage";
 import ChartsPage from "./pages/main_pages/ChartsPage";
 import Top100Page from "./pages/main_pages/Top100Page";
 import RadioPage from "./pages/main_pages/RadioPage";
+import StartedPage from "./pages/started_page/StartedPage.tsx";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 export default function App() {
     const dispatch = useDispatch();
+    const [isInitializing, setIsInitializing] = React.useState(true);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -53,26 +56,37 @@ export default function App() {
             }
             console.log("init user", user);
         }
+        setIsInitializing(false);
     }, [dispatch]);
     const initHistory = usePlayerStore((state) => state.initHistory);
 
     useEffect(() => {
         initHistory(); // ✅ підтягнемо історію з localStorage
     }, [initHistory]);
+
+    if (isInitializing) {
+        return null; // Or a simple loader, this prevents child routes from rendering prematurely before Redux has user data
+    }
+
     return (
         <Router>
             <Routes>
+                <Route path="/" element={<StartedPage />} />
+
                 {/* Сторінка логіну */}
                 <Route element={<Layout_login_page/>}>
-                    <Route path="/" element={<Navigate to="/login" replace />} />
                     <Route path="/login" element={<Login/>} />
                     <Route path="/signup" element={<Signup/>} />
                     <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
                     <Route path="/reset-password" element={<ResetPasswordPage/>}/>
                 </Route>
 
-                {/* Головний Layout_LS */}
-                <Route element={<Layout />}>
+                {/* Головний Layout_LS (Protected) */}
+                <Route element={
+                    <ProtectedRoute>
+                        <Layout />
+                    </ProtectedRoute>
+                }>
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/feed" element={<FeedPage />} />
                     <Route path="/music" element={<MusicPage />} />
@@ -91,8 +105,12 @@ export default function App() {
                     <Route path="/set-password" element={<SetPassword />} />
                 </Route>
 
-                {/*  Адмінка (ОКРЕМО, без Layout) */}
-                <Route path="/admin" element={<AdminLayout />}>
+                {/*  Адмінка (ОКРЕМО, без Layout, Protected to Role 2) */}
+                <Route path="/admin" element={
+                    <ProtectedRoute requireAdmin={true}>
+                        <AdminLayout />
+                    </ProtectedRoute>
+                }>
                     <Route path="users" element={<UsersPage />} />
                     <Route path="tracks" element={<TracksPage />} />
                     <Route path="albums" element={<AlbumsPage />} />
