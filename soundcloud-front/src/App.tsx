@@ -76,13 +76,13 @@ export default function App() {
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/feed" element={<FeedPage />} />
                     <Route path="/music" element={<MusicPage />} />
-                    <Route path="/library" element={<LibraryPage />} />
-                    <Route path="/genres" element={<GenresPage />} />
+                    {/* <Route path="/library" element={<LibraryPage />} />
+                    <Route path="/genres" element={<GenresPage />} /> */}
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
-                    <Route path="/artists" element={<ArtistsPage />} />
+                    {/* <Route path="/artists" element={<ArtistsPage />} />
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
-                    <Route path="/radio" element={<RadioPage />} />
+                    <Route path="/radio" element={<RadioPage />} /> */}
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/play-album/:id" element={<PlayAlbumPage />} />
                     <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
@@ -96,7 +96,7 @@ export default function App() {
                     <Route path="users" element={<UsersPage />} />
                     <Route path="tracks" element={<TracksPage />} />
                     <Route path="albums" element={<AlbumsPage />} />
-                    <Route path="categories" element={<CategoriesPage />} />
+                    {/* <Route path="categories" element={<CategoriesPage />} /> */}
                     <Route path="playlists" element={<PlaylistsPage />} />
                     <Route path="admin" element={<AdminPage />} />
                 </Route>
