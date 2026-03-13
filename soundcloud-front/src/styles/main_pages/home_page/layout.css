@@ -1,154 +1,140 @@
 
-.first_first_container{
-    /* Genre */
+/* Banner */
+.music_buddy_banner{
+    display: flex;
+    height: 175px;
+    padding: 0px;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    left: 176px;
+    top: 185px;
+}
 
+/* Albums Section */
+.albumsContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0px;
     gap: 26px;
-
     position: absolute;
-    width: 1170px;
     height: auto;
     left: 176px;
-    top: 235px;
-       /* для кнопок */
+    top: 435px;
 }
 
-.first_first_container_text{
-
+.sectionTitle{
     display: flex;
-
     flex-direction: row;
     align-items: center;
     padding: 8px 12px;
     gap: 687px;
-
     width: 1170px;
     height: 40px;
-
-    background: linear-gradient(90deg, #5241B3 0%, #101010 50.48%);
     border-radius: 30px;
     flex: none;
     order: 0;
     align-self: stretch;
     flex-grow: 0;
-
+    color: #FFF;
+    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
-.first_first_container_track{
+
+.albumsScroll{
     display: flex;
-
-
     flex-direction: row;
     justify-content: start;
     align-items: center;
     padding: 0px;
     isolation: isolate;
-    gap:24px;
-    width: 1170px;
+    gap: 16px;
+    width: 100%;
     height: auto;
     flex: none;
     order: 1;
     align-self: stretch;
     flex-grow: 0;
-
-
-}
-/* Контейнер горизонтального скролу */
-.first_first_container_track {
-    display: flex;
-
-    gap: 16px;
-    padding-bottom: 0px;
     max-width: 100%;
     overflow: hidden;
     scroll-behavior: smooth;
 }
 
-.first_first_track{
-    /* Frame 26080081 */
+.albumCard{
     flex: 0 0 auto;
-    /* Auto layout */
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0px;
-    gap: 12px;
-
     width: 210px;
     height: auto;
-
     flex: none;
     order: 0;
     flex-grow: 0;
-
 }
-.track_image_home_page{
 
+.albumImage{
     width: 210px;
     height: 210px;
     border-radius: 30px;
-
-    /* Inside auto layout */
     flex: none;
     order: 0;
     flex-grow: 0;
 }
-.track_information_container{
+
+.albumInfo{
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     gap: 8px;
-
     width: 210px;
     height: 90px;
-
     flex: none;
     flex-grow: 0;
 }
-.track_name{
+
+.albumTitle{
     width: 210px;
     height: 24px;
     font-style: normal;
     font-weight: 500;
-    font-size: 24px;
+    font-size: 20px;
     line-height: 24px;
     display: block;
     align-items: center;
-    text-align: center;
-
-
-
+    text-align: left;
     color: #FFFFFF;
-
     flex: none;
     order: 0;
     align-self: stretch;
     flex-grow: 0;
 }
 
-.track_author_home_page{
-    /* Imagine Dragons */
+.albumArtist{
     width: 100%;
-    height: 18px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 20px;
-    /* identical to box height, or 100% */
+    height: 14px;
     display: block;
     align-items: center;
-    text-align: center;
-    color: #C9D4FF;
+    text-align: left;
     flex: none;
     order: 1;
     align-self: stretch;
     flex-grow: 0;
+    color: #FFF;
+    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
 }
 
-.second_first_container{
+/* Novelty Section */
+.noveltyContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -158,64 +144,212 @@
     width: 1170px;
     height: 338px;
     left: 176px;
-    top: 631px;
+    top: 870px;
+    font-family: "Baloo2", sans-serif;
 }
 
-.third_first_container{
-    /* Genre */
+.noveltyList,
+.noveltyList * {
+  box-sizing: border-box;
+}
+.noveltyList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  width: 1528px;
+  position: relative;
+  font-family: "Baloo2", sans-serif;
+}
 
-    /* Auto layout */
+.divider {
+  flex-shrink: 0;
+  height: 3px;
+  position: relative;
+  overflow: visible;
+}
+
+.trackItem,
+.trackItem * {
+  box-sizing: border-box;
+}
+.trackItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+}
+
+.trackImageWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 144px;
+  position: relative;
+}
+
+.trackCover {
+  border-radius: 9px;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  object-fit: cover;
+}
+
+.trackHeader {
+  padding: 5px 0px 5px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 500px;
+  height: 50px;
+  position: relative;
+}
+
+.trackName {
+  text-align: left;
+  position: relative;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.trackMeta {
+  display: flex;
+  flex-direction: row;
+  gap: 144px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.trackDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 413px;
+  height: 24px;
+  position: relative;
+}
+
+.trackArtistNovelt {
+  text-align: left;
+  position: relative;
+  width: 330px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.trackGenre {
+  text-align: left;
+  position: relative;
+  width: 150px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.trackActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 90px;
+  position: relative;
+}
+
+.likeIcon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+
+.trackDuration {
+  text-align: left;
+  position: relative;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+/* Banner */
+.hit_fm_banner{
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 175px;
     padding: 0px;
-    gap: 26px;
-    margin-top: 23px;
+    justify-content: center;
     position: absolute;
-    width: 1170px;
-    height: 312px;
+    align-items: center;
     left: 176px;
-    top: 1001px;
+    top: 1880px;
 }
 
-.playlist_container{
-    /* Genre */
-
-    /* Auto layout */
+/* Popular Albums Section */
+.popularAlbumsContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0px;
     gap: 26px;
-    margin-top: 48px;
     position: absolute;
-    width: 1170px;
-    height: 732px;
-    left: 176px;
-    top: 1370px;
-}
-
-.trending_by_genre_container{
-    /* Genre */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-
-    position: absolute;
-    width: 1170px;
+    width: 1570px;
     height: 338px;
     left: 176px;
     top: 2109px;
 }
 
-.discover_new_songs_container{
-    /* Genre */
+.scrollGrid{
+    padding: 0px;
+    isolation: isolate;
+    gap: 30px;
+    width: 100%;
+    order: 1;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+}
 
-    /* Auto layout */
+
+
+
+/* Artists Section */
+.artistsContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -223,490 +357,85 @@
     gap: 26px;
     margin-top: 22px;
     position: absolute;
-    width: 1170px;
+    width: 1570px;
     height: 338px;
     left: 176px;
-    top: 2479px;
-}
-.button_side_bar_right_container{
-    position: absolute;
-    height: 320px;
-    right:0px;
-    top:50px;
-    width: 210px;
-    align-items: flex-end;
-    justify-items: flex-end;
-    right:0px;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    z-index: 1;
-    background: linear-gradient(to right, transparent 0, #101010 70%);
-}
-.button_side_bar_left_container{
-    position: absolute;
-    height: 320px;
-    top:50px;
-    width: 210px;
-    left:0px;
-    align-items: flex-start;
-    justify-items: flex-start;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    z-index: 1;
-    background: linear-gradient(to left, transparent 0, #101010 70%);
-}
-.button_side_bar_right{
-    position: absolute;
-    width: 72px;
-    height: 72px;
-    right:0px;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    z-index: 1;
-    background: linear-gradient(to right, transparent, black);
-}
-.button_side_bar_left {
-    position: absolute;
-    width: 72px;
-    height: 72px;
-    top:50px;
-    left:0px;
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    z-index: 1;
+    top: 2820px;
 }
 
-
-.top_creators_container{
-    /* Top_Creators */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 0px;
-    gap: 26px;
-
-    position: absolute;
-    width: 374px;
-    height: 346px;
-    left: 1370px;
-    top: 235px;
+.artistsGrid,
+.artistsGrid * {
+  box-sizing: border-box;
+}
+.artistsGrid {
+  display: flex;
+  flex-direction: row;
+  gap: 28px;
+  row-gap: 64px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+  width: 100%;
 }
 
-.top_creators_top_text_container{
-    /* Frame 26080069 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    padding: 12px;
-    gap: 56px;
-
-    width: 374px;
-    height: 48px;
-
-    background: linear-gradient(90deg, #5241B3 0%, rgba(16, 16, 16, 0) 79.81%);
-    border-radius: 30px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
+.artistCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 231px;
+  position: relative;
 }
 
-.top_creators_creators_container{
-    /* Frame 26080071 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 16px;
-
-    width: 374px;
-    height: 272px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-
-}
-.top_creator_container{
-    /* Artist */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0px;
-    gap: 24px;
-
-    width: 374px;
-    height: 56px;
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-}
-.top_creator_container{
-    /* Artist */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0px;
-    gap: 24px;
-
-    width: 374px;
-    height: 56px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-
+.artistImageContainer {
+  background: #ffffff;
+  border-radius: 130px;
+  align-self: stretch;
+  flex-shrink: 0;
+  height: 230px;
+  position: relative;
+  overflow: hidden;
 }
 
-.top_creators_numeration{
-    /* 1. */
-
-    width: 28px;
-    height: 34px;
-
-    font-style: normal;
-    font-weight: 700;
-    font-size: 34px;
-    line-height: 34px;
-    /* identical to box height, or 100% */
-    display: flex;
-    align-items: center;
-
-    color: #FFFFFF;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
+.artistImageWrapper {
+  background: #ffffff;
+  border-radius: 130px;
+  width: 231px;
+  height: 230px;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
 }
 
-.top_creators_avatar_container{
-    /* Ellipse 71 */
-
-    width: 56px;
-    height: 56px;
-    border-radius: 50%; /* робимо круглим */
-    overflow: hidden;
-    object-fit: cover; /* картинка заповнює контейнер і обрізається */
-    display: block;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-}
-.top_creators_author_container{
-    /* ladygaga */
-
-    width: 108px;
-    height: 56px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 20px;
-    /* or 100% */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    color: #FFFFFF;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 2;
-    align-self: stretch;
-    flex-grow: 0;
-
-}
-.top_creators_follow_button_container{
-    /* Frame 26080067 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 32px;
-
-    width: 109px;
-    height: 44px;
-
-    background: #5241B3;
-    border-radius: 50px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 3;
-    flex-grow: 0;
-
-
-}
-.top_creators_unfollow_button_container{
-    /* Frame 26080067 */
-
-    box-sizing: border-box;
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 32px;
-
-    width: 109px;
-    height: 44px;
-
-    border: 2px solid #5241B3;
-    border-radius: 50px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 3;
-    flex-grow: 0;
-
+.artistImage {
+  width: 231px;
+  height: 231px;
+  aspect-ratio: 1/1;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  object-fit: cover;
+  aspect-ratio: 1;
 }
 
-.recommended_for_you_container{
-    /* Recommended */
+.artistName {
+  color: #ffffff;
+  text-align: center;
+  position: relative;
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 0px;
-    gap: 26px;
-    position: absolute;
-    width: 374px;
-    height: 346px;
-    left: 1370px;
-    top: 605px;
-}
-
-.recommended_for_you_author_container{
-    /* OneRepublic */
-
-    width: 161px;
-    height: 56px;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 20px;
-    /* or 100% */
-    display: flex;
-    align-items: center;
-
-    color: #FFFFFF;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-
-}
-
-.recommended_for_you_follow_button_container{
-    /* Frame 26080067 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 12px 32px;
-
-    width: 109px;
-    height: 44px;
-
-    background: #5241B3;
-    border-radius: 50px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-}
-
-.history_container{
-    /* History */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 0px;
-    gap: 26px;
-
-    position: absolute;
-    width: 374px;
-    height: 346px;
-    left: 1370px;
-    top: 975px;
-}
-.history_track_image_container{
-    /* Rectangle 55 */
-
-    width: 56px;
-    height: 56px;
-
-    border-radius: 10px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-.history_track_information_container{
-    /* Frame 26080068 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 0px;
-    gap: 8px;
-
-    width: 161px;
-    height: 44px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
-}
-.history_track_author{
-    /* Derivakat */
-
-    width: 161px;
-    height: 16px;
-
-    font-style: normal;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 16px;
-    /* identical to box height, or 100% */
-    display: flex;
-    align-items: center;
-
-    color: #FFFFFF;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-}
-.history_track_title{
-    /* Take Aim */
-
-    width: 161px;
-    height: 20px;
-
-    font-style: normal;
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 20px;
-    /* identical to box height, or 100% */
-    display: flex;
-    align-items: center;
-
-    color: #FFFFFF;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-}
-.history_buttons_container{
-    /* Frame 26080084 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px;
-    gap: 24px;
-
-    width: 96px;
-    height: 36px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-}
-.history_like{
-    /* ic:sharp-favorite-border */
-
-    width: 36px;
-    height: 36px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-
-}
-.history_add_info{
-    width: 36px;
-    height: 36px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-}
-
-.following_img_style{
-    /* Ellipse 66 */
-
-    width: 210px;
-    height: 210px;
-
-    border-radius: 50%;
-    transform: matrix(-1, 0, 0, 1, 0, 0);
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }

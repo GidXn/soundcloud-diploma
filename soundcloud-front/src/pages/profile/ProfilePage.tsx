@@ -19,15 +19,16 @@ import {useNavigate} from "react-router-dom";
 //import {useSelector} from "react-redux";
 //import {RootState} from "../../store/store.ts";
 
-const tabs = ["All","Tracks", "Albums", "Playlists"];
+const tabs = ["Tracks", "Albums", "Playlists"];
 
 const ProfilePage: React.FC = () => {
-    const [activeTab, setActiveTab] = useState<string>("All");
+    const [activeTab, setActiveTab] = useState<string>("Tracks");
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const navigate = useNavigate();
     const [user, setUser] = useState<IUser | null>(null);
 
     const [userTracksCount, setUserTracksCount] = useState<number | null>(null);
+    const [userAlbumsCount, setUserAlbumsCount] = useState<number | null>(null);
 
     useEffect(() => {
         getCurrentUser()
@@ -48,6 +49,7 @@ const ProfilePage: React.FC = () => {
 
     const playTrack = usePlayerStore(state => state.playTrack);
     const pauseTrack = usePlayerStore((state) => state.pauseTrack);
+    const playAlbum = usePlayerStore(state => state.playAlbum);
 
 
     const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
@@ -193,6 +195,7 @@ const ProfilePage: React.FC = () => {
         albumService.getMyAlbums().then(setAlbums).catch(console.error);
         genreService.getGenres().then(setGenres).catch(console.error);
         trackService.getMyTracksCount().then(setUserTracksCount).catch(console.error);
+        albumService.getMyAlbumsCount().then(setUserAlbumsCount).catch(console.error);
     }, []);
 
     const handleUserUpdate = async (updateData: {
@@ -262,10 +265,16 @@ const ProfilePage: React.FC = () => {
         if (!track || !track.imageUrl) return "/default-cover.png";
         return `http://localhost:5122/${track.imageUrl}`;
     };
+    const getAlbumImageUrl = (album?: IAlbum | null) => {
+        if (!album || !album.coverUrl) return "/default-cover.png";
+        return `http://localhost:5122/${album.coverUrl}`;
+    };
     const getUserImageUrl = (user?: IUser | null) => {
-        if (!user || !user.avatar) return "/default-cover.png";
-        console.log(user)
-        return `http://localhost:5122/${user.avatar}`;
+        if (!user?.avatar) return "/default-cover.png";
+    
+        return user.avatar.startsWith("http")
+            ? user.avatar
+            : `http://localhost:5122/${user.avatar}`;
     };
     const getUserBannerUrl = (user?: IUser | null) => {
         if (!user || !user.banner) return "src/images/profile/banner.png";
@@ -614,17 +623,11 @@ const ProfilePage: React.FC = () => {
             console.error("Error toggling follow:", error);
         }
     };
-    const getUserAvatarUrl = (user: IUserFollow) => {
-        if (!user.avatarUrl) return "/default-cover.png"; // запасна картинка
-        return `http://localhost:5122${user.avatarUrl}`;
-    };
 
 
     //лайки
     // окремо зберігаємо саме лайкнуті треки
     const [likedTracks, setLikedTracks] = useState<ITrack[]>([]);
-
-    const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
 
     useEffect(() => {
         const fetchLikedTracks = async () => {
@@ -682,9 +685,44 @@ const ProfilePage: React.FC = () => {
         }
     };
 
+    const handleDeleteTrack = async (id: number) => {
+        if (!window.confirm("Delete this track? This action cannot be undone.")) return;
+        try {
+            await trackService.deleteTrack(id);
+            setTracks(prev => prev.filter(t => t.id !== id));
+            setUserTracksCount(prev => (prev !== null ? prev - 1 : prev));
+        } catch (err) {
+            console.error("Failed to delete track", err);
+            alert("Failed to delete track");
+        }
+    };
+
+    const handleDeleteAlbum = async (id: number) => {
+        if (!window.confirm("Delete this album? This action cannot be undone.")) return;
+        try {
+            await albumService.delete(id);
+            setAlbums(prev => prev.filter(a => a.id !== id));
+            setAlbumTracks(prev => {
+                const updated = { ...prev };
+                delete updated[id];
+                return updated;
+            });
+            setUserAlbumsCount(prev => (prev !== null ? prev - 1 : prev));
+        } catch (err) {
+            console.error("Failed to delete album", err);
+            alert("Failed to delete album");
+        }
+    };
+
+    const formatTimeSpan = (ts: string): string => {
+        const [h, m, s] = ts.split(":");
+        const seconds = s.split(".")[0];
+        const totalMinutes = Number(h) * 60 + Number(m);
+        return `${totalMinutes}:${seconds}`;
+    };
 
     return (
-        <div className="layout_container mb-[2900px] baloo2">
+        <div className="layout_container pb-[1900px] baloo2">
             <div className="banner_container">
                 <img className="banner_image_style" src={getUserBannerUrl(user)} alt="Banner"/>
             </div>
@@ -705,20 +743,20 @@ const ProfilePage: React.FC = () => {
             <div className="profile_page_following_tracks_info_container">
                 <div className="followers_container">
                     <div className="title">
-                        Followers
+                        Albums
                     </div>
                     <div className="number">
-                        <span>{followersCount}</span>
+                        <span>{userAlbumsCount}</span>
                     </div>
                 </div>
-                <div className="following_container">
+                {/* <div className="following_container">
                     <div className="title">
                         Following
                     </div>
                     <div className="number">
                         <span>{followingCount}</span>
                     </div>
-                </div>
+                </div> */}
                 <div className="tracks_container">
                     <div className="title">
                         Tracks
@@ -732,39 +770,6 @@ const ProfilePage: React.FC = () => {
             <div className="profile_page_right_sidebar">
                 <div className="profile_page_bio_container">
                     {user?.bio ? <span>{user.bio}</span> : <span>You don’t have bio :(</span>}
-                </div>
-
-                <div className="profile_page_following_users_container">
-                    <div className="container_title_container">
-                        <span className="header_txt_style">FOLLOWING</span>
-                    </div>
-
-                    {followingUsers.length === 0 ? (
-                        <div className="user_info_container">
-                            <span className="txt_style">You don`t have Followings</span>
-                        </div>
-                    ) : (
-                        <div className="user_info_container">
-                            {followingUsers.map(u => (
-                                <div key={u.id} className="user_container">
-                                    <div className="user_avatar_text_container">
-                                        <div className="user_avatar_container">
-                                            <img className="img_style" src={getUserAvatarUrl(u)} alt="avatar" />
-                                        </div>
-                                        <div className="user_text_container">{u.username}</div>
-                                    </div>
-                                        <button
-                                            className={u.isFollowing ? "unfollow_button_container cursor-pointer" : "follow_button_container cursor-pointer"}
-                                            onClick={() => toggleFollow(u.id)}
-                                        >
-                                            <span className="user_button_text_style">
-                                                {u.isFollowing ? "Unfollow" : "Follow"}
-                                            </span>
-                                        </button>
-                                </div>
-                            ))}
-                        </div>
-                    )}
                 </div>
 
                 <div className="profile_page_likes_users_container">
@@ -1050,95 +1055,48 @@ const ProfilePage: React.FC = () => {
                 {activeTab === "Tracks" && (
                     <>
                         {tracks.length ? (
-                                <div>
-                                {tracks.map((t) => (
-                                    <li key={t.id}>
-                                        {t.imageUrl && (
-                                            <div className="track_container">
-                                                <div className="profile_page_track_image_wrapper">
-                                                    <img
-                                                        src={getTrackImageUrl(t)}
-                                                        alt={t.title}
-                                                        className="profile_page_track_image"
-                                                    />
-                                                    <div className="profile_page_track_image_overlay cursor-pointer">
-                                                        <img src="src/images/icons/edit_pen.png" className="img_style"
-                                                             onClick={() => {
-                                                                 handleTrackClick(t)
-                                                             }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <div className="track_controls_container">
-                                                    <div className="play_info_track_container">
-                                                        <div className="play_pause_track_container">
-                                                            {currentTrack?.id === t.id && isPlaying ? (
-                                                                <img src="src/images/player/pause_icon.png"
-                                                                     alt={"playIcon"}
-                                                                     onClick={() => pauseTrack()}
-                                                                />
-                                                            ) : (
-                                                                <img src="src/images/player/play_icon.png"
-                                                                     alt={"playIcon"}
-                                                                     onClick={() => playTrack(t,tracks)}
-                                                                />
-                                                            )}
-
-                                                        </div>
-                                                        <div className="track_title_author_container">
-                                                            <div className="track_title_container">
-                                                                {t.title.length > 80 ? t.title.slice(0, 50) + "…" : t.title}
-                                                            </div>
-                                                        </div>
-                                                        <div className="track_duration_range_container">
-                                                            <div className="track_author_container">
-                                                                {t.author.length > 80 ? t.author.slice(0, 50) + "…" : t.author}
-                                                            </div>
-                                                        </div>
-                                                        <div className="track_genre_container">
-                                                            {t.genre}
-                                                        </div>
-                                                        <div className="track_more_controls_container">
-                                                            <div className="track_more_controls_style">
-                                                                <img
-                                                                    src={t.isLikedByCurrentUser ? "src/images/icons/like.png" : "src/images/icons/unlike.png"}
-                                                                    alt="like"
-                                                                    onClick={() => toggleLike(t)}
-                                                                    style={{cursor: "pointer"}}
-                                                                />
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img
-                                                                    src="/src/images/player/repeat_icon.png"
-                                                                    alt="repeatIcon"
-                                                                    id="hover_cursor_player"
-                                                                />
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/download.png"
-                                                                     alt="download"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/share.png" alt="share"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/content_copy.png"
-                                                                     alt="copy"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/add_playlist.png"
-                                                                     id="add_playlist_icon"
-                                                                     alt="addPlaylist"/>
-                                                            </div>
-                                                            <div className="track_more_controls_style">
-                                                                <img src="src/images/icons/reply.png" alt="reply"/>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                <div className="profile_tracks_list_container">
+                                {tracks.map((t, index) => (
+                                    <React.Fragment key={t.id}>
+                                        {index !== 0 && <div className="profile_track_divider"></div>}
+                                        <div className="profile_track_item">
+                                            <div className="profile_track_image_wrapper">
+                                                <img 
+                                                    src={getTrackImageUrl(t)} 
+                                                    alt={t.title}
+                                                    className="profile_track_cover"
+                                                    onClick={() => playTrack(t, tracks)}
+                                                    style={{ cursor: 'pointer' }}
+                                                />
+                                            </div>
+                                            <div className="profile_track_header">
+                                                <div className="profile_track_name">{t.title}</div>
+                                            </div>
+                                            <div className="profile_track_meta">
+                                                <div className="profile_track_details">
+                                                    <span className="profile_track_artist">{t.author}</span>
+                                                    <span className="profile_track_genre">{t.genre}</span>
                                                 </div>
                                             </div>
-                                        )}
-                                    </li>
+                                            <div className="profile_track_actions">
+                                                <img
+                                                    src={t.isLikedByCurrentUser ? "src/images/icons/like.png" : "src/images/icons/unlike.png"}
+                                                    alt="like"
+                                                    className="profile_like_icon"
+                                                    onClick={() => toggleLike(t)}
+                                                    style={{ cursor: "pointer" }}
+                                                />
+                                                <span className="profile_track_duration">{formatTimeSpan(t.duration)}</span>
+                                                <img
+                                                    src="src/images/icons/close_icon.png"
+                                                    alt="delete"
+                                                    className="profile_like_icon"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleDeleteTrack(t.id)}
+                                                />
+                                            </div>
+                                        </div>
+                                    </React.Fragment>
                                 ))}
                                 </div>
                         ) : (
@@ -1262,107 +1220,57 @@ const ProfilePage: React.FC = () => {
                 {activeTab === "Albums" && (
                     <>
                         {albums.length ? (
-                            <ul className="text-white baloo2">
-                                {albums.map((a) => (
-                                    <li key={a.id} className="profile_track_container">
-                                        <div className="">
-                                            <img
-                                                src={a.coverUrl ? `http://localhost:5122/${a.coverUrl}` : "/default-cover.png"}
-                                                alt={a.title}
-                                                className="profile_page_playlist_image"
-                                                onClick={() => navigate(`/play-album/${a.id}`)}
-                                            />
-
+                            <div className="profile_tracks_list_container">
+                                {[...albums].map((album, index) => (
+                                    <React.Fragment key={album.id}>
+                                        {index !== 0 && <div className="profile_track_divider"></div>}
+                                        <div
+                                            className="profile_track_item"
+                                            onClick={() => playAlbum(album, albumTracks[album.id] || [])}
+                                            style={{ cursor: "pointer" }}
+                                        >
+                                            <div className="profile_track_image_wrapper">
+                                                <img
+                                                    src={getAlbumImageUrl(album)}
+                                                    alt={album.title}
+                                                    className="profile_track_cover"
+                                                />
+                                            </div>
+                                            <div className="profile_track_header">
+                                                <div className="profile_track_name">
+                                                    {album.title.length > 60 ? album.title.slice(0, 57) + "…" : album.title}
+                                                </div>
+                                            </div>
+                                            <div className="profile_track_meta">
+                                                <div className="profile_track_details">
+                                                    <div className="profile_track_artist">
+                                                        {album.description && album.description.length > 80
+                                                            ? album.description.slice(0, 77) + "…"
+                                                            : (album.description || "No description")}
+                                                    </div>
+                                                    <div className="profile_track_genre">
+                                                        {(() => {
+                                                            const count = (albumTracks[album.id] || []).length;
+                                                            if (count === 0) return "No tracks";
+                                                            if (count === 1) return "1 track";
+                                                            return `${count} tracks`;
+                                                        })()}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="profile_track_actions" onClick={(e) => e.stopPropagation()}>
+                                                <img
+                                                    src="src/images/icons/close_icon.png"
+                                                    alt="delete"
+                                                    className="profile_like_icon"
+                                                    style={{ cursor: "pointer" }}
+                                                    onClick={() => handleDeleteAlbum(album.id)}
+                                                />
+                                            </div>
                                         </div>
-
-                                        {/* Треки конкретного альбому */}
-                                        <ul className="profile_page_track_information_container">
-                                            <div className="profile_page_track_play_button_container">
-                                                <div className="profile_page_play_button_background">
-                                                    {currentTrack &&
-                                                    albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === a.id &&  // <-- додано
-                                                    isPlaying ? (
-                                                        <img
-                                                            src="src/images/player/pause_icon.png"
-                                                            alt="pauseIcon"
-                                                            onClick={() => pauseTrack()}
-                                                        />
-                                                    ) : (
-                                                        <img
-                                                            src="src/images/player/play_icon.png"
-                                                            alt="playIcon"
-                                                            onClick={() => playTrack(albumTracks[a.id][0], albumTracks[a.id], a.id)}
-                                                        />
-                                                    )}
-                                                </div>
-                                                <div className="profile_page_track_title_style">
-                                                    {a.title}
-                                                </div>
-                                            </div>
-
-                                            <ul className="profile_page_tracks_in_playlist_container">
-                                                {(albumTracks[a.id] || []).map((t, index) => (
-                                                    <li key={t.id}>
-                                                        <div className="profile_page_tracks color">
-                                                            <img
-                                                                src={getTrackImageUrl(t)}
-                                                                alt={t.title}
-                                                                className="profile_page_tracks_image_style"
-                                                                onClick={() => playTrack(t, albumTracks[a.id])}
-                                                            />
-                                                            <div
-                                                                className={`profile_page_track_info_title_style txt_style 
-                                                                        ${currentTrack?.id === t.id && currentAlbumId === a.id
-                                                                    ? "profile_page_track_info_title_style txt_style_is_playing"
-                                                                    : ""}`}
-                                                            >
-                                                                <div>{index + 1}</div>
-                                                                <div>&#160;&#x2022;&#160;</div>
-                                                                <span>{t.author}</span>
-                                                                <div>&#160;&#x2022;&#160;</div>
-                                                                <span>{t.title}</span>
-                                                            </div>
-                                                            <img
-                                                                className="playlist_close_button_container cursor-pointer"
-                                                                src="src/images/icons/close_icon.png"
-                                                                onClick={() => handleRemoveTrackAlbum(a.id, t.id)}
-                                                            />
-                                                        </div>
-                                                    </li>
-                                                ))}
-                                            </ul>
-
-                                            <div className="profile_page_track_controls_buttons">
-                                                <div className="track_more_controls_style">
-                                                <img src="src/images/icons/unlike.png" alt="unlike"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img
-                                                        src="/src/images/player/repeat_icon.png"
-                                                        alt="repeatIcon"
-                                                        id="hover_cursor_player"
-                                                    />
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/download.png" alt="download"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/share.png" alt="share"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/content_copy.png" alt="copy"/>
-                                                </div>
-                                                <div className="track_more_controls_style">
-                                                    <img src="src/images/icons/information_white.png" alt="information_white"/>
-                                                </div>
-                                            </div>
-                                        </ul>
-
-                                    </li>
-
+                                    </React.Fragment>
                                 ))}
-                            </ul>
+                            </div>
                         ) : (
                             <p className="text-gray-400 py-4">No albums yet</p>
                         )}

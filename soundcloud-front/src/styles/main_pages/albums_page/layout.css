@@ -1,0 +1,201 @@
+/* Banner */
+.nrj_fm_banner{
+    display: flex;
+    height: 175px;
+    padding: 0px;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    left: 176px;
+    top: 185px;
+}
+
+/* Albums Page Layout */
+.albumsListContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 26px;
+    width: 1170px;
+    position: relative;
+    left: 76px;
+    top: 355px;
+    margin-top: 20px;
+    font-family: "Baloo2", sans-serif;
+}
+
+.sectionTitle {
+    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: #FFF;
+    margin: 0;
+}
+
+/* Albums List */
+.albumsList,
+.albumsList * {
+    box-sizing: border-box;
+}
+
+.albumsList {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+    justify-content: flex-start;
+    align-self: stretch;
+    flex-shrink: 0;
+    width: 1528px;
+    position: relative;
+    font-family: "Baloo2", sans-serif;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.divider {
+    flex-shrink: 0;
+    height: 3px;
+    position: relative;
+    overflow: visible;
+    background: linear-gradient(90deg, rgba(158, 127, 207, 0.3) 0%, rgba(158, 127, 207, 0) 100%);
+    width: 100%;
+}
+
+.albumItemRow,
+.albumItemRow * {
+    box-sizing: border-box;
+}
+
+.albumItemRow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    align-self: stretch;
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+}
+
+.albumImageWrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    width: 240px;
+    position: relative;
+}
+
+.albumCover {
+    border-radius: 9px;
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    object-fit: cover;
+}
+
+.albumHeader {
+    padding: 5px 0px 5px 0px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 180px;
+    height: 50px;
+    position: relative;
+}
+
+.albumItemTitle {
+    text-align: left;
+    position: relative;
+    color: #FFF;
+    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+.albumMeta {
+    display: flex;
+    flex-direction: row;
+    gap: 144px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    position: relative;
+    flex: 1;
+}
+
+.albumDetails {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    width: auto;
+    height: 24px;
+    position: relative;
+}
+
+.albumDescription {
+    text-align: left;
+    position: relative;
+    color: #FFF;
+    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-left: 24px;
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.albumActions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    gap: 8px;
+    position: relative;
+}
+
+.albumTrackIcon {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+    border-radius: 9px;
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    position: relative;
+    object-fit: cover;
+}
+
+.albumTracksMore {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(158, 127, 207, 0.4);
+    border-radius: 4px;
+    color: #FFF;
+    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+}

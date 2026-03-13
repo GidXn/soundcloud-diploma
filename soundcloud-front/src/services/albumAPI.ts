@@ -22,6 +22,9 @@ export const albumService = {
         const res = await api.get(`/Album/${id}`);
         return res.data;
     },
+    delete: async (id: number): Promise<void> => {
+        await api.delete(`/Album/${id}`);
+    },
     create: async (dto: CreateAlbumDto): Promise<IAlbum> => {
         const formData = new FormData();
         formData.append("Title", dto.title);
@@ -36,6 +39,16 @@ export const albumService = {
         });
 
         return res.data;
+    },
+
+    getMyAlbumsCount: async (): Promise<number> => {
+        try {
+            const albums: IAlbum[] = await albumService.getMyAlbums();
+            return albums.length;
+        } catch (err) {
+            console.error("Failed to fetch user's albums count:", err);
+            return 0;
+        }
     },
 
     removeTrack: async (albumId: number, trackId: number): Promise<void> => {

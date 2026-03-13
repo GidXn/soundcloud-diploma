@@ -27,8 +27,8 @@ export default function Player({ footerSelector }: PlayerProps) {
     const[loop, setLoop] = useState<boolean>(false);
 
     const max = 1;
-    const minBottom = 50;   // коли футер не видно
-    const maxBottom = 100;  // коли футер повністю видно
+    const minBottom = 16;   // фіксована відстань від низу
+    const maxBottom = 16;
 
     useEffect(() => {
         if (modalOpen) {
@@ -141,40 +141,96 @@ export default function Player({ footerSelector }: PlayerProps) {
     return (
         <>
 
-        <div
-            className="player_player_container baloo2"
-            style={{
-                position: "fixed",
-                transform: "translateX(-50%)",
-                left: "50%",
-                bottom: `${bottomOffset}px`,
-                zIndex: 100,
-                transition: "bottom 0.1 linear",
-            }}
-        >
+        <div className="player_player_container baloo2">
+            {/* основний рядок плеєра */}
+            <div className="player_main_row">
+                {/* внутрішній рядок: лівий блок, центр, гучність */}
+                <div className="player_inner_row">
+                    {/* лівий блок: кнопки + інфо про трек */}
+                    <div className="player_left_block">
+                        {/* навігація: попередній / плей / наступний */}
+                        <div className="player_nav_controls">
+                            <div className="track_control_track_container">
+                                <img
+                                    src="/src/images/player/skip_previous_icon.png"
+                                    alt={"skipPreviousIcon"}
+                                    id="hover_cursor_player"
+                                    onClick={() => previousTrack()}
+                                />
+                                <button onClick={togglePlay}>
+                                    {isPlaying ? (
+                                        <img
+                                            src="/src/images/player/pause_icon.png"
+                                            id="hover_cursor_player"
+                                            alt={"PauseIcon"}
+                                        />
+                                    ) : (
+                                        <img
+                                            src="/src/images/player/play_icon.png"
+                                            id="hover_cursor_player"
+                                            alt={"PlayIcon"}
+                                        />
+                                    )}
+                                </button>
+                                <img
+                                    src="/src/images/player/skip_next_icon.png"
+                                    id="hover_cursor_player"
+                                    alt={"skipNextIcon"}
+                                    onClick={() => nextTrack()}
+                                />
+                            </div>
+                        </div>
+
+                        {/* блок інформації про трек: обкладинка + назва + автор */}
+                        <div className="player_track_info_block">
             <div className="player_track_container">
                 <div className="player_track_image">
-                    <img className="player_track_image" src={getTrackImageUrl(track)} alt={track.title}/>
+                                    <img
+                                        className="player_track_image"
+                                        src={getTrackImageUrl(track)}
+                                        alt={track.title}
+                                    />
                 </div>
                 <div className="player_track_title_container ">
-                    <div className={`player_track_title ${track.title.length > 10 ? "scrolling" : ""}`}>
+                                    <div
+                                        className={`player_track_title ${
+                                            track.title.length > 10 ? "scrolling" : ""
+                                        }`}
+                                    >
                         {track.title}
                     </div>
-                    <div className={`player_track_author ${track.author.length > 25 ? "scrolling" : ""}`}>
+                                    <div
+                                        className={`player_track_author ${
+                                            track.author.length > 25 ? "scrolling" : ""
+                                        }`}
+                                    >
                         {track.author}
                     </div>
                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* центральний блок: прогрес + час + додаткові дії */}
+                    <div className="player_center_block">
+                        {/* прогрес треку з часом */}
+                        <div className="player_progress_block">
+                            <div className="track_time_skip_container">
+                                <TrackProgress audioRef={audioRef} track={track} />
+                            </div>
+                        </div>
+
+                        {/* дії: лайк, повтор, плейлист */}
+                        <div className="player_actions_block">
                 <div className="track_control_container">
                     <div className="track_control_like_container">
                         <img
-
-                            src={track.isLikedByCurrentUser ? like_icon :unlike_icon}
-
+                                        src={track.isLikedByCurrentUser ? like_icon : unlike_icon}
                             alt="like"
                             onClick={() => {
                                 toggleLike(track);
                             }}
-                            style={{cursor: "pointer"}}
+                                        style={{ cursor: "pointer" }}
                         />
                     </div>
 
@@ -184,45 +240,34 @@ export default function Player({ footerSelector }: PlayerProps) {
                                 src="/src/images/player/repeat_icon.png"
                                 alt="repeatIcon"
                                 id="hover_cursor_player"
-                                onClick={() => setLoop(true)}   // 🔹 увімкнути
+                                            onClick={() => setLoop(true)} // 🔹 увімкнути
                             />
                         ) : (
                             <img
                                 src="/src/images/player/repeat_cyan.png"
                                 alt="repeatIcon"
                                 id="hover_cursor_player"
-                                onClick={() => setLoop(false)}  // 🔹 вимкнути
+                                            onClick={() => setLoop(false)} // 🔹 вимкнути
                             />
                         )}
                     </div>
-                    <div className="track_control_track_container">
-                        <img src="/src/images/player/skip_previous_icon.png"
-                             alt={"skipPreviousIcon"}
+                                <div className="track_control_queue_container">
+                                    <img
+                                        src="/src/images/player/queue_icon.png"
                              id="hover_cursor_player"
-                             onClick={() => (previousTrack())}
-                        />
-                        <button onClick={togglePlay}>{isPlaying ?
-                            <img src="/src/images/player/pause_icon.png" id="hover_cursor_player" alt={"PauseIcon"}/>
-                            :
-                            <img src="/src/images/player/play_icon.png" id="hover_cursor_player" alt={"PlayIcon"}/>}
-                        </button>
-                        <img src="/src/images/player/skip_next_icon.png" id="hover_cursor_player" alt={"skipNextIcon"}
-                             onClick={() => (nextTrack())}
+                                        alt={"queueIcon"}
+                                        onClick={() => setModalOpen(true)}
                         />
                     </div>
-                    <div className="track_control_queue_container">
-                        <img src="/src/images/player/queue_icon.png" id="hover_cursor_player" alt={"queueIcon"}
-                            onClick={()=>setModalOpen(true)}
-                        />
+                    </div>
+                </div>
+                </div>
 
-                    </div>
-                </div>
-                <div className="track_time_skip_container">
-                    <TrackProgress audioRef={audioRef} track={track}/>
-                </div>
+                    {/* блок гучності – іконка + повзунок */}
+                    <div className="player_volume_block">
                 <div className="track_loudness_container">
                     <div className="track_loudness_image_container">
-                        <img src="/src/images/player/volume_up_icon.png" alt="Volume"/>
+                                <img src="/src/images/player/volume_up_icon.png" alt="Volume" />
                     </div>
                     <div>
                         <input
@@ -233,11 +278,11 @@ export default function Player({ footerSelector }: PlayerProps) {
                             step={0.001}
                             value={volume}
                             onChange={handleVolumeChange}
-                            style={{"--val": `${(volume / max) * 100}%`} as React.CSSProperties}
+                                    style={{ "--val": `${(volume / max) * 100}%` } as React.CSSProperties}
                         />
                     </div>
-
-
+                        </div>
+                    </div>
                 </div>
             </div>
             {!loop? (

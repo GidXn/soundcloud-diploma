@@ -9,7 +9,8 @@ export const adminApi = {
     createUser: (data: any) => api.post(`${API_URL}/User/register`, data),
     updateUser: (id: number, data: any) => api.put(`${API_URL}/Admin/users/${id}`, data),
     deleteUser: (id: number) => api.delete(`${API_URL}/Admin/users/${id}`),
-    changeUserRole: (id: number, role: string) => api.put(`${API_URL}/Admin/users/${id}/role`, { role }),
+    // role: 0 = User, 2 = Admin
+    changeUserRole: (id: number, role: number) => api.put(`${API_URL}/Admin/users/${id}/role`, { role }),
     blockUser: (id: number) => api.patch(`${API_URL}/Admin/users/${id}/block`),
     unblockUser: (id: number) => api.patch(`${API_URL}/Admin/users/${id}/unblock`),
     // ================= TRACK =================

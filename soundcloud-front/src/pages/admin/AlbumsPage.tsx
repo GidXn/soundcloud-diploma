@@ -7,7 +7,10 @@ const AlbumsPage = () => {
     const [albums, setAlbums] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [form] = Form.useForm();
+    const [editForm] = Form.useForm();
+    const [editingAlbum, setEditingAlbum] = useState<any | null>(null);
 
     const loadAlbums = async () => {
         setLoading(true);
@@ -46,6 +49,38 @@ const AlbumsPage = () => {
         }
     };
 
+    // ===== Edit =====
+    const handleEditOpen = (album: any) => {
+        setEditingAlbum(album);
+        editForm.setFieldsValue({
+            title: album.title,
+            description: album.description,
+        });
+        setIsEditModalVisible(true);
+    };
+
+    const handleEditSave = async () => {
+        if (!editingAlbum) return;
+        try {
+            const values = await editForm.validateFields();
+            const payload = {
+                title: values.title,
+                description: values.description || "",
+                ownerId: editingAlbum.ownerId ?? editingAlbum.ownerId ?? editingAlbum.owner?.id ?? 0,
+                isPublic: editingAlbum.isPublic ?? true,
+            };
+
+            await adminApi.updateAlbum(editingAlbum.id, payload);
+            message.success("Альбом оновлено");
+            setIsEditModalVisible(false);
+            setEditingAlbum(null);
+            editForm.resetFields();
+            loadAlbums();
+        } catch {
+            message.error("Помилка при оновленні альбому");
+        }
+    };
+
     // ===== Delete =====
     const handleDelete = async (id: number) => {
         await adminApi.deleteAlbum(id);
@@ -73,6 +108,7 @@ const AlbumsPage = () => {
             title: "Actions",
             render: (_: any, record: any) => (
                 <Space>
+                    <Button onClick={() => handleEditOpen(record)}>Edit</Button>
                     <Button danger onClick={() => handleDelete(record.id)}>Delete</Button>
                     <Button
                         onClick={() => {
@@ -108,6 +144,26 @@ const AlbumsPage = () => {
             >
                 <Form form={form} layout="vertical">
                     <Form.Item name="title" label="Title" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="description" label="Description">
+                        <Input.TextArea />
+                    </Form.Item>
+                </Form>
+            </Modal>
+
+            <Modal
+                title="Edit Album"
+                visible={isEditModalVisible}
+                onOk={handleEditSave}
+                onCancel={() => {
+                    setIsEditModalVisible(false);
+                    setEditingAlbum(null);
+                    editForm.resetFields();
+                }}
+            >
+                <Form form={editForm} layout="vertical">
+                    <Form.Item name="title" label="Title" rules={[{ required: true, message: "Enter title" }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item name="description" label="Description">

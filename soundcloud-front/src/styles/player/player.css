@@ -1,20 +1,25 @@
 .player_player_container{
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    align-items: start;
-    padding: 12px 32px;
-    gap: 50px;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 24px;
+    gap: 24px;
 
-    position: absolute;
+    position: fixed;
+    left: 6.3%;
+    /* transform: translateX(-50%); */
+    bottom: 1%;
 
-    width: 1568px;
-    height: 79px;
-    left: 176px;
-    bottom: 50px;
+    width: 95%;
+    max-width: 1770px;
+    height: 72px;
 
-    background: #344289;
-    border-radius: 100px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    z-index: 100;
 }
 .player_track_container{
     display: flex;
@@ -42,6 +47,106 @@
     order: 0;
     flex-grow: 0;
 }
+
+/* ================================
+   New layout wrappers (player_1…5)
+   mapped to your Figma frames
+   ================================ */
+
+/* frame-1304 → already styled by .player_player_container */
+
+/* frame-303 */
+.player_main_row {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+}
+
+/* container for left / center / right blocks */
+.player_inner_row {
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+}
+
+/* frame-299 – left block (controls + track info) */
+.player_left_block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    width: 467px;
+    position: relative;
+}
+
+/* frame-284 – prev / play / next */
+.player_nav_controls {
+    display: flex;
+    flex-direction: row;
+    gap: 18px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* frame-298 – cover + title/artist */
+.player_track_info_block {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* frame-302 – middle block (progress + actions) */
+.player_center_block {
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    position: relative;
+}
+
+/* group-8 + time labels – we reuse existing .track_time_skip_container */
+.player_progress_block {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* frame-292 / frame-291 – like / repeat / playlist */
+.player_actions_block {
+    display: flex;
+    flex-direction: row;
+    gap: 23px;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* frame-301 – right block (volume) */
+.player_volume_block {
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    position: relative;
+}
 .player_track_title_container{
     display: flex;
     flex-direction: column;
@@ -59,12 +164,13 @@
     /* Take the Lead */
 
     width: 150px;
-    height: 19px;
+    height: 20px;
 
+    font-family: "Space Grotesk";
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
-    font-size: 18.9794px;
-    line-height: 19px;
+    line-height: normal;
     /* identical to box height, or 100% */
     align-items: center;
     color: #FFFFFF;
@@ -80,14 +186,15 @@
 .player_track_author{
 
     width: 150px;
-    height: 17px;
+    height: 18px;
 
-    font-style: normal;
-    font-weight: 600;
+    font-family: "Space Grotesk";
     font-size: 14px;
-    line-height: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
     /* identical to box height, or 100% */
-    align-items: center;
+    align-items: stretch;
 
     color: rgba(255, 255, 255, 0.6);
 
@@ -184,9 +291,9 @@
     align-items: center;
     justify-content: center;
     padding: 0px;
-    gap: 12px;
+    gap: 0px;
 
-    width: 748px;
+    width: 606px;
     height: 22px;
     margin-left:20px;
     flex: none;
@@ -196,7 +303,7 @@
 }
 .track_duration_input {
     -webkit-appearance: none; /* відключає стандартний стиль */
-    width: 600px;
+    width: 606px;
     padding: 0 12px;
     height: 8px; /* висота треку */
     background: transparent; /* фон задаємо через псевдоелемент */
@@ -208,8 +315,8 @@
     border-radius: 4px;
     background: linear-gradient(
             to right,
-            #00e1ff 1%,
-            #00e1ff var(--val, 0%),
+            #6D28D9 1%,
+            #1D4ED8 var(--val, 0%),
             #ffffff var(--val, 0%),
             #ffffff 100%
     );
@@ -222,7 +329,7 @@
     height: 11px; /* розмір кружечка */
     width: 11px;
     border-radius: 50%; /* щоб був круглий */
-    background: #00e1ff;
+    background: #1D4ED8;
     border: none;
 
     cursor: pointer;
@@ -237,8 +344,8 @@
     flex-direction: row;
     align-items: center;
     padding: 0px;
-    margin-left:15px;
-    width: 168.74px;
+    margin-left: 0px;
+    width: 160px;
     height: 33.74px;
 
     flex: none;
@@ -267,17 +374,19 @@
     width: 44px;
     height: 22px;
 
+    font-family: Inter;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 700;
-    font-size: 21.0882px;
-    line-height: 21px;
+    font-weight: 400;
+    line-height: normal;
     /* or 100% */
     display: flex;
     align-items: center;
 
     color: #FFFFFF;
 
-
+    margin-right: 0px;
+    margin-left: 30px;
     flex: none;
     order: 0;
     flex-grow: 0;
@@ -289,10 +398,11 @@
     width: 40px;
     height: 22px;
 
+    font-family: Inter;
+    font-size: 14px;
     font-style: normal;
-    font-weight: 700;
-    font-size: 21.0882px;
-    line-height: 21px;
+    font-weight: 400;
+    line-height: normal;
     /* or 100% */
     display: flex;
     align-items: center;
@@ -308,7 +418,7 @@
 }
 .volume_input {
     -webkit-appearance: none; /* відключає стандартний стиль */
-    width: 123px;
+    width: 160px;
     padding: 0 12px;
     height: 8px; /* висота треку */
     background: transparent; /* фон задаємо через псевдоелемент */
@@ -320,8 +430,8 @@
     border-radius: 4px;
     background: linear-gradient(
             to right,
-            #00e1ff 1%,
-            #00e1ff var(--val, 0%),
+            #6D28D9 1%,
+            #1D4ED8 var(--val, 0%),
             #ffffff var(--val, 0%),
             #ffffff 100%
     );
@@ -334,7 +444,7 @@
     height: 11px; /* розмір кружечка */
     width: 11px;
     border-radius: 50%; /* щоб був круглий */
-    background: #00e1ff;
+    background: #1D4ED8;
     border: none;
 
     cursor: pointer;

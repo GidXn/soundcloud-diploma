@@ -31,44 +31,44 @@ const Sidebar: React.FC = () => {
             id: "music",
             label: "Музика",
             icon: "/inside/mdi-light-music.svg",
-            path: "/feed",
+            path: "/music",
         },
-        {
-            id: "genres",
-            label: "Жанри",
-            icon: "/inside/stash-square-light.svg",
-            path: "/genres",
-        },
+        // {
+        //     id: "genres",
+        //     label: "Жанри",
+        //     icon: "/inside/stash-square-light.svg",
+        //     path: "/genres",
+        // },
         {
             id: "albums",
             label: "Альбоми",
             icon: "/inside/ion-albums-outline.svg",
             path: "/albums",
         },
-        {
-            id: "artists",
-            label: "Артисти",
-            icon: "/inside/weui-contacts-outlined.svg",
-            path: "/artists",
-        },
-        {
-            id: "charts",
-            label: "Чарти",
-            icon: "/inside/f-7-menu.svg",
-            path: "/charts",
-        },
-        {
-            id: "top100",
-            label: "Топ 100 місяця",
-            icon: "/inside/uit-favorite.svg",
-            path: "/top-100",
-        },
-        {
-            id: "radio",
-            label: "Радіо",
-            icon: "/inside/material-symbols-light-radio-outline.svg",
-            path: "/radio",
-        },
+        // {
+        //     id: "artists",
+        //     label: "Артисти",
+        //     icon: "/inside/weui-contacts-outlined.svg",
+        //     path: "/artists",
+        // },
+        // {
+        //     id: "charts",
+        //     label: "Чарти",
+        //     icon: "/inside/f-7-menu.svg",
+        //     path: "/charts",
+        // },
+        // {
+        //     id: "top100",
+        //     label: "Топ 100 місяця",
+        //     icon: "/inside/uit-favorite.svg",
+        //     path: "/top-100",
+        // },
+        // {
+        //     id: "radio",
+        //     label: "Радіо",
+        //     icon: "/inside/material-symbols-light-radio-outline.svg",
+        //     path: "/radio",
+        // },
     ];
 
     const isActive = (itemPath: string): boolean => {

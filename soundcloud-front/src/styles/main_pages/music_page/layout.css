@@ -1,0 +1,186 @@
+
+/* Banner */
+.music_hit_fm_banner{
+    display: flex;
+    height: 175px;
+    padding: 0px;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    left: 176px;
+    top: 185px;
+}
+
+/* Music Section */
+.musicContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0px;
+    gap: 26px;
+    position: absolute;
+    width: 1170px;
+    height: 338px;
+    left: 176px;
+    top: 430px;
+    font-family: "Baloo2", sans-serif;
+}
+
+.musicList,
+.musicList * {
+  box-sizing: border-box;
+}
+.musicList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  width: 1528px;
+  position: relative;
+  font-family: "Baloo2", sans-serif;
+}
+
+.divider {
+  flex-shrink: 0;
+  height: 3px;
+  position: relative;
+  overflow: visible;
+}
+
+.trackItem,
+.trackItem * {
+  box-sizing: border-box;
+}
+.trackItem {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+}
+
+.trackImageWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  width: 144px;
+  position: relative;
+}
+
+.trackCover {
+  border-radius: 9px;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  position: relative;
+  object-fit: cover;
+}
+
+.trackHeader {
+  padding: 5px 0px 5px 0px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 500px;
+  height: 50px;
+  position: relative;
+}
+
+.trackName {
+  text-align: left;
+  position: relative;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.trackMeta {
+  display: flex;
+  flex-direction: row;
+  gap: 144px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.trackDetails {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 413px;
+  height: 24px;
+  position: relative;
+}
+
+.trackArtistNovelt {
+  text-align: left;
+  position: relative;
+  width: 330px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.trackGenre {
+  text-align: left;
+  position: relative;
+  width: 150px;
+  flex-shrink: 0;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.trackActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  width: 90px;
+  position: relative;
+}
+
+.likeIcon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+
+.trackDuration {
+  text-align: left;
+  position: relative;
+  color: #FFF;
+  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}

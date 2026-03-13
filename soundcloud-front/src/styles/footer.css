@@ -1,41 +1,88 @@
+/* Allure footer styling (Figma-like) */
 
-.footer_text_first{
-    position: absolute;
-    width: 639px;
-    height: 24px;
-    left: 176px;
-    top: 232px;
-
-    font-family: 'Space Grotesk', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 24px;
-    /* identical to box height, or 100% */
+.allure-footer {
+    background-color: #170024; /* deep purple background */
+    color: #ffffff;
     display: flex;
-    align-items: center;
-
-    color: #101010;
-}
-.footer_text_second{
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    padding: 0px;
-    gap: 0px;
-
-    position: absolute;
-    width: 240px;
-    height: 24px;
-    left: 1503px;
-    top: 232px;
-
-    font-family: 'Space Grotesk', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 24px;
-    color: #101010;
+    align-items: flex-start;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
+.allure-footer-inner {
+    width: 100%;
+    max-width: 1600px;
+    padding: 32px 176px 40px;
+    box-sizing: border-box;
+    font-family: 'Space Grotesk', sans-serif;
+}
 
+.allure-footer-copy {
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+    color: rgba(255, 255, 255, 0.72);
+    margin-bottom: 24px;
+}
+
+.allure-footer-copy p {
+    margin: 0;
+}
+
+.allure-footer-divider {
+    width: 100%;
+    height: 1px;
+    background-color: #3b1048; /* subtle lighter purple line */
+    margin-bottom: 24px;
+}
+
+.allure-footer-links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 64px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.allure-footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 140px;
+}
+
+.allure-footer-column a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.allure-footer-column a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive tweaks */
+@media (max-width: 1024px) {
+    .allure-footer-inner {
+        padding: 24px 32px 32px;
+    }
+
+    .allure-footer-links-row {
+        gap: 32px;
+    }
+}
+
+@media (max-width: 640px) {
+    .allure-footer-inner {
+        padding: 20px 16px 24px;
+    }
+
+    .allure-footer-links-row {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    .allure-footer-column {
+        min-width: 0;
+    }
+}
