@@ -41,6 +41,7 @@ import Top100Page from "./pages/main_pages/Top100Page";
 import RadioPage from "./pages/main_pages/RadioPage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
 
 
 export default function App() {
@@ -120,6 +121,8 @@ export default function App() {
                     <Route path="playlists" element={<PlaylistsPage />} />
                     <Route path="admin" element={<AdminPage />} />
                 </Route>
+
+                <Route path="*" element={<NotFoundPage />} />
             </Routes>
         </Router>
     );

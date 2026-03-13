@@ -1,0 +1,139 @@
+.not-found-page,
+.not-found-page * {
+  box-sizing: border-box;
+}
+
+.not-found-page {
+  background: #000000;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+.not-found-bg {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  filter: blur(55px);
+  object-fit: cover;
+  z-index: 0;
+}
+
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  width: 1150px;
+  position: relative;
+  z-index: 10;
+}
+
+.not-found-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.not-found-title {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Princess Sofia", sans-serif;
+  font-size: 400px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+  line-height: 1;
+}
+
+.not-found-message {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.not-found-subtitle {
+  color: #ffffff;
+  text-align: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 36px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+}
+
+.not-found-desc {
+  color: #bebebe;
+  text-align: center;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  position: relative;
+  align-self: stretch;
+}
+
+.not-found-reboot-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 24px 12px 20px;
+  gap: 8px;
+
+  /* Matches the login page buttons: */
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  color: #FFFFFF;
+  flex-shrink: 0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.not-found-reboot-wrap:hover {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.not-found-reboot-content {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.not-found-reboot-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  position: relative;
+  overflow: visible;
+  aspect-ratio: 1;
+}
+
+.not-found-reboot-text {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  position: relative;
+}
