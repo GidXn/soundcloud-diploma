@@ -56,7 +56,7 @@ const AlbumsCollectionPage: React.FC = () => {
     };
 
     return (
-        <main className="layout_container mb-[2050px]">
+        <main className="layout_container mb-[900px]">
             <img className="nrj_fm_banner" src="\public\inside\homep_banner3.png" />
             {/* Albums List */}
             <div className="albumsListContainer">
