@@ -220,7 +220,7 @@ const HomePage: React.FC = () => {
                         <div className="artistImageContainer">
                         <img className="artistImage" src="public\artists\Skryabin.jpg" />
                         </div>
-                        <div className="artistName">Skryabin</div>
+                        <div className="artistName">Скрябін</div>
                     </div>
                     <div className="artistCard">
                         <div className="artistImageContainer">
