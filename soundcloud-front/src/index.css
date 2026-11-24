@@ -35,9 +35,13 @@
     --breakpoint-full-xl: 1920px;
 }
 
+html {
+    background-color: #101010;
+}
+/* body and #root stay transparent: the blurred page background
+   (.main_content_wrapper::before, z-index -1) must not be covered */
 html, body, #root {
     margin: 0;
-    background-color: #101010;
     font-family: 'Space Grotesk', 'Roboto', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 .baloo2{

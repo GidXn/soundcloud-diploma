@@ -4,10 +4,9 @@
 .catalog_page {
     --catalog-accent: #9E7FCF;
     --catalog-tile-bg: rgba(255, 255, 255, 0.06);
-    box-sizing: border-box;
-    width: 100%;
-    max-width: calc(1532px + 176px + 64px);
-    padding: 150px 64px 40px 176px;
+    /* horizontal offsets: shared page grid (General.css); 64px below the header as in the design */
+    padding-top: 64px;
+    padding-bottom: 40px;
     font-family: "Space Grotesk", "Roboto", system-ui, sans-serif;
     color: #FFF;
 }
@@ -28,10 +27,11 @@
 }
 
 .catalog_title {
-    margin: 0 0 22px;
+    /* Figma: Space Grotesk Regular 36, text box 46px, 32px to the content below */
+    margin: 0 0 32px;
     font-size: 36px;
     font-weight: 400;
-    line-height: 1.2;
+    line-height: 46px;
     color: #FFF;
 }
 
@@ -162,12 +162,13 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.45);
+    /* Figma: Frame 330, #000 at 65% */
+    background: rgba(0, 0, 0, 0.65);
     transition: background 0.2s ease;
 }
 
 .genre_tile:hover { transform: translateY(-2px); }
-.genre_tile:hover::after { background: rgba(0, 0, 0, 0.25); }
+.genre_tile:hover::after { background: rgba(0, 0, 0, 0.45); }
 .genre_tile.empty { cursor: default; }
 .genre_tile.empty:hover { transform: none; }
 
@@ -183,8 +184,8 @@
 .genre_tile_name {
     position: absolute;
     z-index: 1;
-    top: 30px;
-    left: 34px;
+    top: 28px;
+    left: 35px;
     font-size: 24px;
     font-weight: 400;
     line-height: 1.2;
@@ -193,9 +194,8 @@
 .genre_tile_play {
     position: absolute;
     z-index: 1;
-    left: 34px;
-    top: 50%;
-    transform: translateY(20%);
+    left: 35px;
+    top: 55%;   /* 133 of 242 in the design */
 }
 
 /* ---------- Artists ---------- */
@@ -405,6 +405,14 @@
     border-radius: 10px;
     overflow: hidden;
     text-align: center;
+}
+
+.radio_logo_img {
+    display: block;
+    width: 74.8%;            /* 113 of 151 */
+    aspect-ratio: 113 / 116;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .radio_logo_mark {

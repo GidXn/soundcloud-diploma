@@ -1,128 +1,45 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useTrackLikes } from "../../components/catalog/useTrackLikes";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
 import { ITrack } from "../../types/track";
 import { trackService } from "../../services/trackApi.ts";
-import { usePlayerStore } from "../../store/player_store.tsx";
-import "../../styles/main_pages/music_page/layout.css"
+import Pagination from "../../components/catalog/Pagination";
+import { DetailBanner, TrackTable } from "../../components/detail/DetailParts";
+import "../../styles/main_pages/catalog/layout.css";
+import "../../styles/main_pages/music_page/layout.css";
 
+const PAGE_SIZE = 36; // rows per page
+
+/* Music, Figma «Music» (2270:6938): title, XIT FM banner, track list, pagination. */
 const MusicPage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
-    const { liked, toggleLike } = useTrackLikes(tracks);
-    // shuffle once per load, not on every re-render (otherwise the list jumps during playback)
-    const shuffled = useMemo(() => [...tracks].sort(() => Math.random() - 0.5).slice(0, 30), [tracks]);
-
-    const playTrack = usePlayerStore(state => state.playTrack);
-
-    const navigate = useNavigate();
-
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
 
     useEffect(() => {
         trackService.getAll()
-            .then((data) => setTracks(data))
-            .catch((err) => console.error(err));
-
+            .then((data) => setTracks(data.filter((t) => !t.isHidden)))
+            .catch((err) => console.error("Failed to load tracks", err))
+            .finally(() => setLoading(false));
     }, []);
-    const getTrackImageUrl = (track?: ITrack | null) => {
-        if (!track || !track.imageUrl) return "/default-cover.png"; // fallback image
-        return `http://localhost:5122${track.imageUrl}`;
-    };
 
-
-
-
-    //for likes
-    // const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
-    // useEffect(() => {
-    //     trackService.getAll()
-    //         .then((data) => {
-    //             setTracks(data);
-    //             const likedIds = data.filter(t => t.isLikedByCurrentUser).map(t => t.id);
-    //             setLikedTracksIds(likedIds);
-    //         })
-    //         .catch((err) => console.error(err));
-    // }, []);
-
-    // const toggleLike = async (track: ITrack) => {
-    //     try {
-    //         if (likedTracksIds.includes(track.id)) {
-    //             // unlike
-    //             await trackService.unlike(track.id);
-    //             setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-    //             track.isLikedByCurrentUser = false; // update locally
-    //             addtoHistory(track);
-    //             trackService.getAll()
-    //         } else {
-    //             // like
-    //             await trackService.like(track.id);
-    //             setLikedTracksIds(prev => [...prev, track.id]);
-    //             track.isLikedByCurrentUser = true; // update locally
-    //             addtoHistory(track);
-    //             trackService.getAll()
-    //         }
-    //     } catch (err) {
-    //         console.error("Error liking track:", err);
-    //     }
-    // };
-
-    function formatTimeSpan(ts: string): string {
-        const [h, m, s] = ts.split(":");
-        const seconds = s.split(".")[0];
-
-        const totalMinutes = Number(h) * 60 + Number(m);
-        return `${totalMinutes}:${seconds}`;
-    }
-
+    // Shuffled once per visit (the page was a random selection before), stable while paging
+    const shuffled = useMemo(() => [...tracks].sort(() => Math.random() - 0.5), [tracks]);
+    const totalPages = Math.max(1, Math.ceil(shuffled.length / PAGE_SIZE));
+    const visible = shuffled.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
     return (
-        <main className="layout_container mb-[2050px]">
-            <img className="music_hit_fm_banner" src="\public\inside\homep_banner2.png" />
-            {/* Music List */}
-            <div className="musicContainer">
-                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
-                    Music
-                </div>
-                <div className="musicList">
-
-                    {shuffled.map((track, index) => (
-                    <React.Fragment key={track.id}>
-                        {index !== 0 &&
-                    <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.5 0.5H1526.5" stroke="#64707C" strokeLinecap="round"/>
-                    </svg>}
-
-                    <div className="trackItem" onClick={() => playTrack(track, tracks)}>
-                        <div className="trackImageWrapper">
-                            <img className="trackCover" src={getTrackImageUrl(track)} alt={""}/>
-                            <div className="trackHeader">
-                                <div className="trackName" onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}>{track.title}</div>
-                            </div>
-                        </div>
-                        <div className="trackMeta">
-                            <div className="trackDetails">
-                                <div className="trackArtistNovelt">{track.author}</div>
-                                <div className="trackGenre">{track.genre}</div>
-                                {/* <div className="frame-355">
-                                </div> */}
-                            </div>
-                            <div className="trackActions">
-                                <svg className="likeIcon" width="22" height="20" viewBox="0 0 22 20" fill={liked.has(track.id) ? "#9E7FCF" : "none"}
-                                    role="button" aria-label="Like" style={{cursor: "pointer"}} onClick={(e) => toggleLike(e, track)}
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M6.5 1C3.4625 1 1 3.4625 1 6.5C1 12 7.5 17 11 18.163C14.5 17 21 12 21 6.5C21 3.4625 18.5375 1 15.5 1C13.64 1 11.995 1.9235 11 3.337C10.4928 2.61469 9.81897 2.0252 9.03568 1.61841C8.25238 1.21162 7.38263 0.999502 6.5 1Z"
-                                        stroke="#9E7FCF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-
-                                <div className="trackDuration">{formatTimeSpan(track.duration)}</div>
-                            </div>
-                        </div>
-                    </div></React.Fragment>))}
-                </div>
+        <main className="catalog_page detail_page music_page">
+            <div className="music_head">
+                <h1 className="catalog_title">Music</h1>
+                <DetailBanner variant="xit" />
             </div>
+
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && tracks.length === 0 && <div className="catalog_state">No tracks yet</div>}
+            {visible.length > 0 && <TrackTable tracks={visible} playlist={shuffled} />}
+
+            <Pagination page={page} totalPages={totalPages} onChange={setPage} />
         </main>
     );
-}
+};
 
 export default MusicPage;

@@ -25,6 +25,21 @@ html, body {
     background: transparent !important;
 }
 
+/* Shared page grid from the Figma frames (1920px): content column 1528px starting
+   138px right of the 112px sidebar (x=250), i.e. the same offsets as the header.
+   On narrower screens the left gutter shrinks to 48px and the column narrows. */
+.page_grid,
+.catalog_page,
+.support_page,
+.subscribe_page {
+    --page-pl: clamp(48px, calc((100% - 1528px) / 2 - 2px), 138px);
+    --page-pr: max(40px, calc(100% - var(--page-pl) - 1528px));
+    box-sizing: border-box;
+    width: 100%;
+    padding-left: var(--page-pl);
+    padding-right: var(--page-pr);
+}
+
 .layout_container {
     display: flex;
     min-height: 100vh;
@@ -38,31 +53,18 @@ html, body {
     min-height: 100vh;
 }
 
-.header_container_main{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 0px;
-    gap: 125px;
-
-    position: relative;
-    width: calc(100% - 176px);
-    height: 44px;
-    left: 176px;
-    top: 50px;
-}
 
 .content_container {
     flex-grow: 1;
     flex-shrink: 0;
     flex-basis: auto;
-    margin-bottom: 220px;
+    /* 40px + the pages' 40px bottom padding = 80px to the footer, as in the design */
+    margin-bottom: 40px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .footer_container {
     width: 100%;
-    height: 306px;
     margin-top: auto;
 }

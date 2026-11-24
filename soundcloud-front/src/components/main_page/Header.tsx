@@ -39,15 +39,11 @@ const Header: React.FC = () => {
         logout();
         navigate("/");
     }
-    console.log("header user", user);
     return (
         <>
-            <div className="max-w-screen-full-xl">
-
-                <header className="header_container_main" style={{justifyContent: 'space-between'}}>
-                        <div className="header_logo">
-                            <img src="/logo_Allurew.png" alt="logo"/>
-                        </div>
+            <header className="header_container_main" style={{justifyContent: 'space-between'}}>
+                        {/* Figma: text logo «Allure», Princess Sofia 40 */}
+                        <div className="header_logo" aria-label="Allure">Allure</div>
 
                         {isLogin ? (
                             <>
@@ -98,8 +94,7 @@ const Header: React.FC = () => {
                                 </button>
                             </div>
                         )}
-                </header>
-            </div>
+            </header>
         </>
     );
 };

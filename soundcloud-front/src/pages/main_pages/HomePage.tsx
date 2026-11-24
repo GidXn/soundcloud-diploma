@@ -1,255 +1,256 @@
-import React, {useEffect, useState} from 'react';
-import { useTrackLikes } from "../../components/catalog/useTrackLikes";
+import React, { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import "../../styles/main_pages/home_page/layout.css"
-import {trackService} from "../../services/trackApi.ts";
-import {ITrack} from "../../types/track.ts";
-import {IAlbum} from "../../types/album.ts";
-import {usePlayerStore} from "../../store/player_store.tsx";
-import { albumService } from '../../services/albumAPI.ts';
-//import { IUserFollow } from "../../types/follow.ts";
+import { trackService } from "../../services/trackApi.ts";
+import { albumService } from "../../services/albumAPI.ts";
+import { genreService } from "../../services/genreApi.ts";
+import { ITrack } from "../../types/track.ts";
+import { IAlbum } from "../../types/album.ts";
+import { IGenre } from "../../types/genre.ts";
+import { groupTracks, mediaUrl, trackImageUrl } from "../../components/catalog/catalogUtils";
+import { STATIONS } from "../../components/catalog/radioStations";
+import RadioTile from "../../components/catalog/RadioTile";
+import {
+    ArtistsCarousel,
+    Carousel,
+    ChevronButton,
+    DetailBanner,
+    MediaCard,
+    ShowMoreButton,
+    TrackTable,
+    genreLink,
+    yearOf,
+} from "../../components/detail/DetailParts";
 
+import "../../styles/main_pages/catalog/layout.css";
+import "../../styles/main_pages/home_page/layout.css";
 
-const HomePage: React.FC = () => {
-    const [tracks, setTracks] = useState<ITrack[]>([]);
-    const { liked, toggleLike } = useTrackLikes(tracks);
-    const [albums, setAlbums] = useState<IAlbum[]>([]);
+/* Home, Figma «Home» (2270:6638), top to bottom:
+   Music Buddy banner, Charts, Albums, Radio stations, Novelty + Show More, XIT FM,
+   Popular albums (2 x 6, All + arrows) with News / Radio / Mood and genres buttons,
+   promo banners, Artists, Mood and genres, XIT FM. Sections are 64px apart. */
 
-    const playTrack = usePlayerStore(state => state.playTrack);
+const NOVELTY_STEP = 24;       // rows shown before / added by «Show More»
+const POPULAR_PAGE = 12;       // 2 rows of 6
 
+const PlayIcon: React.FC = () => (
+    <svg className="genre_tile_play" width="19" height="20" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 7.27C16.33 8.04 16.33 9.96 15 10.73L3 17.66C1.67 18.43 0 17.47 0 15.93V2.07C0 0.53 1.67 -0.43 3 0.34L15 7.27Z" fill="#FFF" />
+    </svg>
+);
+
+const SeeAll: React.FC<{ to: string; label?: string }> = ({ to, label = "See all" }) => {
     const navigate = useNavigate();
+    return <button className="detail_see_all" onClick={() => navigate(to)}>{label}</button>;
+};
 
-    const [, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({}); // album tracks are now on the page /album/:id
+const albumMeta = (a: IAlbum) => [yearOf(a.createdAt), a.ownerName];
 
-    useEffect(() => {
-        albumService.getAllAlbums()
-            .then((data) => setAlbums(data))
-            .catch((err) => console.error(err));
-        trackService.getAll()
-            .then((data) => setTracks(data))
-            .catch((err) => console.error(err));
+// Promo banners (800 x 250, r 13): a full-width row from the sidebar to the right edge,
+// the middle banner centred on the content column; arrows sit on the column edges.
+const PromoRow: React.FC = () => {
+    const sectionRef = useRef<HTMLElement>(null);
+    const trackRef = useRef<HTMLDivElement>(null);
+    const [edges, setEdges] = useState({ left: 0, right: 0 });
+    const banners = ["/inside/promo_1.jpg", "/inside/promo_2.jpg", "/inside/promo_3.jpg"];
 
-    }, []);
-
-    // Fetch tracks for each album
-    useEffect(() => {
-        const loadAllAlbumTracks = async () => {
-            try {
-                const results = await Promise.all(
-                    albums.map(async (a) => {
-                        const tracks = await albumService.getTracks(a.id);
-                        return { id: a.id, tracks };
-                    })
-                );
-
-                const tracksByAlbum = results.reduce(
-                    (acc, { id, tracks }) => ({ ...acc, [id]: tracks }),
-                    {} as Record<number, ITrack[]>
-                );
-
-                setAlbumTracks(tracksByAlbum);
-            } catch (err) {
-                console.error("Failed to load album tracks", err);
+    useLayoutEffect(() => {
+        const layout = (center: boolean) => {
+            const section = sectionRef.current;
+            const track = trackRef.current;
+            const main = section?.parentElement;
+            if (!section || !track || !main) return;
+            const cs = getComputedStyle(main);
+            const pl = parseFloat(cs.paddingLeft) || 0;
+            const pr = parseFloat(cs.paddingRight) || 0;
+            section.style.marginLeft = `${-pl}px`;
+            section.style.marginRight = `${-pr}px`;
+            setEdges({ left: pl, right: pr });
+            const middle = track.children[1] as HTMLElement | undefined;
+            if (center && middle) {
+                const contentCenter = pl + (main.clientWidth - pl - pr) / 2;
+                track.scrollLeft = middle.offsetLeft + middle.offsetWidth / 2 - contentCenter;
             }
         };
+        layout(true);
+        const onResize = () => layout(true);
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
 
-        if (albums.length > 0) {
-            loadAllAlbumTracks();
-        }
-    }, [albums]);
-
-    const getTrackImageUrl = (track?: ITrack | null) => {
-        if (!track || !track.imageUrl) return "/default-cover.png"; // fallback image
-        return `http://localhost:5122${track.imageUrl}`;
-    };
-    const getAlbumImageUrl = (album?: IAlbum | null) => {
-        if (!album || !album.coverUrl) return "/default-cover.png"; // fallback image
-        return `http://localhost:5122/${album.coverUrl}`;
-    };
-
-
-    //for likes
-    // const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
-    // useEffect(() => {
-    //     trackService.getAll()
-    //         .then((data) => {
-    //             setTracks(data);
-    //             const likedIds = data.filter(t => t.isLikedByCurrentUser).map(t => t.id);
-    //             setLikedTracksIds(likedIds);
-    //         })
-    //         .catch((err) => console.error(err));
-    // }, []);
-
-    // const toggleLike = async (track: ITrack) => {
-    //     try {
-    //         if (likedTracksIds.includes(track.id)) {
-    //             // unlike
-    //             await trackService.unlike(track.id);
-    //             setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-    //             track.isLikedByCurrentUser = false; // update locally
-    //             addtoHistory(track);
-    //             trackService.getAll()
-    //         } else {
-    //             // like
-    //             await trackService.like(track.id);
-    //             setLikedTracksIds(prev => [...prev, track.id]);
-    //             track.isLikedByCurrentUser = true; // update locally
-    //             addtoHistory(track);
-    //             trackService.getAll()
-    //         }
-    //     } catch (err) {
-    //         console.error("Error liking track:", err);
-    //     }
-    // };
-
-    function formatTimeSpan(ts: string): string {
-        const [h, m, s] = ts.split(":");
-        const seconds = s.split(".")[0];
-
-        const totalMinutes = Number(h) * 60 + Number(m);
-        return `${totalMinutes}:${seconds}`;
-    }
+    const scroll = (dir: number) => trackRef.current?.scrollBy({ left: dir * 830, behavior: "smooth" });
 
     return (
-        <main className="layout_container mb-[2050px]">
-            <img className="music_buddy_banner" src="\public\inside\homep_banner.png" />
-            <div className="albumsContainer relative">
-                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
-                    Albums
-                </div>
-                <div
-                    className="albumsScroll flex overflow-x-auto gap-4 py-4">
-                    {albums.slice(0, 7).map(album => (
-                        <li className="albumCard flex-shrink-0 w-40" key={album.id}>
-                            <img
-                                className="albumImage"
-                                src={getAlbumImageUrl(album)}
-                                alt=""
+        <section className="home_promo" ref={sectionRef}>
+            <div className="home_promo_track" ref={trackRef}>
+                {banners.map((src) => (
+                    <img key={src} className="home_promo_banner" src={src} alt="" />
+                ))}
+            </div>
+            <ChevronButton dir="left" className="home_promo_arrow" style={{ left: edges.left - 28 }} onClick={() => scroll(-1)} />
+            <ChevronButton dir="right" className="home_promo_arrow" style={{ right: edges.right - 25 }} onClick={() => scroll(1)} />
+        </section>
+    );
+};
+
+const HomePage: React.FC = () => {
+    const navigate = useNavigate();
+    const [tracks, setTracks] = useState<ITrack[]>([]);
+    const [albums, setAlbums] = useState<IAlbum[]>([]);
+    const [genres, setGenres] = useState<IGenre[]>([]);
+    const [noveltyCount, setNoveltyCount] = useState(NOVELTY_STEP);
+    const [popularPage, setPopularPage] = useState(0);
+
+    useEffect(() => {
+        albumService.getAllAlbums().then(setAlbums).catch((err) => console.error("Failed to load albums", err));
+        trackService.getAll().then((t) => setTracks(t.filter((x) => !x.isHidden))).catch((err) => console.error("Failed to load tracks", err));
+        genreService.getGenres().then(setGenres).catch((err) => console.error("Failed to load genres", err));
+    }, []);
+
+    // Novelty: newest uploads first
+    const novelty = useMemo(
+        () => [...tracks].sort((a, b) => (b.createdAt || "").localeCompare(a.createdAt || "") || b.id - a.id),
+        [tracks]
+    );
+
+    // Popular albums: by total plays of their tracks
+    const popular = useMemo(() => {
+        const plays = new Map<number, number>();
+        for (const t of tracks) {
+            if (t.albumId) plays.set(t.albumId, (plays.get(t.albumId) || 0) + (t.playCount || 0));
+        }
+        return [...albums].sort((a, b) => (plays.get(b.id) || 0) - (plays.get(a.id) || 0));
+    }, [albums, tracks]);
+    const popularPages = Math.max(1, Math.ceil(popular.length / POPULAR_PAGE));
+    const popularVisible = popular.slice(popularPage * POPULAR_PAGE, (popularPage + 1) * POPULAR_PAGE);
+
+    const tracksByGenre = useMemo(() => groupTracks(tracks, (t) => t.genre?.toLowerCase()), [tracks]);
+
+    return (
+        <main className="catalog_page detail_page home_page">
+            <img className="home_hero_banner" src="/inside/homep_banner.png" alt="Music Buddy — only quality music" />
+
+            {albums.length > 0 && (
+                <Carousel
+                    title="Charts"
+                    variant="cards"
+                    className="home_row home_charts"
+                    progress={false}
+                    action={<SeeAll to="/charts" />}
+                >
+                    {albums.map((album) => (
+                        <button
+                            key={album.id}
+                            className="home_chart_card"
+                            style={{ backgroundImage: `url('${mediaUrl(album.coverUrl)}')` }}
+                            onClick={() => navigate(`/chart/${album.id}`)}
+                            title={album.title}
+                        >
+                            <span className="home_chart_title">{album.title}</span>
+                        </button>
+                    ))}
+                </Carousel>
+            )}
+
+            {albums.length > 0 && (
+                <Carousel title="Albums" variant="cards" className="home_row home_albums" action={<SeeAll to="/albums" />}>
+                    {albums.map((album) => (
+                        <MediaCard
+                            key={album.id}
+                            cover={mediaUrl(album.coverUrl)}
+                            title={album.title}
+                            meta={albumMeta(album)}
+                            onClick={() => navigate(`/album/${album.id}`)}
+                        />
+                    ))}
+                </Carousel>
+            )}
+
+            <Carousel
+                title="Radio stations"
+                variant="cards"
+                className="home_row home_radio"
+                progress={false}
+                action={<SeeAll to="/radio" />}
+            >
+                {STATIONS.map((s) => (
+                    <RadioTile key={s.id} station={s} onClick={() => navigate("/radio")} />
+                ))}
+            </Carousel>
+
+            <section className="detail_section home_novelty">
+                <h2 className="detail_section_title">Novelty</h2>
+                {novelty.length === 0 ? (
+                    <div className="detail_empty">No tracks yet</div>
+                ) : (
+                    <TrackTable tracks={novelty.slice(0, noveltyCount)} playlist={novelty} />
+                )}
+                {noveltyCount < novelty.length && (
+                    <ShowMoreButton onClick={() => setNoveltyCount((n) => n + NOVELTY_STEP)} />
+                )}
+            </section>
+
+            <DetailBanner variant="xit" />
+
+            {popular.length > 0 && (
+                <section className="detail_section home_popular">
+                    <div className="detail_section_head">
+                        <h2 className="detail_section_title">Popular albums</h2>
+                        <div className="home_popular_controls">
+                            <SeeAll to="/albums" label="All" />
+                            <div className="home_popular_arrows">
+                                <ChevronButton dir="left" onClick={() => setPopularPage((p) => Math.max(0, p - 1))} disabled={popularPage === 0} />
+                                <ChevronButton dir="right" onClick={() => setPopularPage((p) => Math.min(popularPages - 1, p + 1))} disabled={popularPage >= popularPages - 1} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="home_popular_grid">
+                        {popularVisible.map((album) => (
+                            <MediaCard
+                                key={album.id}
+                                cover={mediaUrl(album.coverUrl)}
+                                title={album.title}
+                                meta={albumMeta(album)}
                                 onClick={() => navigate(`/album/${album.id}`)}
                             />
-                            <div className="albumInfo">
-                                <span className="albumTitle baloo2">
-                                    {album.title.length > 16 ? album.title.slice(0, 16) + "…" : album.title}
-                                </span>
-                                <span className="albumArtist baloo2">{album.description}</span>
-                            </div>
-                        </li>
-                    ))}
-                </div>
-            </div>
-            <div className="noveltyContainer">
-                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
-                    Novelty
-                </div>
-                <div className="noveltyList">
+                        ))}
+                    </div>
+                    {/* Figma: three buttons under the grid. «News» has no page in the design,
+                        so it opens Music (all tracks, newest first is the closest match). */}
+                    <div className="home_links">
+                        <button className="home_link_btn" onClick={() => navigate("/music")}>News</button>
+                        <button className="home_link_btn" onClick={() => navigate("/radio")}>Radio</button>
+                        <button className="home_link_btn" onClick={() => navigate("/genres")}>Mood and genres</button>
+                    </div>
+                </section>
+            )}
 
-                    {[...tracks].reverse().slice(0, 11).map((track, index) => (
-                    <React.Fragment key={track.id}>
-                        {index !== 0 &&
-                    <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.5 0.5H1526.5" stroke="#64707C" strokeLinecap="round"/>
-                    </svg>}
+            <PromoRow />
 
-                    <div className="trackItem" onClick={() => playTrack(track, tracks)}>
-                        <div className="trackImageWrapper">
-                            <img className="trackCover" src={getTrackImageUrl(track)} alt={""}/>
-                            <div className="trackHeader">
-                                <div className="trackName" onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}>{track.title}</div>
-                            </div>
-                        </div>
-                        <div className="trackMeta">
-                            <div className="trackDetails">
-                                <div className="trackArtistNovelt">{track.author}</div>
-                                <div className="trackGenre">{track.genre}</div>
-                                {/* <div className="frame-355">
-                                </div> */}
-                            </div>
-                            <div className="trackActions">
-                                <svg className="likeIcon" width="22" height="20" viewBox="0 0 22 20" fill={liked.has(track.id) ? "#9E7FCF" : "none"}
-                                    role="button" aria-label="Like" style={{cursor: "pointer"}} onClick={(e) => toggleLike(e, track)}
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M6.5 1C3.4625 1 1 3.4625 1 6.5C1 12 7.5 17 11 18.163C14.5 17 21 12 21 6.5C21 3.4625 18.5375 1 15.5 1C13.64 1 11.995 1.9235 11 3.337C10.4928 2.61469 9.81897 2.0252 9.03568 1.61841C8.25238 1.21162 7.38263 0.999502 6.5 1Z"
-                                        stroke="#9E7FCF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
+            <ArtistsCarousel tracks={tracks} className="home_row home_artists" />
 
-                                <div className="trackDuration">{formatTimeSpan(track.duration)}</div>
-                            </div>
-                        </div>
-                    </div></React.Fragment>))}
-                </div>
-            </div>
-            <img className="hit_fm_banner" src="\public\inside\homep_banner2.png" />
-            <div className="popularAlbumsContainer">
-                <div className="sectionTitle">
-                    Popular albums
-                </div>
-                <div className="scrollGrid">
-                    {[...albums].reverse().slice(0, 12).map(album => (
-                        <li className="albumCard flex-shrink-0 w-40" key={album.id}>
-                            <img
-                                className="albumImage"
-                                src={getAlbumImageUrl(album)}
-                                alt=""
-                                onClick={() => navigate(`/album/${album.id}`)}
-                            />
-                            <div className="albumInfo">
-                    <span className="albumTitle baloo2">
-                        {album.title.length > 20 ? album.title.slice(0, 16) + "…" : album.title}
-                    </span>
-                                <span className="albumArtist baloo2">{album.description}</span>
-                            </div>
-                        </li>
-                    ))}
-                </div>
-            </div>
-            <div className="artistsContainer">
-                <div className="sectionTitle baloo2 text-lightpurple text-[24px] font-bold">
-                    Artists
-                </div>
-                <div className="artistsGrid">
-                    <div className="artistCard">
-                        <div className="artistImageContainer">
-                        <img className="artistImage" src="public\artists\MaxBarskih.png" />
-                        </div>
-                        <div className="artistName">Max Barskih</div>
-                    </div>
-                    <div className="artistCard">
-                        <div className="artistImageContainer">
-                        <img className="artistImage" src="public\artists\Skryabin.jpg" />
-                        </div>
-                        <div className="artistName">Скрябін</div>
-                    </div>
-                    <div className="artistCard">
-                        <div className="artistImageContainer">
-                        <img className="artistImage" src="public\artists\KlavdiaPetrivna.png" />
-                        </div>
-                        <div className="artistName">Klavdia Petrivna</div>
-                    </div>
-                    <div className="artistCard">
-                        <div className="artistImageContainer">
-                        <img className="artistImage" src="public\artists\Yaktak.png" />
-                        </div>
-                        <div className="artistName">Yaktak</div>
-                    </div>
-                    <div className="artistCard">
-                        <div className="artistImageContainer">
-                        <img className="artistImage" src="public\artists\Volkanov.png" />
-                        </div>
-                        <div className="artistName">Volkanov</div>
-                    </div>
-                    <div className="artistCard">
-                        <div className="artistImageContainer">
-                        <div className="artistImageWrapper">
-                            <img className="artistImage" src="public\artists\Drevo.png" />
-                        </div>
-                        </div>
-                        <div className="artistName">Drevo</div>
-                    </div>
-                </div>
-            </div>
+            {genres.length > 0 && (
+                <Carousel title="Mood and genres" variant="cards" className="home_row home_mood" action={<SeeAll to="/genres" />}>
+                    {genres.map((genre) => {
+                        const list = tracksByGenre.get(genre.name.toLowerCase()) || [];
+                        const cover = list.find((t) => t.imageUrl);
+                        return (
+                            <button
+                                key={genre.id}
+                                className={`genre_tile ${list.length === 0 ? "empty" : ""}`}
+                                onClick={() => navigate(genreLink(genre.name))}
+                                title={genre.name}
+                            >
+                                {cover && <img className="genre_tile_bg" src={trackImageUrl(cover)} alt="" />}
+                                <span className="genre_tile_name">{genre.name}</span>
+                                <PlayIcon />
+                            </button>
+                        );
+                    })}
+                </Carousel>
+            )}
+
+            <DetailBanner variant="xit" />
         </main>
     );
 };

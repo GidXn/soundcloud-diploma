@@ -2,11 +2,9 @@
    Content: x = 251px from the frame edge, width 1535px. */
 
 .subscribe_page {
-    box-sizing: border-box;
-    width: 100%;
-    max-width: calc(1535px + 139px + 64px);
-    /* The header takes 44px in the flow; the heading in the design is at y = 188px */
-    padding: 144px 64px 64px 139px;
+    /* horizontal offsets: shared page grid (General.css); heading at y=188 in the design */
+    padding-top: 64px;
+    padding-bottom: 64px;
     font-family: "Space Grotesk", "Roboto", system-ui, sans-serif;
     font-weight: 400;
     color: #FFF;

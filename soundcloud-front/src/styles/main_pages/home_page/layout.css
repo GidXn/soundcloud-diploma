@@ -1,441 +1,164 @@
+/* Home. Figma «Home» (2270:6638), 1920px frame, content column 1528px (shared page grid).
+   Row items are sized as fractions of the column, so at 1920 they match the design
+   (Charts 4 x 366, Albums 6 x 220, Radio 9 x 151, Artists 6 x 231, Mood 6 x 242)
+   and shrink proportionally on narrower desktops. */
 
-/* Banner */
-.music_buddy_banner{
-    display: flex;
-    height: 175px;
-    padding: 0px;
-    justify-content: center;
-    position: absolute;
-    align-items: center;
-    left: 176px;
-    top: 185px;
+.home_page {
+    --home-arrow: 60px;
 }
 
-/* Albums Section */
-.albumsContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-    position: absolute;
-    height: auto;
-    left: 176px;
-    top: 435px;
-}
-
-.sectionTitle{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    padding: 8px 12px;
-    gap: 687px;
-    width: 1170px;
-    height: 40px;
-    border-radius: 30px;
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-    color: #FFF;
-    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-}
-
-.albumsScroll{
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    padding: 0px;
-    isolation: isolate;
-    gap: 16px;
+/* Music Buddy banner: 1528 x 170, r 20 */
+.home_hero_banner {
+    display: block;
     width: 100%;
     height: auto;
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-    max-width: 100%;
+    aspect-ratio: 1528 / 170;
+    object-fit: cover;
+    border-radius: 20px;
+}
+
+/* ---------- Carousel rows ---------- */
+.home_row.detail_carousel { gap: 32px; }
+.home_row .detail_carousel_frame { container-type: inline-size; }
+.home_row .detail_carousel_track { gap: var(--home-gap); }
+.home_row .detail_carousel_track > * {
+    flex: 0 0 calc((100% - (var(--home-cols) - 1) * var(--home-gap)) / var(--home-cols));
+    min-width: 0;
+}
+/* arrows centred on the row media: (column width / cols) * media ratio / 2 - 30 */
+.home_row .detail_carousel_arrow {
+    top: calc((100cqw - (var(--home-cols) - 1) * var(--home-gap)) / var(--home-cols) * var(--home-media) / 2 - var(--home-arrow) / 2);
+}
+.home_row .detail_carousel_arrow.left { left: -29px; }
+.home_row .detail_carousel_arrow.right { right: -30px; }
+
+/* Charts: 4 x 366 x 219, gap 21, r 20, title Regular 20 at the bottom right (24 / 12) */
+.home_charts { --home-cols: 4; --home-gap: 21px; --home-media: 0.5984; }
+.home_charts.detail_carousel { gap: 28px; }
+.home_chart_card {
+    position: relative;
+    aspect-ratio: 366 / 219;
+    border-radius: 20px;
     overflow: hidden;
-    scroll-behavior: smooth;
+    background-color: rgba(255, 255, 255, 0.06);
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.2s ease;
 }
-
-.albumCard{
-    flex: 0 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    width: 210px;
-    height: auto;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
-.albumImage{
-    width: 210px;
-    height: 210px;
-    border-radius: 30px;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
-.albumInfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    width: 210px;
-    height: 90px;
-    flex: none;
-    flex-grow: 0;
-}
-
-.albumTitle{
-    width: 210px;
-    height: 24px;
-    font-style: normal;
-    font-weight: 500;
+.home_chart_card:hover { transform: translateY(-2px); }
+.home_chart_title {
+    position: absolute;
+    right: 12px;
+    bottom: 24px;
+    max-width: calc(100% - 24px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     font-size: 20px;
-    line-height: 24px;
-    display: block;
-    align-items: center;
-    text-align: left;
-    color: #FFFFFF;
-    flex: none;
-    order: 0;
-    align-self: stretch;
-    flex-grow: 0;
-}
-
-.albumArtist{
-    width: 100%;
-    height: 14px;
-    display: block;
-    align-items: center;
-    text-align: left;
-    flex: none;
-    order: 1;
-    align-self: stretch;
-    flex-grow: 0;
-    color: #FFF;
-    font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: 20px;
-    font-style: normal;
     font-weight: 400;
-    line-height: normal;
+    line-height: 26px;
+    color: #FFFFFF;
 }
 
-/* Novelty Section */
-.noveltyContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-    position: absolute;
-    width: 1170px;
-    height: 338px;
-    left: 176px;
-    top: 870px;
-    font-family: "Baloo2", sans-serif;
+/* Albums: 6 x 220, gap 44, cover r 20, title 20, meta 14 */
+.home_albums { --home-cols: 6; --home-gap: 44px; --home-media: 1; }
+.home_page .detail_card { width: auto; }
+.home_page .detail_card_title { max-width: 100%; }
+
+/* Radio stations: 9 x 151 x 152, gap 21, r 17 */
+.home_radio { --home-cols: 9; --home-gap: 21px; --home-media: 1.0066; }
+.home_radio .radio_tile {
+    aspect-ratio: 151 / 152;
+    border-radius: 17px;
 }
 
-.noveltyList,
-.noveltyList * {
-  box-sizing: border-box;
-}
-.noveltyList {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  align-self: stretch;
-  flex-shrink: 0;
-  width: 1528px;
-  position: relative;
-  font-family: "Baloo2", sans-serif;
-}
-
-.divider {
-  flex-shrink: 0;
-  height: 3px;
-  position: relative;
-  overflow: visible;
-}
-
-.trackItem,
-.trackItem * {
-  box-sizing: border-box;
-}
-.trackItem {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  align-self: stretch;
-  flex: 1;
-  position: relative;
-}
-
-.trackImageWrapper {
-  display: flex;
-  flex-direction: row;
-  gap: 16px;
-  align-items: center;
-  justify-content: flex-start;
-  flex-shrink: 0;
-  width: 144px;
-  position: relative;
-}
-
-.trackCover {
-  border-radius: 9px;
-  flex-shrink: 0;
-  width: 50px;
-  height: 50px;
-  position: relative;
-  object-fit: cover;
-}
-
-.trackHeader {
-  padding: 5px 0px 5px 0px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  align-items: flex-start;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 500px;
-  height: 50px;
-  position: relative;
-}
-
-.trackName {
-  text-align: left;
-  position: relative;
-  color: #FFF;
-  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-}
-
-.trackMeta {
-  display: flex;
-  flex-direction: row;
-  gap: 144px;
-  align-items: center;
-  justify-content: flex-start;
-  flex-shrink: 0;
-  position: relative;
-}
-
-.trackDetails {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  width: 413px;
-  height: 24px;
-  position: relative;
-}
-
-.trackArtistNovelt {
-  text-align: left;
-  position: relative;
-  width: 330px;
-  flex-shrink: 0;
-  color: #FFF;
-  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.trackGenre {
-  text-align: left;
-  position: relative;
-  width: 150px;
-  flex-shrink: 0;
-  color: #FFF;
-  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-.trackActions {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  flex-shrink: 0;
-  width: 90px;
-  position: relative;
-}
-
-.likeIcon {
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  position: relative;
-  overflow: visible;
-  aspect-ratio: 1;
-}
-
-.trackDuration {
-  text-align: left;
-  position: relative;
-  color: #FFF;
-  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-}
-
-/* Banner */
-.hit_fm_banner{
-    display: flex;
-    height: 175px;
-    padding: 0px;
-    justify-content: center;
-    position: absolute;
-    align-items: center;
-    left: 176px;
-    top: 1880px;
-}
-
-/* Popular Albums Section */
-.popularAlbumsContainer{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 0px;
-    gap: 26px;
-    position: absolute;
-    width: 1570px;
-    height: 338px;
-    left: 176px;
-    top: 2109px;
-}
-
-.scrollGrid{
-    padding: 0px;
-    isolation: isolate;
-    gap: 30px;
+/* Artists: 6 x 231 circles, gap 28 */
+.home_artists { --home-cols: 6; --home-gap: 28px; --home-media: 1; }
+.home_artists .detail_artist { width: auto; }
+.home_artists .detail_artist_photo {
     width: 100%;
-    order: 1;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-template-rows: repeat(2, auto);
-    gap: 10px;
+    height: auto;
+    aspect-ratio: 1;
 }
 
+/* Mood and genres: 6 x 242, gap 16 */
+.home_mood { --home-cols: 6; --home-gap: 16px; --home-media: 1; }
+.home_mood .genre_tile { aspect-ratio: 1; }
 
+/* ---------- Novelty: heading, 25px, track list, Show More ---------- */
+.home_novelty { gap: 25px; }
+.home_novelty .detail_show_more { margin-top: 7px; } /* 32px below the list in the design */
 
-
-/* Artists Section */
-.artistsContainer{
+/* ---------- Popular albums: 2 x 6 grid (231, gaps 30 / 22), All + arrows, three buttons ---------- */
+.home_popular_controls {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    padding: 0px;
-    gap: 26px;
-    margin-top: 22px;
+    gap: 61px;
+}
+.home_popular_arrows {
+    display: flex;
+    gap: 9px;
+}
+.home_page .detail_carousel_arrow.static {
+    position: static;
+    flex-shrink: 0;
+}
+.home_page .detail_carousel_arrow.static:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+.home_popular .detail_see_all { padding: 16px !important; }
+
+.home_popular_grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: 30px;
+    row-gap: 22px;
+}
+
+.home_links {
+    display: flex;
+    gap: 17px;
+}
+.home_link_btn {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 58px;
+    padding: 16px;
+    border-radius: 10px;
+    /* Figma: #FFF -> #999 at 30% + glass */
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.3) 0%, rgba(153, 153, 153, 0.3) 100%) !important;
+    backdrop-filter: blur(4px);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    color: #FFFFFF;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: filter 0.15s ease;
+}
+.home_link_btn:hover { filter: brightness(1.3); }
+
+/* ---------- Promo banners: full-width row, 800 x 250, r 13, gap 30 ---------- */
+.home_promo {
+    position: relative;
+}
+.home_promo_track {
+    display: flex;
+    gap: 30px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.home_promo_track::-webkit-scrollbar { display: none; }
+.home_promo_banner {
+    flex: 0 0 800px;
+    width: 800px;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 13px;
+}
+.home_page .home_promo .detail_carousel_arrow.home_promo_arrow {
     position: absolute;
-    width: 1570px;
-    height: 338px;
-    left: 176px;
-    top: 2820px;
-}
-
-.artistsGrid,
-.artistsGrid * {
-  box-sizing: border-box;
-}
-.artistsGrid {
-  display: flex;
-  flex-direction: row;
-  gap: 28px;
-  row-gap: 64px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  flex-shrink: 0;
-  position: relative;
-  width: 100%;
-}
-
-.artistCard {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  align-items: flex-start;
-  justify-content: flex-start;
-  flex-shrink: 0;
-  width: 231px;
-  position: relative;
-}
-
-.artistImageContainer {
-  background: #ffffff;
-  border-radius: 130px;
-  align-self: stretch;
-  flex-shrink: 0;
-  height: 230px;
-  position: relative;
-  overflow: hidden;
-}
-
-.artistImageWrapper {
-  background: #ffffff;
-  border-radius: 130px;
-  width: 231px;
-  height: 230px;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  overflow: hidden;
-}
-
-.artistImage {
-  width: 231px;
-  height: 231px;
-  aspect-ratio: 1/1;
-  position: absolute;
-  left: 0px;
-  top: 0px;
-  object-fit: cover;
-  aspect-ratio: 1;
-}
-
-.artistName {
-  color: #ffffff;
-  text-align: center;
-  position: relative;
-  align-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-family: "Space Grotesk", "Roboto", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
+    top: 95px;
 }
