@@ -1,111 +1,94 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import axios from "axios";
 import api from "../../utilities/axiosInstance";
-import {SearchResponse} from "../../types/search_types.ts";
+import { SearchResponse } from "../../types/search_types.ts";
+import { ITrack } from "../../types/track.ts";
+import { trackService } from "../../services/trackApi.ts";
+import { ArtistCard, TrackTable } from "../../components/detail/DetailParts";
+import { avatarUrl } from "../../components/people/peopleUtils";
+import "../../styles/main_pages/catalog/layout.css";
+import "../../styles/main_pages/search_page/layout.css";
 
+const TRACK_PAGE_SIZE = 20;
+
+/* Search results for the header search («/search-page?q=…»).
+   The design has no separate results screen, so the page reuses the design blocks:
+   36px section titles, the track list of the catalog pages and the round artist cards. */
 const SearchPage: React.FC = () => {
     const [searchParams] = useSearchParams();
-    const [q, setQ] = useState(searchParams.get("q") ?? "");
-
-    useEffect(() => {
-        setQ(searchParams.get("q") ?? "");
-    }, [searchParams]);
+    const q = (searchParams.get("q") ?? "").trim();
+    const navigate = useNavigate();
     const [results, setResults] = useState<SearchResponse | null>(null);
+    const [tracks, setTracks] = useState<ITrack[]>([]);
     const [loading, setLoading] = useState(false);
     const controllerRef = useRef<AbortController | null>(null);
 
-    const [trackPageSize] = useState(8);
-
     useEffect(() => {
-        if (q.trim().length < 2) {
+        if (q.length < 2) {
             setResults(null);
+            setTracks([]);
             return;
         }
-        const timer = setTimeout(() => fetchResults(q, 1), 300); // debounce
-        return () => clearTimeout(timer);
+        controllerRef.current?.abort();
+        const controller = new AbortController();
+        controllerRef.current = controller;
+        setLoading(true);
+        Promise.all([
+            api.get<SearchResponse>("/search", {
+                params: { q, trackPage: 1, trackPageSize: TRACK_PAGE_SIZE },
+                signal: controller.signal,
+            }),
+            trackService.getAll(),
+        ])
+            .then(([res, all]) => {
+                setResults(res.data);
+                // The search returns short track summaries; take the full rows (genre, duration, likes)
+                const byId = new Map(all.map((t) => [t.id, t]));
+                setTracks(res.data.tracks.items.map((t) => byId.get(t.id)).filter((t): t is ITrack => !!t && !t.isHidden));
+            })
+            .catch((err) => {
+                if (axios.isCancel(err)) return;
+                console.error("Search failed", err);
+            })
+            .finally(() => {
+                if (controllerRef.current === controller) setLoading(false);
+            });
+        return () => controller.abort();
     }, [q]);
 
-    const fetchResults = async (query: string, page = 1) => {
-        controllerRef.current?.abort();
-        controllerRef.current = new AbortController();
-        try {
-            setLoading(true);
-            const res = await api.get<SearchResponse>("/search", {
-                params: {
-                    q: query,
-                    trackPage: page,
-                    trackPageSize
-                },
-                signal: controllerRef.current.signal
-            });
-            setResults(res.data);
-        } catch (err: any) {
-            if (err.name === "CanceledError" || err.name === "AbortError") return;
-            console.error(err);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-
-    // const openAlbum = async (albumId: number) => {
-    //     // we can navigate to the album page and/or load its tracks and setPlaylist
-    //     // const res = await api.get(`/api/albums/${albumId}/tracks`);
-    //     // setPlaylist(res.data);
-    //     // playTrack(res.data[0], res.data);
-    // };
+    const users = results?.users.items ?? [];
 
     return (
-        <div className="layout_container align-items-center top-[200px]">
-            <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Search tracks, albums, playlists..."
-            />
-            {loading && <div>Loading…</div>}
+        <main className="catalog_page detail_page search_page">
+            <h1 className="catalog_title">{q ? `Search: ${q}` : "Search"}</h1>
 
-            {results && (
-                <div>
-                    <h4>Tracks</h4>
-                    {results.tracks.items.length === 0 ? <div>No tracks</div> : (
-                        <ul>
-                            {results.tracks.items.map(t => (
-                                <li key={t.id}>
-                                    <img src={t.imageUrl ? `http://localhost:5122${t.imageUrl}` : "/default-cover.png"} width={48} />
-                                    <div>{t.title}</div>
-                                    <div>{t.author}</div>
+            {q.length < 2 && <div className="catalog_state">Type at least 2 characters in the search field</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
 
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    <h4>Authors</h4>
-                    {results.users.items.length === 0 ? <div>No tracks</div> : (
-                        <ul>
-                            {results.users.items.map(t => (
-                                <li key={t.id}>
-                                    <div>{t.username}</div>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
-                    {/*<h4>Albums</h4>*/}
-                    {/*{results.albums.items.map(a => (*/}
-                    {/*    <div key={a.id} onClick={() => openAlbum(a.id)}>*/}
-                    {/*        <img src={a.imageUrl ? `http://localhost:5122${a.imageUrl}` : "/default-cover.png"} width={48} />*/}
-                    {/*        <div>{a.title} — {a.artist}</div>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
-                    {/*<h4>Playlists</h4>*/}
-                    {/*{results.playlists.items.map(p => (*/}
-                    {/*    <div key={p.id} onClick={() => /!* open playlist *!/}>*/}
-                    {/*        <img src={p.imageUrl ? `http://localhost:5122${p.imageUrl}` : "/default-cover.png"} width={48} />*/}
-                    {/*        <div>{p.name} — {p.owner}</div>*/}
-                    {/*    </div>*/}
-                    {/*))}*/}
-                </div>
+            {results && !loading && (
+                <>
+                    <section className="detail_section">
+                        <h2 className="detail_section_title">Tracks</h2>
+                        {tracks.length === 0 ? <div className="detail_empty">No tracks found</div> : <TrackTable tracks={tracks} />}
+                    </section>
+
+                    <section className="detail_section">
+                        <h2 className="detail_section_title">Authors</h2>
+                        {users.length === 0 ? (
+                            <div className="detail_empty">No authors found</div>
+                        ) : (
+                            <div className="search_people">
+                                {users.map((u) => (
+                                    <ArtistCard key={u.id} name={u.username} photo={avatarUrl(u.avatarUrl)} onClick={() => navigate(`/user/${u.id}`)} />
+                                ))}
+                            </div>
+                        )}
+                    </section>
+                </>
             )}
-        </div>
+        </main>
     );
 };
+
 export default SearchPage;

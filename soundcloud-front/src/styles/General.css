@@ -47,6 +47,7 @@ html, body {
 
 .main_content_wrapper {
     flex: 1;
+    min-width: 0;   /* wide carousels must not stretch the page past the viewport */
     margin-left: 112px;
     display: flex;
     flex-direction: column;

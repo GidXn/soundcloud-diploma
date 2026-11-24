@@ -1,0 +1,10 @@
+/* Search results: built from the design blocks (no separate screen in Figma). */
+.search_page { gap: 64px; }
+.search_page .catalog_title { margin: 0; }
+.search_people {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 28px;
+}
+.search_people .detail_artist { width: auto; }
+.search_people .detail_artist_photo { width: 100%; height: auto; aspect-ratio: 1; }
