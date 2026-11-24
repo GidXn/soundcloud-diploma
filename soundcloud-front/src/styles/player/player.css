@@ -4,7 +4,7 @@
     position: fixed;
     left: 123px;            /* 112px sidebar + 11px */
     right: 9px;
-    bottom: 16px;
+    bottom: 0;              /* Figma: the player sits on the bottom edge of the frame */
     height: 80px;
     box-sizing: border-box;
     padding: 15px 17px 15px 68px;

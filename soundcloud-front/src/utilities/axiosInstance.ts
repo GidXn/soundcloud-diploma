@@ -1,9 +1,10 @@
 import axios from "axios";
+import { API_BASE_URL } from "../env/index";
 
 
 const api = axios.create({
     // baseURL: import.meta.env.VITE_BASE_URL,
-    baseURL: import.meta.env.VITE_BASE_URL || 'http://localhost:5122/api',
+    baseURL: API_BASE_URL,
     withCredentials: true,
 });
 

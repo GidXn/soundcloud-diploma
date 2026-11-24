@@ -8,6 +8,7 @@ import api from "../../utilities/axiosInstance.ts";
 // import { trackService } from "../../services/trackApi.ts";
 import { PlaylistModal } from "../PlaylistModal.tsx";
 import { TrackProgress } from "./TrackProgress";
+import { API_ORIGIN } from "../../env/index";
 
 interface PlayerProps {
     // kept for compatibility with Layout
@@ -108,7 +109,7 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
     useEffect(() => {
         if (!audioRef.current || !track) return;
         api.post(`/Track/${track.id}/play`).catch(() => undefined);
-        audioRef.current.src = `http://localhost:5122${track.url}`;
+        audioRef.current.src = `${API_ORIGIN}${track.url}`;
         audioRef.current.volume = volume;
         audioRef.current.play().catch((err) => console.error(err));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -135,7 +136,7 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
 
     if (!track) return null; // nothing is selected: no player
 
-    const getTrackImageUrl = (t: ITrack) => (t.imageUrl ? `http://localhost:5122${t.imageUrl}` : "/default-cover.png");
+    const getTrackImageUrl = (t: ITrack) => (t.imageUrl ? `${API_ORIGIN}${t.imageUrl}` : "/default-cover.png");
 
     /* Like button is not in the Figma player.
     const isLiked = likedTracksIds.includes(track.id) || !!track.isLikedByCurrentUser;

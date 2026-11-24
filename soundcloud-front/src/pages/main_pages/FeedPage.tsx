@@ -12,6 +12,7 @@ import { followService } from "../../services/followApi.ts";
 
 import {PlaylistModal} from "../../components/PlaylistModal.tsx";
 import {useNavigate} from "react-router-dom";
+import { API_ORIGIN } from "../../env/index";
 
 //import { IUserFollow } from "../../types/follow.ts";
 
@@ -83,7 +84,7 @@ const FeedPage: React.FC = ()=> {
 
     const getTrackImageUrl = (track: ITrack) => {
         if (!track.imageUrl) return "/default-cover.png"; // fallback image
-        return `http://localhost:5122${track.imageUrl}`;
+        return `${API_ORIGIN}${track.imageUrl}`;
     };
 
 

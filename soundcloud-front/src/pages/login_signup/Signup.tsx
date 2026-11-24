@@ -9,6 +9,7 @@ import {register} from "../../services/authApi.ts";
 import "../../styles/login_signup/layout.css"
 import "../../styles/login_signup/login_signup_form.css"
 import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
+import { API_ORIGIN } from "../../env/index";
 
 const Signup: React.FC = () => {
     const dispatch = useDispatch();
@@ -100,7 +101,7 @@ const Signup: React.FC = () => {
         }
 
         try {
-            const res = await fetch("http://localhost:5122/auth/google", {
+            const res = await fetch(`${API_ORIGIN}/auth/google`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),

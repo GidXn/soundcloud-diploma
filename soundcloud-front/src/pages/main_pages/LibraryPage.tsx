@@ -14,6 +14,7 @@ import {playlistService} from "../../services/playlistApi.ts";
 import {albumService} from "../../services/albumAPI.ts";
 import {IPlaylist} from "../../types/playlist.ts";
 import {useNavigate} from "react-router-dom";
+import { API_ORIGIN } from "../../env/index";
 
 
 const tab = ["All", "History", "Likes", "Following", "Albums", "Playlists"];
@@ -149,7 +150,7 @@ const LibraryPage: React.FC = () => {
 
     const getTrackImageUrl = (track?: ITrack | null) => {
         if (!track || !track.imageUrl) return "/default-cover.png";
-        return `http://localhost:5122/${track.imageUrl}`;
+        return `${API_ORIGIN}/${track.imageUrl}`;
     };
     const getUserAvatarUrl = (user: IUserFollow) => {
         return avatarUrl(user.avatarUrl);
@@ -399,7 +400,7 @@ const LibraryPage: React.FC = () => {
                                 albums.map((a) => (
                                     <li key={a.id} className="track_card_container">
                                         <img
-                                            src={a.coverUrl ? `http://localhost:5122/${a.coverUrl}` : "/default-cover.png"}
+                                            src={a.coverUrl ? `${API_ORIGIN}/${a.coverUrl}` : "/default-cover.png"}
                                             alt={a.title}
                                             className="img_style"
                                             onClick={() => navigate(`/play-album/${a.id}`)}
@@ -460,7 +461,7 @@ const LibraryPage: React.FC = () => {
                                 playlists.map((p) => (
                                     <li key={p.id} className="track_card_container">
                                         <img
-                                            src={p.coverUrl ? `http://localhost:5122/${p.coverUrl}` : "/default-cover.png"}
+                                            src={p.coverUrl ? `${API_ORIGIN}/${p.coverUrl}` : "/default-cover.png"}
                                             alt={p.name}
                                             className="img_style"
                                             onClick={() => navigate(`/play-playlist/${p.id}`)}
@@ -622,7 +623,7 @@ const LibraryPage: React.FC = () => {
                                 albums.map((a) => (
                                     <li key={a.id} className="track_card_container">
                                         <img
-                                            src={a.coverUrl ? `http://localhost:5122/${a.coverUrl}` : "/default-cover.png"}
+                                            src={a.coverUrl ? `${API_ORIGIN}/${a.coverUrl}` : "/default-cover.png"}
                                             alt={a.title}
                                             className="img_style"
                                         />
@@ -664,7 +665,7 @@ const LibraryPage: React.FC = () => {
                                 playlists.map((p) => (
                                     <li key={p.id} className="track_card_container">
                                         <img
-                                            src={p.coverUrl ? `http://localhost:5122/${p.coverUrl}` : "/default-cover.png"}
+                                            src={p.coverUrl ? `${API_ORIGIN}/${p.coverUrl}` : "/default-cover.png"}
                                             alt={p.name}
                                             className="img_style"
                                         />

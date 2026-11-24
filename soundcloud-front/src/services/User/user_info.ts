@@ -1,5 +1,6 @@
 import {IUser} from "../../types/user.ts";
 import api from "../../utilities/axiosInstance.ts";
+import { API_BASE_URL } from "../../env/index";
 
 interface RawUserData {
     userId: number;
@@ -55,7 +56,7 @@ export const uploadUserBanner = {
         const formData = new FormData();
         formData.append("Banner", bannerFile);
 
-        const response = await fetch(`http://localhost:5122/api/User/${userId}/banner`, {
+        const response = await fetch(`${API_BASE_URL}/User/${userId}/banner`, {
             method: "PUT",
             body: formData,
         });

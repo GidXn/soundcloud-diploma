@@ -1,7 +1,8 @@
 import axios from "axios";
 import { IUserFollow } from "../types/follow";
+import { API_BASE_URL } from "../env/index";
 
-const API_URL = "http://localhost:5122/api/Follow";
+const API_URL = `${API_BASE_URL}/Follow`;
 
 const getAuthHeader = () => ({
     Authorization: `Bearer ${localStorage.getItem("token")}`,
