@@ -1,54 +1,39 @@
-# React + TypeScript + Vite
+# Allure Web (soundcloud-front)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> Frontend of the Allure music streaming app. See the [root README](../README.md) for the full project overview, architecture and screenshots.
 
-Currently, two official plugins are available:
+Single-page application built with **React 19 + TypeScript + Vite**.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Scripts
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+npm install      # the repo has no package-lock.json, so use install (not ci)
+npm run dev      # dev server on http://localhost:5173
+npm run build    # type check (tsc -b) + production build into dist/
+npm run preview  # serve the production build locally
+npm run lint     # ESLint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Environment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create `.env.local` (git-ignored) to override the defaults:
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```dotenv
+# Base URL of the API (axios instance). Default: http://localhost:5122/api
+VITE_BASE_URL=http://localhost:5122/api
+```
+
+The backend must allow the frontend origin in its CORS policy (`http://localhost:5173` by default).
+
+## Source layout
+
+```
+src/
+├── components/   # layout (header, sidebar, footer), player, catalog & detail building blocks
+├── pages/        # route pages: main_pages, detail, profile, admin, login_signup, support, subscription…
+├── services/     # API clients (axios): tracks, albums, playlists, genres, follow, auth, admin
+├── store/        # Redux Toolkit (user session) + Zustand (player, subscription)
+├── styles/       # page and component CSS (Tailwind 4 + plain CSS)
+├── utilities/    # axios instance, token helpers
+└── App.tsx       # routes
 ```
