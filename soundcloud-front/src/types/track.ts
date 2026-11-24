@@ -3,6 +3,7 @@ export interface ITrack {
     title: string;
     author: string;
     playCount: number;
+    createdAt?: string; // ISO, дата завантаження
     genre: string;
     duration: string;
     isHidden: boolean;

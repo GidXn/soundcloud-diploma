@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import ProfilePeoplePanel from "../../components/people/ProfilePeoplePanel.tsx";
 import { trackService } from "../../services/trackApi";
 import { ITrack } from "../../types/track";
 import { IPlaylist } from "../../types/playlist";
@@ -28,7 +29,7 @@ const ProfilePage: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
 
     const [userTracksCount, setUserTracksCount] = useState<number | null>(null);
-    const [userAlbumsCount, setUserAlbumsCount] = useState<number | null>(null);
+    const [, setUserAlbumsCount] = useState<number | null>(null);
 
     useEffect(() => {
         getCurrentUser()
@@ -598,7 +599,7 @@ const ProfilePage: React.FC = () => {
 
     //лайки
     // окремо зберігаємо саме лайкнуті треки
-    const [likedTracks, setLikedTracks] = useState<ITrack[]>([]);
+    const [, setLikedTracks] = useState<ITrack[]>([]);
 
     useEffect(() => {
         const fetchLikedTracks = async () => {
@@ -696,78 +697,14 @@ const ProfilePage: React.FC = () => {
                 {user?.username}
             </div>
 
-            <div className="profile_page_following_tracks_info_container">
-                <div className="followers_container">
-                    <div className="title">
-                        Albums
-                    </div>
-                    <div className="number">
-                        <span>{userAlbumsCount}</span>
-                    </div>
-                </div>
-                {/* <div className="following_container">
-                    <div className="title">
-                        Following
-                    </div>
-                    <div className="number">
-                        <span>{followingCount}</span>
-                    </div>
-                </div> */}
-                <div className="tracks_container">
-                    <div className="title">
-                        Tracks
-                    </div>
-                    <div className="number">
-                        {userTracksCount}
-                    </div>
-                </div>
-            </div>
-
             <div className="profile_page_right_sidebar">
                 <div className="profile_page_bio_container">
                     {user?.bio ? <span>{user.bio}</span> : <span>You don’t have bio :(</span>}
                 </div>
 
-                <div className="profile_page_likes_users_container">
-                    <div className="container_title_container">
-                        <span className="header_txt_style">LIKES</span>
-                    </div>
-
-                    {likedTracks.length === 0 ? (
-                        <div className="user_info_container">
-                            <span className="txt_style">You don`t have Likes</span>
-                        </div>
-                    ) : (
-                        likedTracks.map(track => (
-                            <div key={track.id} className="user_info_container">
-                                <div className="user_container">
-                                    <div className="user_avatar_text_container">
-                                        <div className="user_avatar_container">
-                                            <img className="user_avatar_container"  src={getTrackImageUrl(track)} alt={track.title} />
-                                        </div>
-                                        <div className="user_text_container">
-                                            <p>{track.title}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="user_like_moreinfo_container">
-                                        <div className="user_like_style">
-                                            <img
-                                                src={track.isLikedByCurrentUser ? "src/images/icons/like.png" : "src/images/icons/unlike.png"}
-                                                alt="like"
-                                                onClick={() => toggleLike(track)}
-                                                style={{ cursor: "pointer" }}
-                                            />
-                                        </div>
-                                        <div className="user_moreinfo_style">
-                                            <img src="src/images/icons/more_info.png" alt="more info" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
+                {user && (
+                    <ProfilePeoplePanel userId={user.id} isOwn tracksCount={userTracksCount ?? tracks.length}/>
+                )}
             </div>
 
             {/* Tabs */}

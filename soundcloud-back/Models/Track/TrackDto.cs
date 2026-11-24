@@ -33,6 +33,9 @@ namespace soundcloud_back.Models.Track
         // Нове поле: кількість прослуховувань
         public int PlayCount { get; set; }
 
+        // Дата завантаження (для «Топ року»)
+        public DateTime CreatedAt { get; set; }
+
         public List<AlbumDto>? Albums { get; set; } = new List<AlbumDto>();
 
         public int LikesCount { get; set; }              // кількість лайків

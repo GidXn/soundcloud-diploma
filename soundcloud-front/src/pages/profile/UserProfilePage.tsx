@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { userService } from "../../services/userApi.ts";
 import { IUser } from "../../types/user.ts";
 import {followService} from "../../services/followApi.ts";
+import ProfilePeoplePanel from "../../components/people/ProfilePeoplePanel.tsx";
 import {ITrack} from "../../types/track.ts";
 import {trackService} from "../../services/trackApi.ts";
 import share from "../../images/icons/share.png";
@@ -155,7 +156,7 @@ const UserProfilePage: React.FC = () => {
     //для follow
     // Кількість підписників і підписок
     const [followersCount, setFollowersCount] = useState<number>(0);
-    const [followingCount, setFollowingCount] = useState<number>(0);
+    const [, setFollowingCount] = useState<number>(0);
 
     // Чи підписаний поточний користувач на користувача профілю
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
@@ -277,37 +278,12 @@ const UserProfilePage: React.FC = () => {
             </div>
 
 
-            <div className="profile_page_following_tracks_info_container">
-                <div className="followers_container">
-                    <div className="title">
-                        Followers
-                    </div>
-                    <div className="number">
-                        <span>{followersCount}</span>
-                    </div>
-                </div>
-                <div className="following_container">
-                    <div className="title">
-                        Following
-                    </div>
-                    <div className="number">
-                        <span>{followingCount}</span>
-                    </div>
-                </div>
-                <div className="tracks_container">
-                    <div className="title">
-                        Tracks
-                    </div>
-                    <div className="number">
-                        {tracks.length}
-                    </div>
-                </div>
-            </div>
-
             <div className="profile_page_right_sidebar">
                 <div className="profile_page_bio_container">
                     {user?.bio ? <span>{user.bio}</span> : <span>You don’t have bio :(</span>}
                 </div>
+
+                <ProfilePeoplePanel userId={user.id} isOwn={false} tracksCount={tracks.length} followersVersion={followersCount}/>
 
             </div>
 
