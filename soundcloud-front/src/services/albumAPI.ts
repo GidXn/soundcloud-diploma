@@ -69,10 +69,6 @@ export const albumService = {
         await api.post(`/Album/${albumId}/tracks/${trackId}`);
     },
 
-    removeTrack: async (albumId: number, trackId: number) => {
-        await api.delete(`/Album/${albumId}/tracks/${trackId}`);
-    },
-
     // Отримати всі альбоми конкретного користувача
     getAllByUser: async (userId: number): Promise<IAlbum[]> => {
         const res = await api.get<IAlbum[]>(`/album/user/${userId}`);

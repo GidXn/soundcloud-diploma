@@ -17,7 +17,6 @@ import React, {useEffect} from "react";
 import {setUser} from "./store/slices/userSlice.ts";
 import {normalizeUser} from "./utilities/normalizeUser.ts";
 import SetPassword from "./pages/login_signup/SetPassword";
-import { Navigate } from "react-router-dom";
 
 //імпорти для адмінки
 
@@ -33,12 +32,12 @@ import {usePlayerStore} from "./store/player_store.tsx";
 import UserProfilePage from "./pages/profile/UserProfilePage.tsx";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/login_signup/ResetPassword";
-import GenresPage from "./pages/main_pages/GenresPage";
+// import GenresPage from "./pages/main_pages/GenresPage"; // заглушка, роут вимкнено
 import AlbumsCollectionPage from "./pages/main_pages/AlbumsCollectionPage.tsx";
-import ArtistsPage from "./pages/main_pages/ArtistsPage";
-import ChartsPage from "./pages/main_pages/ChartsPage";
-import Top100Page from "./pages/main_pages/Top100Page";
-import RadioPage from "./pages/main_pages/RadioPage";
+// import ArtistsPage from "./pages/main_pages/ArtistsPage"; // заглушка, роут вимкнено
+// import ChartsPage from "./pages/main_pages/ChartsPage"; // заглушка, роут вимкнено
+// import Top100Page from "./pages/main_pages/Top100Page"; // заглушка, роут вимкнено
+// import RadioPage from "./pages/main_pages/RadioPage"; // заглушка, роут вимкнено
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
@@ -93,19 +92,18 @@ export default function App() {
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
 
                     <Route path="/profile" element={<ProfilePage />} />
-                    {/* <Route path="/library" element={<LibraryPage />} />
-                    <Route path="/genres" element={<GenresPage />} /> */}
-                    {/* <Route path="/feed" element={<FeedPage />} /> */}
-                    {/* <Route path="/artists" element={<ArtistsPage />} />
+                    <Route path="/library" element={<LibraryPage />} />
+                    <Route path="/feed" element={<FeedPage />} />
+                    <Route path="/search-page" element={<SearchPage/>}/>
+                    <Route path="/play-album/:id" element={<PlayAlbumPage />} />
+                    <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
+                    <Route path="/user/:id" element={<UserProfilePage />} />
+                    <Route path="/set-password" element={<SetPassword />} />
+                    {/* <Route path="/genres" element={<GenresPage />} />
+                    <Route path="/artists" element={<ArtistsPage />} />
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
                     <Route path="/radio" element={<RadioPage />} /> */}
-
-                    {/* <Route path="/play-album/:id" element={<PlayAlbumPage />} />
-                    <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
-                    <Route path="/user/:id" element={<UserProfilePage />} /> */}
-                    {/* <Route path="/search-page" element={<SearchPage/>}/> */}
-                    {/* <Route path="/set-password" element={<SetPassword />} /> */}
                 </Route>
 
                 {/*  Адмінка (ОКРЕМО, без Layout, Protected to Role 2) */}
@@ -117,7 +115,7 @@ export default function App() {
                     <Route path="users" element={<UsersPage />} />
                     <Route path="tracks" element={<TracksPage />} />
                     <Route path="albums" element={<AlbumsPage />} />
-                    {/* <Route path="categories" element={<CategoriesPage />} /> */}
+                    <Route path="categories" element={<CategoriesPage />} />
                     <Route path="playlists" element={<PlaylistsPage />} />
                     <Route path="admin" element={<AdminPage />} />
                 </Route>

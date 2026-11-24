@@ -31,7 +31,6 @@ const FeedPage: React.FC = ()=> {
     const currentTracks = tracks.slice(indexOfFirstTrack, indexOfLastTrack);
 
     const totalPages = Math.ceil(tracks.length / tracksPerPage);
-    const setCurrentTrack = usePlayerStore(state => state.setCurrentTrack);
     //для лайків
     const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
     useEffect(() => {

@@ -19,7 +19,7 @@ interface PlayerProps {
 export default function Player({ footerSelector }: PlayerProps) {
     const { track, isPlaying, togglePlay,nextTrack,previousTrack } = usePlayerStore();
     const audioRef = usePlayerStore(state => state.audioRef); // глобал
-    const [bottomOffset, setBottomOffset] = useState(0);
+    const [, setBottomOffset] = useState(0);
 
     const [modalOpen, setModalOpen] = useState(false);
     const currentTrack = usePlayerStore(state => state.track);

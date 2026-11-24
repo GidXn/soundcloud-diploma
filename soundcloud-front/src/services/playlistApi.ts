@@ -17,7 +17,7 @@ export const playlistService = {
     },
 
 
-    create: async (dto: ICreatePlaylist): Promise<IPlaylist> => {
+    create: async (dto: ICreatePlaylist | FormData): Promise<IPlaylist> => {
         const { data } = await api.post("/Playlist", dto);
         return data;
     },
@@ -45,10 +45,6 @@ export const playlistService = {
     // --- нові методи для треків у плейліст ---
     addTrack: async (playlistId: number, trackId: number): Promise<void> => {
         await api.post(`/Playlist/${playlistId}/tracks/${trackId}`);
-    },
-
-    removeTrack: async (playlistId: number, trackId: number): Promise<void> => {
-        await api.delete(`/Playlist/${playlistId}/tracks/${trackId}`);
     },
 
     // playlistApi.ts

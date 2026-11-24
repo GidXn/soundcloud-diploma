@@ -57,7 +57,7 @@ const ProfilePage: React.FC = () => {
     // const [selectedPlaylist, setSelectedPlaylist] = useState<IPlaylist | null>(null);
     // const [playlistName, setPlaylistName] = useState("");
     // const [playlistCoverFile, setPlaylistCoverFile] = useState<File | undefined>();
-    const [playlistModalOpen, setPlaylistModalOpen] = useState(false);
+    const [playlistModalOpen] = useState(false);
 
     const [playlistTracks, setPlaylistTracks] = useState<{ [playlistId: number]: ITrack[] |null}>({});
 
@@ -102,11 +102,6 @@ const ProfilePage: React.FC = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
 
-    const handleTrackClick = (track: ITrack) => {
-        setSelectedTrack(track);
-        setIsEditModalOpen(true);
-    };
-
     const handleSaveChanges = async (trackId: number, formData: FormData) => {
         try {
             // Виклик методу з id треку
@@ -135,7 +130,7 @@ const ProfilePage: React.FC = () => {
             if (foundGenre) {
                 setGenreId(foundGenre.id); // тут явно передаємо number
             } else {
-                setGenreId(null); // якщо не знайшли, можна передати null
+                setGenreId(0); // якщо не знайшли
             }
         }
     }, [selectedTrack, genres]);
@@ -501,12 +496,12 @@ const ProfilePage: React.FC = () => {
 
     useEffect(() => {
         if (!isEditModalOpen) {
-            setTitle(null);
+            setTitle("");
             setAlbumId(null);
-            setGenreId(null);
-            setCover(null);
+            setGenreId(0);
+            setCover(undefined);
             setCoverUrl(null);
-            setFile(null);
+            setFile(undefined);
 
             setSelectedTrack(null);
         }
@@ -550,10 +545,10 @@ const ProfilePage: React.FC = () => {
 
     //для follow
     // Кількість підписників і підписок
-    const [followersCount, setFollowersCount] = useState<number>(0);
-    const [followingCount, setFollowingCount] = useState<number>(0);
+    const [, setFollowersCount] = useState<number>(0);
+    const [, setFollowingCount] = useState<number>(0);
 
-    const [followingUsers, setFollowingUsers] = useState<IUserFollow[]>([]);
+    const [, setFollowingUsers] = useState<IUserFollow[]>([]);
 
 
     useEffect(() => {
@@ -601,30 +596,6 @@ const ProfilePage: React.FC = () => {
         fetchFollowingUsers();
     }, [user]);
 
-// 3️⃣ Функція toggleFollow для кнопки
-    const toggleFollow = async (userId: number) => {
-        try {
-            const userToToggle = followingUsers.find(u => u.id === userId);
-            if (!userToToggle) return;
-
-            if (userToToggle.isFollowing) {
-                await followService.unfollow(userId);
-            } else {
-                await followService.follow(userId);
-            }
-
-            // оновлюємо локально стан
-            setFollowingUsers(prev =>
-                prev.map(u =>
-                    u.id === userId ? { ...u, isFollowing: !u.isFollowing } : u
-                )
-            );
-        } catch (error) {
-            console.error("Error toggling follow:", error);
-        }
-    };
-
-
     //лайки
     // окремо зберігаємо саме лайкнуті треки
     const [likedTracks, setLikedTracks] = useState<ITrack[]>([]);
@@ -654,21 +625,6 @@ const ProfilePage: React.FC = () => {
             console.error("Error removing track:", err);
         }
     };
-    const handleRemoveTrackAlbum = async (albumId: number, trackId: number) => {
-        try {
-            await albumService.removeTrack(albumId, trackId);
-            // Можна оновити локальний стан плейліста після видалення
-            setAlbumTracks(prev => ({
-                ...prev,
-                [albumId]: prev[albumId]?.filter(t => t.id !== trackId) || []
-            }));
-        } catch (err) {
-            console.error("Error removing track:", err);
-        }
-    };
-
-
-
     const toggleLike = async (track: ITrack) => {
         try {
             if (track.isLikedByCurrentUser) {
@@ -885,7 +841,7 @@ const ProfilePage: React.FC = () => {
                                                         <img
                                                             src="src/images/player/play_icon.png"
                                                             alt="playIcon"
-                                                            onClick={() => playTrack(playlistTracks[p.id][0], playlistTracks[p.id], p.id)}
+                                                            onClick={() => playlistTracks[p.id]?.[0] && playTrack(playlistTracks[p.id]![0], playlistTracks[p.id] ?? undefined, p.id)}
                                                         />
                                                     )}
                                                 </div>
@@ -902,7 +858,7 @@ const ProfilePage: React.FC = () => {
                                                                 src={getTrackImageUrl(t)}
                                                                 alt={t.title}
                                                                 className="profile_page_tracks_image_style"
-                                                                onClick={() => playTrack(t, playlistTracks[p.id], p.id)}
+                                                                onClick={() => playTrack(t, playlistTracks[p.id] ?? undefined, p.id)}
                                                             />
                                                             <div
                                                                 className={`profile_page_track_info_title_style txt_style 
@@ -1142,7 +1098,7 @@ const ProfilePage: React.FC = () => {
                                                         <img
                                                             src="src/images/player/play_icon.png"
                                                             alt="playIcon"
-                                                            onClick={() => playTrack(playlistTracks[p.id][0], playlistTracks[p.id], p.id)}
+                                                            onClick={() => playlistTracks[p.id]?.[0] && playTrack(playlistTracks[p.id]![0], playlistTracks[p.id] ?? undefined, p.id)}
                                                         />
                                                     )}
                                                 </div>
@@ -1159,7 +1115,7 @@ const ProfilePage: React.FC = () => {
                                                                 src={getTrackImageUrl(t)}
                                                                 alt={t.title}
                                                                 className="profile_page_tracks_image_style"
-                                                                onClick={() => playTrack(t, playlistTracks[p.id], p.id)}
+                                                                onClick={() => playTrack(t, playlistTracks[p.id] ?? undefined, p.id)}
                                                             />
                                                             <div
                                                                 className={`profile_page_track_info_title_style txt_style 
@@ -1401,7 +1357,7 @@ const ProfilePage: React.FC = () => {
                                             </div>
                                             <div className="delete_track_container cursor-pointer">
                                                 <img src="src/images/icons/close_icon.png"
-                                                onClick={()=>setFile(0)}
+                                                onClick={()=>setFile(undefined)}
                                                 />
                                             </div>
                                         </div>
@@ -1495,7 +1451,7 @@ const ProfilePage: React.FC = () => {
                                     <span className="txt_style">Genre</span>
                                     <select
                                         value={genreId ?? ""}
-                                        onChange={(e) => setGenreId(e.target.value)}
+                                        onChange={(e) => setGenreId(Number(e.target.value))}
                                         className="input_upload_track_container"
                                     >
                                     <option value="">None (no Genre)</option>
@@ -1528,7 +1484,7 @@ const ProfilePage: React.FC = () => {
                                         </div>
                                         <div className="delete_track_container cursor-pointer">
                                             <img src="src/images/icons/close_icon.png"
-                                                 onClick={()=>setFileUrl(0)}
+                                                 onClick={()=>setFileUrl("")}
                                             />
                                         </div>
                                     </div>

@@ -40,17 +40,8 @@ const UserProfilePage: React.FC = () => {
     const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<{ [playlistId: number]: ITrack[] }>({});
 
-    //Edit track
-    const [selectedTrack, setSelectedTrack] = useState<ITrack | null>(null);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-
     const playTrack = usePlayerStore(state => state.playTrack);
     const pauseTrack = usePlayerStore((state) => state.pauseTrack);
-
-    const handleTrackClick = (track: ITrack) => {
-        setSelectedTrack(track);
-        setIsEditModalOpen(true);
-    };
 
     const { track: currentTrack, isPlaying,currentAlbumId } = usePlayerStore();
     console.log(tracks);
@@ -341,7 +332,7 @@ const UserProfilePage: React.FC = () => {
 
             <div className="profile_page_user_button_controls">
                 <button className="share_button cursor-pointer"
-                        onClick={()=>setIsModalOpen(true)}>
+                        onClick={()=>navigator.clipboard?.writeText(window.location.href)}>
                     <img className="img_style" src={share} alt="shareIcon"/>
                     <span className="txt_style">Share</span>
                 </button>

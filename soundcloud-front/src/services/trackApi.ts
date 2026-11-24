@@ -1,9 +1,7 @@
 import { ITrack } from "../types/track";
-import { IAlbum } from "../types/album";
 import api from "../utilities/axiosInstance";
 import axios from "axios";
 import { TokenService } from "../utilities/tokenService.ts";
-import { albumService } from "./albumAPI.ts";
 
 const API_URL = "http://localhost:5122/api";
 
@@ -57,7 +55,7 @@ export const trackService = {
     // Створити новий трек (усі поля обов'язкові)
     async createTrack(
         title: string,
-        albumId?: number | null,
+        albumId: number | null | undefined,
         file: File,
         cover: File,
         genreId: number

@@ -12,7 +12,6 @@ import {getCurrentUser} from "../../services/User/user_info.ts";
 import people from "../../images/search_bar/people.png";
 import white_arrow_down from "../../images/icons/white_arrow_down.png";
 import profile from "../../images/icons/profile.png";
-import search from "../../images/search_bar/search.png";
 import logout2 from "../../images/icons/logout.png";
 
 
@@ -72,7 +71,13 @@ const Header: React.FC = () => {
                                              alt="search"/>
                                         <input type="text"
                                                placeholder="Search"
-                                               className="search_input_home_page"/>
+                                               className="search_input_home_page"
+                                               onKeyDown={(e) => {
+                                                   const value = e.currentTarget.value.trim();
+                                                   if (e.key === "Enter" && value) {
+                                                       navigate(`/search-page?q=${encodeURIComponent(value)}`);
+                                                   }
+                                               }}/>
                                     </div>
                                 </div>
 
