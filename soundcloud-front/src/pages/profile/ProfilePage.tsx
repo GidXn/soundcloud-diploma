@@ -398,7 +398,9 @@ const ProfilePage: React.FC = () => {
             try {
                 const results = await Promise.all(
                     playlists.map(async (pl) => {
-                        const tracks = await playlistService.getTracks(pl.id);
+                        // The API answers 404 for an empty playlist: treat it as no tracks
+                        // instead of failing the whole profile
+                        const tracks = await playlistService.getTracks(pl.id).catch(() => []);
                         return { id: pl.id, tracks };
                     })
                 );
@@ -411,7 +413,6 @@ const ProfilePage: React.FC = () => {
                 setPlaylistTracks(tracksByPlaylist);
             } catch (err) {
                 console.error("Failed to load all tracks", err);
-                alert("Failed to load playlist tracks");
             }
         };
 

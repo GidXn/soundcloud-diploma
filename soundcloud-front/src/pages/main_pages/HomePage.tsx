@@ -87,8 +87,8 @@ const PromoRow: React.FC = () => {
                     <img key={src} className="home_promo_banner" src={src} alt="" />
                 ))}
             </div>
-            <ChevronButton dir="left" className="home_promo_arrow" style={{ left: edges.left - 28 }} onClick={() => scroll(-1)} />
-            <ChevronButton dir="right" className="home_promo_arrow" style={{ right: edges.right - 25 }} onClick={() => scroll(1)} />
+            <ChevronButton dir="left" className="home_promo_arrow" style={{ left: Math.max(4, edges.left - 28) }} onClick={() => scroll(-1)} />
+            <ChevronButton dir="right" className="home_promo_arrow" style={{ right: Math.max(4, edges.right - 25) }} onClick={() => scroll(1)} />
         </section>
     );
 };

@@ -862,3 +862,90 @@
     .reset_password_button,
     .reset_password_subtitle { width: 100%; }
 }
+
+/* =====================================================================
+   Pages rebuilt from Figma after the responsive layer was written
+   (shared page grid, track list, Home rows, Albums grid).
+   Desktop sizes stay as in the 1920px frames; narrower screens get
+   fewer columns and smaller gutters instead of horizontal scrolling.
+   ===================================================================== */
+@media (max-width: 1440px) {
+    .detail_track_body { grid-template-columns: minmax(0, 1fr) 200px 200px 109px; }
+}
+
+@media (max-width: 1279px) {
+    .page_grid, .catalog_page, .support_page, .subscribe_page {
+        --page-pl: var(--rs-gutter);
+        --page-pr: var(--rs-gutter);
+    }
+    .header_container_main { padding: 0; }
+
+    .detail_track_body { grid-template-columns: minmax(0, 1fr) 160px 140px 100px; }
+
+    .home_charts { --home-cols: 3; }
+    .home_albums, .home_artists, .home_mood { --home-cols: 4; }
+    .home_radio { --home-cols: 6; }
+    .home_popular_grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .albums_grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .home_row .detail_carousel_arrow.left { left: -12px; }
+    .home_row .detail_carousel_arrow.right { right: -12px; }
+}
+
+@media (max-width: 900px) {
+    /* author and genre move under the title */
+    .detail_track_body { grid-template-columns: minmax(0, 1fr) 140px 100px; }
+    .detail_track_genre { display: none; }
+    .home_promo_banner { flex-basis: 560px; width: 560px; height: 175px; }
+    .home_page .home_promo .detail_carousel_arrow.home_promo_arrow { top: 57px; }
+}
+
+@media (max-width: 640px) {
+    .detail_track_body { grid-template-columns: minmax(0, 1fr) 80px; padding-right: 0; }
+    .detail_track_author { display: none; }
+    .detail_track_end { gap: 12px; justify-content: flex-end; }
+
+    .catalog_title { font-size: 28px; line-height: 36px; }
+    .detail_section_title { font-size: 24px; line-height: 30px; }
+
+    .home_charts { --home-cols: 1.6; }
+    .home_albums, .home_artists, .home_mood { --home-cols: 2.4; --home-gap: 16px; }
+    .home_radio { --home-cols: 4.4; --home-gap: 12px; }
+    .home_popular_grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 16px; }
+    .home_popular_controls { gap: 16px; }
+    .home_links { flex-direction: column; gap: 12px; }
+    .albums_grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    /* swipe instead of arrows on touch screens */
+    .home_row .detail_carousel_arrow,
+    .home_page .home_promo .detail_carousel_arrow.home_promo_arrow { display: none; }
+    .home_promo_banner { flex-basis: 300px; width: 300px; height: 94px; }
+    .home_promo_track { gap: 12px; }
+}
+
+/* Subscribe: the 1535px plan row wraps when the column is narrower */
+@media (max-width: 1800px) {
+    .subscribe_plans { width: auto; max-width: 100%; flex-wrap: wrap; padding: 0; }
+}
+
+/* Album / track / playlist hero: cover above the info on narrow screens */
+@media (max-width: 900px) {
+    .detail_hero_row { gap: 32px; }
+    .detail_cover { width: 240px; height: 240px; }
+}
+@media (max-width: 640px) {
+    .detail_hero_row { flex-direction: column; align-items: flex-start; }
+    .detail_cover { width: 100%; height: auto; aspect-ratio: 1; }
+    .detail_info { min-width: 0; max-width: 100%; }
+    .detail_actions { flex-wrap: wrap; }
+    .subscribe_promo_form { flex-wrap: wrap; }
+    .subscribe_promo_input { width: 100%; }
+    .subscribe_card { flex: 1 1 100%; }
+}
+
+/* Carousel arrows sit half outside the row on desktop; keep them inside the gutter */
+@media (max-width: 1279px) {
+    .detail_carousel_arrow.left { left: -16px; }
+    .detail_carousel_arrow.right { right: -16px; }
+}
+@media (max-width: 640px) {
+    .detail_carousel_arrow:not(.static) { display: none; }
+}
