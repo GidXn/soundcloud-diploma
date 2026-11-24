@@ -143,6 +143,7 @@ const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, follo
                                     key={u.id}
                                     className="people_stack_avatar"
                                     src={avatarUrl(u.avatarUrl)}
+                                    referrerPolicy="no-referrer"
                                     alt={u.username}
                                     title={u.username}
                                     onClick={() => openUser(u)}
@@ -162,7 +163,7 @@ const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, follo
                         {following.slice(0, FOLLOWING_PREVIEW).map((u) => (
                             <div key={u.id} className="people_following_row">
                                 <button className="people_following_user" onClick={() => openUser(u)}>
-                                    <img className="people_following_avatar" src={avatarUrl(u.avatarUrl)} alt="" />
+                                    <img className="people_following_avatar" src={avatarUrl(u.avatarUrl)} referrerPolicy="no-referrer" alt="" />
                                     <span className="people_following_text">
                                         <span className="people_following_name">{u.username}</span>
                                         <span className="people_following_count">

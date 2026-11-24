@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux";
+import { avatarUrl } from "../../components/people/peopleUtils";
 import { RootState } from "../../store/store";
 import React, {useEffect, useRef, useState} from 'react';
 import {ITrack} from "../../types/track";
@@ -54,8 +55,7 @@ const FeedPage: React.FC = ()=> {
             .catch((err) => console.error(err));
     }, []);
     const getUserAvatarUrl = (user: IUser) => {
-        if (!user.avatar) return "/default-cover.png"; // fallback image
-        return `http://localhost:5122${user.avatar}`;
+        return avatarUrl(user.avatar);
     };
     const [users, setUsers] = useState<IUser[]>([]);
 

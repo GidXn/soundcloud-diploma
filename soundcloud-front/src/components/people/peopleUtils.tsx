@@ -3,7 +3,7 @@ import { API_ORIGIN } from "../catalog/catalogUtils";
 
 // User avatar: full URL, relative path from the backend, or a placeholder
 export const avatarUrl = (path?: string | null): string => {
-    if (!path) return "/default-cover.png";
+    if (!path) return "/default-avatar.svg";
     if (path.startsWith("http")) return path;
     return path.startsWith("/") ? `${API_ORIGIN}${path}` : `${API_ORIGIN}/${path}`;
 };

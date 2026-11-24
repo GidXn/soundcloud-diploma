@@ -353,16 +353,26 @@ button.people_stat:hover .people_stat_value { color: #D786FF; }
     height: 51px;
     border: 0;
     border-radius: 10px;
-    background: linear-gradient(90deg, #6D28D9 0%, #1D4ED8 100%);
+    /* Design: Frame 1373, «gradien» at 30% + glass 15 */
+    background: linear-gradient(107deg, rgba(109, 40, 217, 0.3) 0%, rgba(29, 78, 216, 0.3) 100%);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     color: #FFF;
     font-family: "Space Grotesk", sans-serif;
     font-size: 20px;
     line-height: 26px;
     cursor: pointer;
-    transition: filter 0.15s ease;
+    transition: background 0.15s ease;
 }
 
-.hdr_get_pro:hover { filter: brightness(1.15); }
+.hdr_get_pro:hover {
+    background: linear-gradient(107deg, rgba(109, 40, 217, 0.5) 0%, rgba(29, 78, 216, 0.5) 100%);
+}
+
+.hdr_get_pro:focus-visible {
+    outline: 2px solid #D786FF;
+    outline-offset: 2px;
+}
 
 .hdr_actions {
     display: flex;

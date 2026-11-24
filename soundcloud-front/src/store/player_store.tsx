@@ -14,6 +14,9 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
     history: [],
     audioRef: createRef<HTMLAudioElement>(), // 🔹 add a global ref
     volume: 1, // default volume
+    shuffle: false,
+
+    toggleShuffle: () => set({ shuffle: !get().shuffle }),
 
     setVolume: (volume: number) => {
         set({ volume });
@@ -151,9 +154,14 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
         }
     },
     nextTrack: () => {
-        const { playlist, currentIndex } = get();
+        const { playlist, currentIndex, shuffle } = get();
         if (!playlist || playlist.length === 0) return;
-        const nextIndex = (currentIndex + 1) % playlist.length;
+        let nextIndex = (currentIndex + 1) % playlist.length;
+        if (shuffle && playlist.length > 1) {
+            // random track, but never the same one again
+            nextIndex = Math.floor(Math.random() * (playlist.length - 1));
+            if (nextIndex >= currentIndex) nextIndex += 1;
+        }
         const track = playlist[nextIndex];
         set({ track, currentIndex: nextIndex, isPlaying: true });
         get().addToHistory(track);

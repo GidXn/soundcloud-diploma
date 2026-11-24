@@ -11,6 +11,7 @@ export interface PlayerContextType {
     currentAlbumId: number | null; // always present, can be null
     audioRef: RefObject<HTMLAudioElement | null>;
     volume: number; // new field
+    shuffle: boolean;
 
     playTrack: (track: ITrack, playlist?: ITrack[], albumId?: number | null) => void;
     playAlbum: (album: IAlbum, tracks?: ITrack[]) => void;
@@ -23,5 +24,6 @@ export interface PlayerContextType {
     initHistory:()=>void;
     clearTrack: () => void;
     setVolume: (volume: number) => void; // new method
+    toggleShuffle: () => void;
     setCurrentTrack: (track: ITrack | null) => void;
 }

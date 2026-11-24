@@ -73,7 +73,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     return (
         <div className="hdr_user" ref={ref}>
             <button className="hdr_user_trigger" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="User menu">
-                <img className="hdr_user_avatar" src={avatarUrl(user?.avatar)} alt="" />
+                <img className="hdr_user_avatar" src={avatarUrl(user?.avatar)} referrerPolicy="no-referrer" alt="" />
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden
                      style={{ transform: open ? "rotate(180deg)" : undefined, transition: "transform .15s" }}>
                     <path d="M6 9l6 6 6-6" stroke="#FFF" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -91,7 +91,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                         </button>
                     </div>
                     <div className="user_menu_profile">
-                        <img className="user_menu_avatar" src={avatarUrl(user?.avatar)} alt="" />
+                        <img className="user_menu_avatar" src={avatarUrl(user?.avatar)} referrerPolicy="no-referrer" alt="" />
                         <span className="user_menu_name">{user?.username}</span>
                     </div>
 

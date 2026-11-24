@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from "react";
+import { avatarUrl } from "../../components/people/peopleUtils";
 import ProfilePeoplePanel from "../../components/people/ProfilePeoplePanel.tsx";
 import { trackService } from "../../services/trackApi";
 import { ITrack } from "../../types/track";
@@ -266,11 +267,7 @@ const ProfilePage: React.FC = () => {
         return `http://localhost:5122/${album.coverUrl}`;
     };
     const getUserImageUrl = (user?: IUser | null) => {
-        if (!user?.avatar) return "/default-cover.png";
-    
-        return user.avatar.startsWith("http")
-            ? user.avatar
-            : `http://localhost:5122/${user.avatar}`;
+        return avatarUrl(user?.avatar);
     };
     const getUserBannerUrl = (user?: IUser | null) => {
         if (!user || !user.banner) return "src/images/profile/banner.png";
@@ -691,7 +688,7 @@ const ProfilePage: React.FC = () => {
                 </span>
             </button>
             <div className="profile_page_user_avatar_container" >
-                <img className="profile_page_user_avatar_style " src={getUserImageUrl(user)} alt="Avatar"/>
+                <img className="profile_page_user_avatar_style " src={getUserImageUrl(user)} referrerPolicy="no-referrer" alt="Avatar"/>
             </div>
             <div className="profile_page_user_name_container">
                 {user?.username}
@@ -1508,7 +1505,7 @@ const ProfilePage: React.FC = () => {
                                 {avatar ? (
                                     <img className="img_style" src={URL.createObjectURL(avatar)} alt="UserImage"/>
                                 ) : (
-                                    <img className="img_style" src={getUserImageUrl(user)} alt="UserImage"/>
+                                    <img className="img_style" src={getUserImageUrl(user)} referrerPolicy="no-referrer" alt="UserImage"/>
                                 )}
 
                                 <button className="button_container cursor-pointer">
@@ -1618,7 +1615,7 @@ const ProfilePage: React.FC = () => {
                                 />
                             )}
                             <div className="profile_page_modal_banner_user_avatar">
-                                <img className="img_style" src={getUserImageUrl(user)}
+                                <img className="img_style" src={getUserImageUrl(user)} referrerPolicy="no-referrer"
                                      alt="UserAvatar"/>
                             </div>
                             <div className="profile_page_modal_banner_avatar_container">
