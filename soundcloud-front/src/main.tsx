@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
+// Адаптив (планшет / телефон) — імпортується останнім, щоб перекривати стилі сторінок
+import './styles/responsive.css';
 import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";

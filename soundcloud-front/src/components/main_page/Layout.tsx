@@ -4,6 +4,7 @@ import Header from "./Header.tsx";
 import Footer from "./Footer.tsx";
 import Sidebar from "./Sidebar.tsx";
 import Player from "../player/Player.tsx";
+import MobileTabBar from "./MobileTabBar.tsx";
 import "../../styles/General.css";
 import "../../index.css";
 
@@ -51,6 +52,7 @@ const Layout: React.FC = () => {
                     </div>
                     <Player footerSelector=".footer_container" />
                 </div>
+                <MobileTabBar />
             </div>
         </>
     );
