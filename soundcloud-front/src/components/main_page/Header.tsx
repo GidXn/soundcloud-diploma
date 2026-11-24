@@ -70,8 +70,7 @@ const Header: React.FC = () => {
 
                                 {/* Права частина шапки з макету: Get Pro, тема, сповіщення, меню користувача */}
                                 <div className="hdr_right">
-                                    {/* Сторінки Pro ще немає — кнопка поки нікуди не веде */}
-                                    <button className="hdr_get_pro" title="Скоро">
+                                    <button className="hdr_get_pro" onClick={() => navigate("/subscribe")}>
                                         <img src="/inside/tabler-crown.svg" alt="" width={24} height={24}/>
                                         <span>Get Pro</span>
                                     </button>

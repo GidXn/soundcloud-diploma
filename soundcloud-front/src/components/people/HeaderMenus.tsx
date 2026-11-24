@@ -96,8 +96,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                     </div>
 
                     <div className="user_menu_items">
-                        {/* Сторінки Pro ще немає — кнопка поки нікуди не веде */}
-                        <button className="user_menu_pro" role="menuitem" title="Скоро">
+                        <button className="user_menu_pro" role="menuitem" onClick={() => go("/subscribe")}>
                             <CrownIcon size={18} />
                             <span>Pro subscribe</span>
                         </button>
