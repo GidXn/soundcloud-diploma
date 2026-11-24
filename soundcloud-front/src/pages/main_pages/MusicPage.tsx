@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { ITrack } from "../../types/track";
 import { trackService } from "../../services/trackApi.ts";
 import { usePlayerStore } from "../../store/player_store.tsx";
@@ -8,6 +9,8 @@ const MusicPage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
 
     const playTrack = usePlayerStore(state => state.playTrack);
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -89,7 +92,7 @@ const MusicPage: React.FC = () => {
                         <div className="trackImageWrapper">
                             <img className="trackCover" src={getTrackImageUrl(track)} alt={""}/>
                             <div className="trackHeader">
-                                <div className="trackName">{track.title}</div>
+                                <div className="trackName" onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}>{track.title}</div>
                             </div>
                         </div>
                         <div className="trackMeta">

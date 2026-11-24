@@ -1,37 +1,20 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ITrack } from "../../types/track";
 import { trackService } from "../../services/trackApi";
-import { usePlayerStore } from "../../store/player_store";
-import { groupTracks, trackImageUrl } from "../../components/catalog/catalogUtils";
+import { buildArtists, CatalogArtist } from "../../components/catalog/catalogUtils";
+import { artistLink } from "../../components/detail/DetailParts";
 import Pagination from "../../components/catalog/Pagination";
 import RadioBanner, { NrjLogo } from "../../components/catalog/RadioBanner";
 import "../../styles/main_pages/catalog/layout.css";
 
 const PAGE_SIZE = 42; // 7 рядів по 6, як у макеті
 
-// Локальні фото артистів з /public/artists (ключ — ім'я без пробілів, у нижньому регістрі)
-const LOCAL_PHOTOS: Record<string, string> = {
-    drevo: "/artists/Drevo.png",
-    klavdiapetrivna: "/artists/KlavdiaPetrivna.png",
-    maxbarskih: "/artists/MaxBarskih.png",
-    rammstein: "/artists/Rammstein.png",
-    skryabin: "/artists/Skryabin.jpg",
-    volkanov: "/artists/Volkanov.png",
-    yaktak: "/artists/Yaktak.png",
-};
-
-interface Artist {
-    name: string;
-    tracks: ITrack[];
-    photo: string;
-    plays: number;
-}
-
 const ArtistsPage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const playTrack = usePlayerStore((s) => s.playTrack);
+    const navigate = useNavigate();
 
     useEffect(() => {
         trackService.getAll()
@@ -40,21 +23,7 @@ const ArtistsPage: React.FC = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    // Артисти = унікальні автори треків, від найпопулярніших
-    const artists: Artist[] = useMemo(() => {
-        const list: Artist[] = [];
-        groupTracks(tracks, (t) => t.author).forEach((items, name) => {
-            const key = name.replace(/\s+/g, "").toLowerCase();
-            const withCover = items.find((t) => t.imageUrl);
-            list.push({
-                name,
-                tracks: items,
-                photo: LOCAL_PHOTOS[key] || trackImageUrl(withCover),
-                plays: items.reduce((sum, t) => sum + (t.playCount || 0), 0),
-            });
-        });
-        return list.sort((a, b) => b.plays - a.plays);
-    }, [tracks]);
+    const artists: CatalogArtist[] = useMemo(() => buildArtists(tracks), [tracks]);
 
     const totalPages = Math.max(1, Math.ceil(artists.length / PAGE_SIZE));
     const visible = artists.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -73,7 +42,7 @@ const ArtistsPage: React.FC = () => {
                     <button
                         key={artist.name}
                         className="artist_card"
-                        onClick={() => playTrack(artist.tracks[0], artist.tracks)}
+                        onClick={() => navigate(artistLink(artist.name))}
                         title={`${artist.name}: ${artist.tracks.length} треків`}
                     >
                         <img

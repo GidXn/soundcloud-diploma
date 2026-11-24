@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import { useNavigate } from "react-router-dom";
 
 import "../../styles/main_pages/home_page/layout.css"
 import {trackService} from "../../services/trackApi.ts";
@@ -14,9 +15,10 @@ const HomePage: React.FC = () => {
     const [albums, setAlbums] = useState<IAlbum[]>([]);
 
     const playTrack = usePlayerStore(state => state.playTrack);
-    const playAlbum = usePlayerStore(state => state.playAlbum);
 
-    const [albumTracks, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({});
+    const navigate = useNavigate();
+
+    const [, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({}); // треки альбому тепер на сторінці /album/:id
 
     useEffect(() => {
         albumService.getAllAlbums()
@@ -122,7 +124,7 @@ const HomePage: React.FC = () => {
                                 className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
-                                onClick={() => playAlbum(album, albumTracks[album.id] || [])}
+                                onClick={() => navigate(`/album/${album.id}`)}
                             />
                             <div className="albumInfo">
                                 <span className="albumTitle baloo2">
@@ -152,7 +154,7 @@ const HomePage: React.FC = () => {
                         <div className="trackImageWrapper">
                             <img className="trackCover" src={getTrackImageUrl(track)} alt={""}/>
                             <div className="trackHeader">
-                                <div className="trackName">{track.title}</div>
+                                <div className="trackName" onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}>{track.title}</div>
                             </div>
                         </div>
                         <div className="trackMeta">
@@ -188,7 +190,7 @@ const HomePage: React.FC = () => {
                                 className="albumImage"
                                 src={getAlbumImageUrl(album)}
                                 alt=""
-                                onClick={() => playAlbum(album, albumTracks[album.id] || [])}
+                                onClick={() => navigate(`/album/${album.id}`)}
                             />
                             <div className="albumInfo">
                     <span className="albumTitle baloo2">

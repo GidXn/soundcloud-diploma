@@ -38,6 +38,10 @@ import ArtistsPage from "./pages/main_pages/ArtistsPage";
 import ChartsPage from "./pages/main_pages/ChartsPage";
 import Top100Page from "./pages/main_pages/Top100Page";
 import RadioPage from "./pages/main_pages/RadioPage";
+import TrackPage from "./pages/detail/TrackPage";
+import { AlbumPage, ChartPage } from "./pages/detail/AlbumPage";
+import ArtistPage from "./pages/detail/ArtistPage";
+import GenrePage from "./pages/detail/GenrePage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
@@ -104,6 +108,11 @@ export default function App() {
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
                     <Route path="/radio" element={<RadioPage />} />
+                    <Route path="/track/:id" element={<TrackPage />} />
+                    <Route path="/album/:id" element={<AlbumPage />} />
+                    <Route path="/chart/:id" element={<ChartPage />} />
+                    <Route path="/artist/:name" element={<ArtistPage />} />
+                    <Route path="/genre/:name" element={<GenrePage />} />
                 </Route>
 
                 {/*  Адмінка (ОКРЕМО, без Layout, Protected to Role 2) */}

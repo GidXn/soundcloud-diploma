@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IGenre } from "../../types/genre";
 import { ITrack } from "../../types/track";
 import { genreService } from "../../services/genreApi";
 import { trackService } from "../../services/trackApi";
-import { usePlayerStore } from "../../store/player_store";
+import { genreLink } from "../../components/detail/DetailParts";
 import { groupTracks, trackImageUrl } from "../../components/catalog/catalogUtils";
 import "../../styles/main_pages/catalog/layout.css";
 
@@ -17,7 +18,7 @@ const GenresPage: React.FC = () => {
     const [genres, setGenres] = useState<IGenre[]>([]);
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const [loading, setLoading] = useState(true);
-    const playTrack = usePlayerStore((s) => s.playTrack);
+    const navigate = useNavigate();
 
     useEffect(() => {
         Promise.all([genreService.getGenres(), trackService.getAll()])
@@ -34,10 +35,7 @@ const GenresPage: React.FC = () => {
         [tracks]
     );
 
-    const playGenre = (genre: IGenre) => {
-        const list = tracksByGenre.get(genre.name.toLowerCase()) || [];
-        if (list.length > 0) playTrack(list[0], list);
-    };
+    const playGenre = (genre: IGenre) => navigate(genreLink(genre.name));
 
     return (
         <main className="catalog_page">

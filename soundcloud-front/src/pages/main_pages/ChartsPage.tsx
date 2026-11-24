@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IAlbum } from "../../types/album";
 import { albumService } from "../../services/albumAPI";
-import { usePlayerStore } from "../../store/player_store";
 import { mediaUrl } from "../../components/catalog/catalogUtils";
 import Pagination from "../../components/catalog/Pagination";
 import "../../styles/main_pages/catalog/layout.css";
@@ -13,7 +13,7 @@ const ChartsPage: React.FC = () => {
     const [albums, setAlbums] = useState<IAlbum[]>([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
-    const playAlbum = usePlayerStore((s) => s.playAlbum);
+    const navigate = useNavigate();
 
     useEffect(() => {
         albumService.getAllAlbums()
@@ -22,14 +22,7 @@ const ChartsPage: React.FC = () => {
             .finally(() => setLoading(false));
     }, []);
 
-    const openChart = async (album: IAlbum) => {
-        try {
-            const tracks = await albumService.getTracks(album.id);
-            playAlbum(album, tracks);
-        } catch (err) {
-            console.error("Failed to load chart tracks", err);
-        }
-    };
+    const openChart = (album: IAlbum) => navigate(`/chart/${album.id}`);
 
     const totalPages = Math.max(1, Math.ceil(albums.length / PAGE_SIZE));
     const visible = albums.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);

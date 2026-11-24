@@ -1,4 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { ITrack } from "../../types/track";
 import { trackService } from "../../services/trackApi";
 import { usePlayerStore } from "../../store/player_store";
@@ -22,6 +23,7 @@ const Top100Page: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const playTrack = usePlayerStore((s) => s.playTrack);
     const current = usePlayerStore((s) => s.track);
+    const navigate = useNavigate();
 
     useEffect(() => {
         trackService.getAll()
@@ -72,7 +74,12 @@ const Top100Page: React.FC = () => {
                         onClick={() => playTrack(track, top)}
                     >
                         <img className="top_cover" src={trackImageUrl(track)} alt="" />
-                        <span className="top_title">{track.title}</span>
+                        <span
+                            className="top_title"
+                            onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}
+                        >
+                            {track.title}
+                        </span>
                         <span className="top_author">{track.author}</span>
                         <span className="top_genre">{track.genre}</span>
                         <button
