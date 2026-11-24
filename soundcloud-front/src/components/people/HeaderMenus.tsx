@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IUser } from "../../types/user";
 import { trackService } from "../../services/trackApi";
 import {
-    avatarUrl, CloseIcon, CrownIcon, HeartIcon, LogoutIcon, PeopleIcon, PersonIcon, SunIcon,
+    avatarUrl, CloseIcon, CrownIcon, FeedIcon, LibraryIcon, HeartIcon, LogoutIcon, PeopleIcon, PersonIcon, SunIcon,
 } from "./peopleUtils";
 import "../../styles/main_pages/people/layout.css";
 
@@ -105,6 +105,13 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                         </button>
                         <button className="user_menu_item" role="menuitem" onClick={() => go("/following")}>
                             <PeopleIcon size={18} /><span>Following</span>
+                        </button>
+                        {/* Library і Feed немає в макеті меню — додані, щоб сторінки мали вхід */}
+                        <button className="user_menu_item" role="menuitem" onClick={() => go("/library")}>
+                            <LibraryIcon size={18} /><span>Library</span>
+                        </button>
+                        <button className="user_menu_item" role="menuitem" onClick={() => go("/feed")}>
+                            <FeedIcon size={18} /><span>Feed</span>
                         </button>
                         <button className="user_menu_item user_menu_item_wide" role="menuitem" onClick={() => go("/favorite")}>
                             <span className="user_menu_item_main"><HeartIcon size={18} /><span>Favorite</span></span>

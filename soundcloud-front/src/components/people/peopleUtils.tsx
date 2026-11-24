@@ -85,3 +85,16 @@ export const PlayTriangle: React.FC<IconProps> = ({ size = 13, color = "#D9D9D9"
         <path d="M2.5 1.2L11.5 6.5L2.5 11.8z" fill={color} />
     </svg>
 );
+
+export const LibraryIcon: React.FC<IconProps> = ({ size = 18, color = "#FFF" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <path d="M4 4v16M9 4v16M14 5l5 14.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+);
+
+export const FeedIcon: React.FC<IconProps> = ({ size = 18, color = "#FFF" }) => (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
+        <rect x="4" y="4" width="16" height="16" rx="3" stroke={color} strokeWidth="1.5" />
+        <path d="M8 9h8M8 12.5h8M8 16h5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+);
