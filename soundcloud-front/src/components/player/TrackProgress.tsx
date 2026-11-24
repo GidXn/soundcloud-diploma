@@ -4,13 +4,22 @@ import { ITrack } from "../../types/track";
 interface TrackProgressProps {
     audioRef: React.RefObject<HTMLAudioElement | null>;
     track: ITrack;
+    // Controls rendered right after the time label (design: Frame 292)
+    children?: React.ReactNode;
 }
 
-export const TrackProgress: React.FC<TrackProgressProps> = ({ audioRef, track }) => {
+const formatTime = (time: number) => {
+    if (!Number.isFinite(time) || time < 0) time = 0;
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+};
+
+// Progress line (white track + gradient fill + 14px thumb) and the time label.
+export const TrackProgress: React.FC<TrackProgressProps> = ({ audioRef, track, children }) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
 
-    // progress calculation
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     useEffect(() => {
@@ -22,13 +31,14 @@ export const TrackProgress: React.FC<TrackProgressProps> = ({ audioRef, track })
 
         audio.addEventListener("timeupdate", updateTime);
         audio.addEventListener("loadedmetadata", setAudioDuration);
+        audio.addEventListener("durationchange", setAudioDuration);
 
-        // If the track is already loaded, set it right away duration
         if (audio.readyState >= 1) setAudioDuration();
 
         return () => {
             audio.removeEventListener("timeupdate", updateTime);
             audio.removeEventListener("loadedmetadata", setAudioDuration);
+            audio.removeEventListener("durationchange", setAudioDuration);
         };
     }, [track, audioRef]);
 
@@ -40,30 +50,28 @@ export const TrackProgress: React.FC<TrackProgressProps> = ({ audioRef, track })
         setCurrentTime(newTime);
     };
 
-    const formatTime = (time: number) => {
-        const minutes = Math.floor(time / 60);
-        const seconds = Math.floor(time % 60);
-        return `${minutes}:${seconds.toString().padStart(2, "0")}`;
-    };
-
     return (
         <>
-            <div className="track_duration_first_time_container">
-                {formatTime(currentTime)}
-            </div>
-            <div>
+            <div className="player_progress">
                 <input
                     type="range"
                     min={0}
-                    max={duration}
+                    max={duration || 0}
+                    step={0.1}
                     value={currentTime}
-                    className="track_duration_input"
+                    className="player_range player_range_progress"
                     onChange={handleSeek}
+                    aria-label="Seek"
+                    aria-valuetext={`${formatTime(currentTime)} of ${formatTime(duration)}`}
+                    title={`${formatTime(currentTime)} / ${formatTime(duration)}`}
                     style={{ "--val": `${progressPercent}%` } as React.CSSProperties}
                 />
             </div>
-            <div className="track_duration_second_time_container">
-                {formatTime(duration)}
+            <div className="player_time_group">
+                <span className="player_time" title={`${formatTime(currentTime)} / ${formatTime(duration)}`}>
+                    {currentTime > 0 ? formatTime(currentTime) : formatTime(duration)}
+                </span>
+                {children}
             </div>
         </>
     );

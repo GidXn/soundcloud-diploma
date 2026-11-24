@@ -324,7 +324,7 @@ namespace soundcloud_back.Services
             {
                 if (u.IsBlocked) throw new UnauthorizedAccessException("User is blocked");
                 bool dirty = false;
-                if (!string.IsNullOrEmpty(picture) && u.AvatarUrl != picture)
+                if (ShouldTakeGooglePicture(u.AvatarUrl, picture))
                 {
                     u.AvatarUrl = picture;
                     dirty = true;
@@ -354,7 +354,7 @@ namespace soundcloud_back.Services
                 if (string.IsNullOrEmpty(user.GoogleSubject))
                 {
                     user.GoogleSubject = p.Subject;
-                    if (!string.IsNullOrEmpty(picture) && user.AvatarUrl != picture) 
+                    if (ShouldTakeGooglePicture(user.AvatarUrl, picture))
                         user.AvatarUrl = picture;            
 
                     // FIX for "old" records created via Google but without the correct flags:
@@ -393,6 +393,15 @@ namespace soundcloud_back.Services
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
             return user;
+        }
+
+        // Take the Google photo only when the user has no avatar yet or still has an older Google one,
+        // so an avatar uploaded in the profile is not replaced on every Google sign-in.
+        private static bool ShouldTakeGooglePicture(string? current, string? picture)
+        {
+            if (string.IsNullOrWhiteSpace(picture) || current == picture) return false;
+            return string.IsNullOrWhiteSpace(current)
+                || current.Contains("googleusercontent.com", StringComparison.OrdinalIgnoreCase);
         }
 
         private async Task<string> MakeUniqueUsernameAsync(string baseName)

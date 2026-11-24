@@ -120,7 +120,7 @@ const Signup: React.FC = () => {
             }
 
             localStorage.setItem("token", token);
-            const user = normalizeUser(token) ?? { id: data.id!, username: data.username!, email: data.email!, avatarUrl: data.avatarUrl, totalPlays: 0 };
+            const user = normalizeUser(token) ?? { id: data.id!, username: data.username!, email: data.email!, avatar: data.avatarUrl || "", totalPlays: 0 };
             dispatch(setUser({ user, token }));
             navigate("/home");
         } catch (e: unknown) {

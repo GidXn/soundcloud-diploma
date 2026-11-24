@@ -1,4 +1,5 @@
 import { useParams } from "react-router-dom";
+import { avatarUrl } from "../../components/people/peopleUtils";
 import React, { useEffect, useState } from "react";
 import { userService } from "../../services/userApi.ts";
 import { IUser } from "../../types/user.ts";
@@ -234,9 +235,7 @@ const UserProfilePage: React.FC = () => {
     };
 
     const getUserImageUrl = (user?: IUser | null) => {
-        if (!user || !user.avatar) return "/default-cover.png";
-        console.log(user)
-        return `http://localhost:5122/${user.avatar}`;
+        return avatarUrl(user?.avatar);
     };
 
     const getTrackImageUrl = (track?: ITrack | null) => {
@@ -271,7 +270,7 @@ const UserProfilePage: React.FC = () => {
                 <img className="banner_image_style" src={getUserBannerUrl(user)} alt="Banner"/>
             </div>
             <div className="profile_page_user_avatar_container" >
-                <img className="profile_page_user_avatar_style " src={getUserImageUrl(user)} alt="Avatar"/>
+                <img className="profile_page_user_avatar_style " src={getUserImageUrl(user)} referrerPolicy="no-referrer" alt="Avatar"/>
             </div>
             <div className="profile_page_user_name_container">
                 {user?.username}

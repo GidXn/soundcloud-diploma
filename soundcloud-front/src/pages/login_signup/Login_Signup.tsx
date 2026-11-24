@@ -192,7 +192,7 @@ const LoginSignup: React.FC = () => {
                 id: data.id!,
                 username: data.username!,
                 email: data.email!,
-                avatarUrl: data.avatarUrl,
+                avatar: data.avatarUrl || "",
                 totalPlays: 0, // new
                 isLocalPasswordSet: false // new,  false for Google users without local password
             };

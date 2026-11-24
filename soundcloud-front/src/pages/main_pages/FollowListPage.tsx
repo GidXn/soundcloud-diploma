@@ -57,7 +57,7 @@ const FollowListPage: React.FC<Props> = ({ mode }) => {
             <div className="people_grid">
                 {users.map((u) => (
                     <button key={u.id} className="people_card" onClick={() => openUser(u)}>
-                        <img className="people_avatar" src={avatarUrl(u.avatarUrl)} alt="" />
+                        <img className="people_avatar" src={avatarUrl(u.avatarUrl)} referrerPolicy="no-referrer" alt="" />
                         <span className="people_name">{u.username}</span>
                     </button>
                 ))}

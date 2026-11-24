@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import { avatarUrl } from "../../components/people/peopleUtils";
 import {trackService} from '../../services/trackApi';
 import {ITrack} from '../../types/track';
 import "../../styles/main_pages/library_page/layout.css";
@@ -151,8 +152,7 @@ const LibraryPage: React.FC = () => {
         return `http://localhost:5122/${track.imageUrl}`;
     };
     const getUserAvatarUrl = (user: IUserFollow) => {
-        if (!user.avatarUrl) return "/default-cover.png"; // fallback image
-        return `http://localhost:5122${user.avatarUrl}`;
+        return avatarUrl(user.avatarUrl);
     };
     useEffect(() => {
         if (!user) return;

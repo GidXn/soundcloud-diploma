@@ -123,24 +123,28 @@ const Sidebar: React.FC = () => {
             )}
 
             {isExpanded && (
-                <nav className="sidebar_container">
-                    {sidebarItems.map((item) => (
-                        <div
-                            key={item.id}
-                            className={`sidebar_item ${isActive(item.path) ? "active" : ""}`}
-                            onClick={() => handleNavigation(item)}
-                            title={item.label}
-                        >
-                            <img
-                                src={item.icon}
-                                alt={item.label}
-                                className={`sidebar_icon ${
-                                    isActive(item.path) ? "active" : ""
-                                }`}
-                            />
-                            {isActive(item.path) && <div className="sidebar_indicator"></div>}
-                        </div>
-                    ))}
+                <nav className="sidebar_container" aria-label="Main navigation">
+                    {sidebarItems.map((item) => {
+                        const active = isActive(item.path);
+                        return (
+                            <button
+                                key={item.id}
+                                type="button"
+                                className={`sidebar_item${active ? " active" : ""}${item.id === "hide" ? " sidebar_item_menu" : ""}`}
+                                onClick={() => handleNavigation(item)}
+                                title={item.label}
+                                aria-label={item.label}
+                                aria-current={active ? "page" : undefined}
+                            >
+                                <span
+                                    className="sidebar_icon"
+                                    style={{ "--icon": `url('${item.icon}')` } as React.CSSProperties}
+                                    aria-hidden
+                                />
+                                {active && <span className="sidebar_indicator" aria-hidden />}
+                            </button>
+                        );
+                    })}
                 </nav>
             )}
 
