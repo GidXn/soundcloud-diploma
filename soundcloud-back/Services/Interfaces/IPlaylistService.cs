@@ -7,22 +7,22 @@ namespace soundcloud_back.Services.Interfaces
 {
     public interface IPlaylistService
     {
-        // Отримати всі плейлисти конкретного користувача
+        // Get all playlists of a specific user
         Task<IEnumerable<PlaylistDto>> GetAllAsync(int userId);
 
-        // Отримати плейлист за ID
+        // Get a playlist by ID
         Task<PlaylistDto?> GetByIdAsync(int id);
 
-        // Створити плейлист для конкретного користувача
+        // Create a playlist for a specific user
         Task<PlaylistDto> CreateAsync(CreatePlaylistDto dto);
 
-        // Оновити плейлист
+        // Update a playlist
         Task UpdateAsync(int playlistId, CreatePlaylistDto dto);
 
-        // Видалити плейлист
+        // Delete a playlist
         Task DeleteAsync(int playlistId);
 
-        // Оновити обкладинку плейлиста
+        // Update the playlist cover
         Task SetCoverAsync(int playlistId, IFormFile url);
 
 

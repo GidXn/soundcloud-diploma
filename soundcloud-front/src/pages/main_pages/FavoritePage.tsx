@@ -8,8 +8,8 @@ import { HeartIcon, MusicIcon } from "../../components/people/peopleUtils";
 import "../../styles/main_pages/catalog/layout.css";
 import "../../styles/main_pages/people/layout.css";
 
-// Favorite: лайкнуті треки поточного користувача.
-// Порожній стан — як у макеті; список — у стилі рядків Top 100 / Топ 2026.
+// Favorite: liked tracks of the current user.
+// Empty state as in the design; the list is styled like the rows of Top 100 / Top 2026.
 const FavoritePage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ const FavoritePage: React.FC = () => {
 
             <RadioBanner title="XIT FM" subtitle="Good vibes only" logo={<XitLogo />} />
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
 
             {!loading && tracks.length === 0 && (
                 <div className="favorite_empty">
@@ -61,7 +61,7 @@ const FavoritePage: React.FC = () => {
                             <span className="top_title">{track.title}</span>
                             <span className="top_author">{track.author}</span>
                             <span className="top_genre">{track.genre}</span>
-                            <button className="top_like" onClick={(e) => unlike(e, track)} aria-label="Прибрати з Favorite">
+                            <button className="top_like" onClick={(e) => unlike(e, track)} aria-label="Remove from Favorite">
                                 <HeartIcon size={22} color="#9E7FCF" filled />
                             </button>
                             <span className="top_duration">{formatDuration(track.duration)}</span>

@@ -6,7 +6,7 @@ interface PaginationProps {
     onChange: (page: number) => void;
 }
 
-// 1 2 3 … 10, як у макеті: перші сторінки, «…», остання
+// 1 2 3 … 10, as in the design: first pages, «…», last
 const getPages = (page: number, total: number): (number | "dots")[] => {
     if (total <= 10) return Array.from({ length: total }, (_, i) => i + 1);
     const pages: (number | "dots")[] = [];
@@ -37,8 +37,8 @@ const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onChange }) =
     };
 
     return (
-        <nav className="catalog_pagination" aria-label="Сторінки">
-            <button className="catalog_pagination_arrow" onClick={() => go(page - 1)} disabled={page === 1} aria-label="Попередня">
+        <nav className="catalog_pagination" aria-label="Pages">
+            <button className="catalog_pagination_arrow" onClick={() => go(page - 1)} disabled={page === 1} aria-label="Previous">
                 <Arrow dir="left" />
             </button>
             <div className="catalog_pagination_pages">
@@ -57,7 +57,7 @@ const Pagination: React.FC<PaginationProps> = ({ page, totalPages, onChange }) =
                     )
                 )}
             </div>
-            <button className="catalog_pagination_arrow" onClick={() => go(page + 1)} disabled={page === totalPages} aria-label="Наступна">
+            <button className="catalog_pagination_arrow" onClick={() => go(page + 1)} disabled={page === totalPages} aria-label="Next">
                 <Arrow dir="right" />
             </button>
         </nav>

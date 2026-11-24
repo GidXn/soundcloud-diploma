@@ -36,7 +36,7 @@ const SubscriptionPage: React.FC = () => {
 
     const onSelect = (id: PlanId) => {
         if (id === plan) return;
-        // Демо: реальна оплата не підключена, план активується одразу.
+        // Demo: real payment is not connected, the plan activates immediately.
         activatePlan(id);
         setPromoStatus(null);
     };

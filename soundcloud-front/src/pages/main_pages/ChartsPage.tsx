@@ -6,9 +6,9 @@ import { mediaUrl } from "../../components/catalog/catalogUtils";
 import Pagination from "../../components/catalog/Pagination";
 import "../../styles/main_pages/catalog/layout.css";
 
-const PAGE_SIZE = 28; // 7 рядів по 4, як у макеті
+const PAGE_SIZE = 28; // 7 rows of 4, as in the design
 
-// Чарти = публічні альбоми (окремої сутності «чарт» на бекенді немає)
+// Charts = public albums (there is no separate «chart» entity on the backend)
 const ChartsPage: React.FC = () => {
     const [albums, setAlbums] = useState<IAlbum[]>([]);
     const [loading, setLoading] = useState(true);
@@ -31,8 +31,8 @@ const ChartsPage: React.FC = () => {
         <main className="catalog_page">
             <h1 className="catalog_title">Charts</h1>
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
-            {!loading && albums.length === 0 && <div className="catalog_state">Чартів поки немає</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && albums.length === 0 && <div className="catalog_state">No charts yet</div>}
 
             <div className="charts_grid">
                 {visible.map((album) => {

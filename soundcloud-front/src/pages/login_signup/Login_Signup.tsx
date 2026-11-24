@@ -37,29 +37,29 @@ const LoginSignup: React.FC = () => {
         };
 
         if (isLogin) {
-            //  Додати перевірки на data.token і user
+            //  Add checks for data.token and user
             try {
                 const data = await login(values.email, values.password);
                 if (!data.token) {
-                    alert("Помилка: токен не отримано");
+                    alert("Error: token not received");
                     return;
                 }
                 const user = normalizeUser(data.token);
                 if (!user) {
-                    alert("Помилка: не вдалося отримати дані користувача");
+                    alert("Error: failed to get user data");
                     return;
                 }
                 localStorage.setItem("token", data.token);
                 dispatch(setUser({ user, token: data.token }));
                 navigate("/home");
             } catch (err) {
-                alert("Помилка логіну: " + (err as AxiosError).message);
+                alert("Login error: " + (err as AxiosError).message);
             }
 
         } else {
-            // логіка реєстрації
+            // sign-up logic
             if (values.password !== values.confirmPassword) {
-                alert("Паролі не співпадають!");
+                alert("Passwords don't match!");
                 return;
             }
             try {
@@ -70,12 +70,12 @@ const LoginSignup: React.FC = () => {
                     values.confirmPassword
                 );
                 if (!data.token) {
-                    alert("Помилка: токен не отримано");
+                    alert("Error: token not received");
                     return;
                 }
                 const user = normalizeUser(data.token);
                 if (!user) {
-                    alert("Помилка: не вдалося отримати дані користувача");
+                    alert("Error: failed to get user data");
                     return;
                 }
                 localStorage.setItem("token", data.token);
@@ -90,42 +90,42 @@ const LoginSignup: React.FC = () => {
                 // }
                 // navigate("/home");
             // } catch (err) {
-            //     alert("Помилка реєстрації: " + (err as AxiosError).message);
+            //     alert("Sign-up error: " + (err as AxiosError).message);
             // }
 
             } catch (err) {
                 const axiosErr = err as AxiosError<{ error?: string; message?: string }>;
 
-                // те, що прислав бекенд у body:
+                // what the backend sent in body:
                 const apiMsg =
                     axiosErr.response?.data?.error ??
                     axiosErr.response?.data?.message ??
                     "";
 
-                // HTTP-статус може бути 400 або 409 (залежно від  обробки)
+                // HTTP-status can be 400 or 409 (depending on the handling)
                 const status = axiosErr.response?.status;
 
-                //  email уже прив’язаний до Google-акаунта
-                if ((status === 400 || status === 409) && apiMsg.includes("Google-акаунта")) {
+                //  email already linked to a Google account
+                if ((status === 400 || status === 409) && apiMsg.includes("Google account")) {
                     alert(
-                        "Цей email вже прив'язаний до Google. Увійдіть через Google, а потім у профілі встановіть локальний пароль (Меню → Профіль → Встановити пароль)."
+                        "This email is already linked to Google. Sign in with Google, then set a local password in your profile (Menu → Profile → Set password)."
                     );
                     return;
                 }
 
-                // інші  валідаційні помилки з бекенда
+                // other validation errors from the backend
                 if ((status === 400 || status === 409) && apiMsg) {
-                    alert("Помилка реєстрації: " + apiMsg);
+                    alert("Sign-up error: " + apiMsg);
                     return;
                 }
 
-                // якщо бекенд не дав зрозумілого тексту
-                alert("Помилка реєстрації: " + (axiosErr.message || "невідома помилка"));
+                // if the backend gave no readable message
+                alert("Sign-up error: " + (axiosErr.message || "unknown error"));
             }
         }
     };
 
-// NEW: допоміжний тип (не обов’язково, але зручно)
+// NEW: helper type (optional, but convenient)
     type GoogleAuthResponse = {
         token: string;
         expiresAt?: string;
@@ -136,7 +136,7 @@ const LoginSignup: React.FC = () => {
         isLocalPasswordSet?: boolean;//new
     };
 
-// NEW: акуратне діставання тексту помилки без any
+// NEW: safe extraction of the error message without any
     const msgFromError = (e: unknown) =>
         e instanceof Error ? e.message : typeof e === "string" ? e : JSON.stringify(e);
 
@@ -147,10 +147,10 @@ const LoginSignup: React.FC = () => {
             return;
         }
 
-        // DEBUG лише у dev:
+        // DEBUG only in dev:
         if (import.meta.env.DEV) {
             // console.debug("[GSI] idToken len=", idToken.length, "sample=", idToken.slice(0, 30), "...");
-            console.debug("[GSI] idToken =", idToken); // ПОВНИЙ токен
+            console.debug("[GSI] idToken =", idToken); // FULL token
         }
 
         let res: Response;
@@ -161,14 +161,14 @@ const LoginSignup: React.FC = () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ token: idToken }),
             });
-        } catch (e: unknown) {                // CHANGED: було (e: any) → стало (e: unknown)
-            alert("Network error: " + msgFromError(e));   // NEW: без any, коректний вивід
+        } catch (e: unknown) {                // CHANGED: was (e: any) → now (e: unknown)
+            alert("Network error: " + msgFromError(e));   // NEW: no any, correct output
             return;
         }
 
-        //читаємо тіло відповіді  1 раз
+        //read the response body once
         if (!res.ok) {
-            const errBody = await res.text();  // CHANGED: читаємо .text() тільки тут (при помилці)
+            const errBody = await res.text();  // CHANGED: read .text() only here (on error)
             if (import.meta.env.DEV) {
                 console.error("[/auth/google] status:", res.status, "body:", errBody);
             }
@@ -176,8 +176,8 @@ const LoginSignup: React.FC = () => {
             return;
         }
 
-        // тепер читаємо JSON (тіло ще не читалося у success-гілці)
-        const data: GoogleAuthResponse = await res.json();  // додано типізацію відповіді
+        // now read JSON (the body hasn't been read in the success branch)
+        const data: GoogleAuthResponse = await res.json();  // added response typing
 
         const token = data?.token;
         if (!token) {
@@ -201,10 +201,10 @@ const LoginSignup: React.FC = () => {
         navigate("/home");
     };
 
-    // Додаємо правильну обробку GIS (отримуємо ID token = credential):
+    // Add proper GIS handling (we get ID token = credential):
     // const handleGoogleSuccess = async (res: CredentialResponse) => {
-    //     const idToken = res.credential; //  Google ID token (eyJ... з 2 крапками)
-    //     console.log("ID_TOKEN:", idToken); // Логування для дебагу
+    //     const idToken = res.credential; //  Google ID token (eyJ... with 2 dots)
+    //     console.log("ID_TOKEN:", idToken); // Debug logging
     //     if (!idToken) {
     //         console.error("No credential returned by Google");
     //         alert("Google login failed: No credential returned");
@@ -231,9 +231,9 @@ const LoginSignup: React.FC = () => {
     //         }
     //
     //         const data = await r.json();
-    //         // очікуємо { token: '<API_JWT>', expiresAt, id, username, email, avatarUrl }
+    //         // expect { token: '<API_JWT>', expiresAt, id, username, email, avatarUrl }
     //         if (!data.token) {
-    //             alert("Помилка: токен не отримано від сервера");
+    //             alert("Error: token not received from the server");
     //             return;
     //         }
     //         localStorage.setItem("token", data.token);
@@ -244,7 +244,7 @@ const LoginSignup: React.FC = () => {
     //             avatarUrl: data.avatarUrl,
     //         };
     //         dispatch(setUser({ user, token: data.token }));
-    //         alert("Логін через Google успішний!");
+    //         alert("Google login successful!");
     //         navigate("/home");
     //     } catch (error) {
     //         console.error("Error during Google login:", error);
@@ -319,18 +319,18 @@ const LoginSignup: React.FC = () => {
                                         {/* new */}
                                         <div className="login_third_google_button baloo2">
                                             <div className="oauth-wrap">
-                                                {/* Видима фіолетова кнопка */}
+                                                {/* Visible purple button */}
                                                 <button type="button" className="oauth-btn">
                                                     <img src="src/images/icons/google_icon.png" alt="" className="oauth-btn__icon" />
                                                     Sign in with Google
                                                 </button>
 
-                                                {/* Невидимий реальний GoogleLogin поверх */}
+                                                {/* Invisible real GoogleLogin on top */}
                                                 <div className="oauth-overlay">
                                                     <GoogleLogin
                                                         onSuccess={handleGoogleSuccess}
                                                         onError={handleGoogleError}
-                                                        theme="filled_blue"  // будь-що — елемент все одно невидимий
+                                                        theme="filled_blue"  // anything, the element is invisible anyway
                                                         size="large"
                                                         text="signin_with"
                                                         shape="pill"
@@ -346,7 +346,7 @@ const LoginSignup: React.FC = () => {
                                     {/*    <button*/}
                                     {/*    type="button"*/}
                                     {/*    onClick={()=>googleLogin()}*/}
-                                    {/*    // запускає Google OAuth*/}
+                                    {/*    // launches Google OAuth*/}
                                     {/*    className="login_third_google_button baloo2"*/}
                                     {/*>*/}
                                     {/*    <img*/}
@@ -463,7 +463,7 @@ const LoginSignup: React.FC = () => {
                                                         className="baloo2 text-purple underline"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            setIsLogin(true); // переключаємо на логін
+                                                            setIsLogin(true); // switch to login
                                                         }}
                                                     >
                                                         Sign in
@@ -477,7 +477,7 @@ const LoginSignup: React.FC = () => {
                                                         className="baloo2 text-purple underline login_signup_button"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            setIsLogin(false); // переключаємо на логін
+                                                            setIsLogin(false); // switch to login
                                                         }}
 
                                                     >
@@ -522,18 +522,18 @@ const LoginSignup: React.FC = () => {
 
                                         <div className="login_third_google_button baloo2">
                                             <div className="oauth-wrap">
-                                                {/* Видима фіолетова кнопка */}
+                                                {/* Visible purple button */}
                                                 <button type="button" className="oauth-btn">
                                                     <img src="src/images/icons/google_icon.png" alt="" className="oauth-btn__icon " />
                                                     <span>Sign up with Google</span>
                                                 </button>
 
-                                                {/* Невидимий реальний GoogleLogin поверх */}
+                                                {/* Invisible real GoogleLogin on top */}
                                                 <div className="oauth-overlay text-white">
                                                     <GoogleLogin
                                                         onSuccess={handleGoogleSuccess}
                                                         onError={handleGoogleError}
-                                                        theme="filled_blue"  // Елемент невидимий, але зберігаємо конфігурацію
+                                                        theme="filled_blue"  // The element is invisible, but we keep the configuration
                                                         size="large"
                                                         text="signin_with"
                                                         shape="pill"
@@ -682,7 +682,7 @@ const LoginSignup: React.FC = () => {
                                                         className="baloo2 text-purple underline login_signup_button"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            setIsLogin(true); // переключаємо на логін
+                                                            setIsLogin(true); // switch to login
                                                         }}
 
                                                     >
@@ -697,7 +697,7 @@ const LoginSignup: React.FC = () => {
                                                         className="baloo2 text-purple underline"
                                                         onClick={(e) => {
                                                             e.preventDefault();
-                                                            setIsLogin(false); // переключаємо на логін
+                                                            setIsLogin(false); // switch to login
                                                         }}
 
                                                     >

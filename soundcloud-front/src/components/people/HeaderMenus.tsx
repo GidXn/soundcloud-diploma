@@ -7,7 +7,7 @@ import {
 } from "./peopleUtils";
 import "../../styles/main_pages/people/layout.css";
 
-// Закриття попапа по кліку поза ним і по Esc
+// Close the popup on click outside it and on Esc
 const useDismiss = (open: boolean, onClose: () => void, ref: React.RefObject<HTMLElement | null>) => {
     useEffect(() => {
         if (!open) return;
@@ -24,8 +24,8 @@ const useDismiss = (open: boolean, onClose: () => void, ref: React.RefObject<HTM
     }, [open, onClose, ref]);
 };
 
-// Тема: поки лише запам'ятовуємо вибір і ставимо data-theme на <html>.
-// Світлої теми в макеті немає, тож стилі під неї — окрема задача.
+// Theme: for now we only remember the choice and set data-theme on <html>.
+// There is no light theme in the design, so its styles are a separate task.
 const useThemeMode = () => {
     const [light, setLight] = useState(() => {
         try { return localStorage.getItem("theme") === "light"; } catch { return false; }
@@ -44,7 +44,7 @@ const useThemeMode = () => {
     return [light, toggle] as const;
 };
 
-/* ---------------- Меню користувача (макет: favorite, варіант 2) ---------------- */
+/* ---------------- User menu (design: favorite, variant 2) ---------------- */
 
 interface UserMenuProps {
     user: IUser | null;
@@ -72,7 +72,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
 
     return (
         <div className="hdr_user" ref={ref}>
-            <button className="hdr_user_trigger" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Меню користувача">
+            <button className="hdr_user_trigger" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="User menu">
                 <img className="hdr_user_avatar" src={avatarUrl(user?.avatar)} alt="" />
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden
                      style={{ transform: open ? "rotate(180deg)" : undefined, transition: "transform .15s" }}>
@@ -83,10 +83,10 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
             {open && (
                 <div className="user_menu" role="menu">
                     <div className="user_menu_top">
-                        <button className="user_menu_icon_btn" onClick={onLogout} aria-label="Вийти" title="Log out">
+                        <button className="user_menu_icon_btn" onClick={onLogout} aria-label="Log out" title="Log out">
                             <LogoutIcon />
                         </button>
-                        <button className="user_menu_icon_btn" onClick={close} aria-label="Закрити">
+                        <button className="user_menu_icon_btn" onClick={close} aria-label="Close">
                             <CloseIcon />
                         </button>
                     </div>
@@ -106,7 +106,7 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                         <button className="user_menu_item" role="menuitem" onClick={() => go("/following")}>
                             <PeopleIcon size={18} /><span>Following</span>
                         </button>
-                        {/* Library і Feed немає в макеті меню — додані, щоб сторінки мали вхід */}
+                        {/* Library and Feed are not in the design menu; added so the pages have an entry point */}
                         <button className="user_menu_item" role="menuitem" onClick={() => go("/library")}>
                             <LibraryIcon size={18} /><span>Library</span>
                         </button>
@@ -136,9 +136,9 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
     );
 };
 
-/* ---------------- Сповіщення (макет: favorite, варіант 3) ---------------- */
+/* ---------------- Notifications (design: favorite, variant 3) ---------------- */
 
-// Текст з макету. Окремого API сповіщень на бекенді немає — показуємо статичну розсилку.
+// Text from the design. The backend has no notifications API, so we show a static announcement.
 const NOTIFICATION: { title: string; blocks: string[][] } = {
     title: "❄️ Winter mood at Allure ❄️",
     blocks: [
@@ -159,11 +159,11 @@ export const NotificationsMenu: React.FC = () => {
 
     return (
         <div className="hdr_notify" ref={ref}>
-            <button className="hdr_icon_btn" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Сповіщення">
+            <button className="hdr_icon_btn" onClick={() => setOpen((v) => !v)} aria-expanded={open} aria-label="Notifications">
                 <img src="/inside/iconamoon-notification-light.svg" alt="" width={24} height={24} />
             </button>
             {open && (
-                <div className="notify_menu" role="dialog" aria-label="Сповіщення">
+                <div className="notify_menu" role="dialog" aria-label="Notifications">
                     <div className="notify_menu_scroll">
                         <div className="notify_block">
                             <span className="notify_title">{NOTIFICATION.title}</span>

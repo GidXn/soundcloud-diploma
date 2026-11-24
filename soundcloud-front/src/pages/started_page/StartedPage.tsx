@@ -21,7 +21,7 @@ const StartedPage: React.FC = () => {
           <div className="get-started-title">
             <span>
               <span className="get-started-welcome">Welcome to</span>
-              {' '} {/* Додає звичайний пробіл */}
+              {' '} {/* Adds a regular space */}
               <span className="allure_logo_started2">Allure</span>
             </span>
           </div>

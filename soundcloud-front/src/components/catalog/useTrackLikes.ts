@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ITrack } from "../../types/track";
 import { trackService } from "../../services/trackApi";
 
-// Лайки для списків треків (Home, Music): стан + перемикання з оновленням лічильника Favorite
+// Likes for track lists (Home, Music): state + toggle with counter update Favorite
 export const useTrackLikes = (tracks: ITrack[]) => {
     const [liked, setLiked] = useState<Set<number>>(new Set());
 

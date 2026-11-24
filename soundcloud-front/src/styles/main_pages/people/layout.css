@@ -1,7 +1,7 @@
-/* Favorite, Following / Followers, блок людей у профілі, «Топ року», меню користувача,
-   сповіщення і розгорнуте меню. Розміри зняті з макету Figma (кадр 1920px). */
+/* Favorite, Following / Followers, people block in the profile, «Top of the year», user menu,
+   notifications and the full menu. Sizes taken from the Figma design (frame 1920px). */
 
-/* ---------- Заголовки сторінок ---------- */
+/* ---------- Page headings ---------- */
 .people_page .people_title {
     margin: 0 0 32px;
     font-size: 36px;
@@ -49,7 +49,7 @@
     white-space: nowrap;
 }
 
-/* ---------- Favorite: порожній стан ---------- */
+/* ---------- Favorite: empty state ---------- */
 .favorite_empty {
     display: flex;
     flex-direction: column;
@@ -62,7 +62,7 @@
     line-height: 31px;
 }
 
-/* ---------- «Топ року» ---------- */
+/* ---------- «Top of the year» ---------- */
 .year_list {
     list-style: none;
     margin: 0;
@@ -125,7 +125,7 @@
 .year_like { display: flex; align-items: center; justify-content: center; }
 .year_duration { text-align: right; }
 
-/* ---------- Права панель профілю (макет «profile PEOPLE») ---------- */
+/* ---------- Right profile panel (design «profile PEOPLE») ---------- */
 .people_panel {
     box-sizing: border-box;
     display: flex;
@@ -336,7 +336,7 @@ button.people_stat:hover .people_stat_value { color: #D786FF; }
 .people_follow_btn:hover { filter: brightness(1.15); }
 .people_follow_btn.is_following { background: rgba(255, 255, 255, 0.2) !important; }
 
-/* ---------- Шапка: Get Pro, іконки, аватар ---------- */
+/* ---------- Header: Get Pro, icons, avatar ---------- */
 .hdr_right {
     display: flex;
     align-items: center;
@@ -414,7 +414,7 @@ button.people_stat:hover .people_stat_value { color: #D786FF; }
     background: #C9D4FF;
 }
 
-/* ---------- Меню користувача ---------- */
+/* ---------- User menu ---------- */
 .user_menu,
 .notify_menu {
     position: absolute;
@@ -457,7 +457,7 @@ button.people_stat:hover .people_stat_value { color: #D786FF; }
     display: flex;
     justify-content: space-between;
     height: 18px;
-    margin-bottom: -35px; /* у макеті рядок іконок накладається на блок аватара */
+    margin-bottom: -35px; /* in the design the icon row overlaps the avatar block */
 }
 
 .user_menu_icon_btn { display: flex; opacity: 0.85; }
@@ -547,7 +547,7 @@ button.user_menu_item:hover span { color: #D786FF; }
 
 .user_menu_toggle.on .user_menu_toggle_knob { transform: translateX(18px); }
 
-/* ---------- Сповіщення ---------- */
+/* ---------- Notifications ---------- */
 .notify_menu {
     right: 60px;
     width: 389px;
@@ -580,7 +580,7 @@ button.user_menu_item:hover span { color: #D786FF; }
 .notify_block_tight { gap: 0; }
 .notify_title { font-weight: 500; }
 
-/* ---------- Розгорнуте меню (макет «full menu») ---------- */
+/* ---------- Full menu (design «full menu») ---------- */
 .full_menu {
     position: fixed;
     inset: 0;

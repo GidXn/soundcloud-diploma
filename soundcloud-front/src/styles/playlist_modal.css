@@ -5,10 +5,10 @@
     right: 0;
     bottom: 0;
     left: 0;
-    display: flex;          /* для центрування контенту */
+    display: flex;          /* to center the content */
     justify-content: center;
     align-items: center;
-    background: rgba(82, 65, 179, 0.3); /* напівпрозорий фон */
+    background: rgba(82, 65, 179, 0.3); /* semi-transparent background */
     z-index: 1000;
 }
 
@@ -167,8 +167,8 @@
 }
 
 .add_playlist_search_playlist:focus{
-    border-color: #4f46e5; /* фіолетова рамка при фокусі */
-    box-shadow: 0 0 4px rgba(79, 70, 229, 0.5); /* підсвітка */
+    border-color: #4f46e5; /* purple border on focus */
+    box-shadow: 0 0 4px rgba(79, 70, 229, 0.5); /* glow */
 }
 
 .add_playlists_container{
@@ -342,7 +342,7 @@
     cursor:pointer;
 }
 .add_playlist_button_container:active {
-    background-color: #402bba; /* приклад */
+    background-color: #402bba; /* example */
     color: white;
 }
 .add_playlist_button_container .txt_button_style{
@@ -490,8 +490,8 @@
 
 }
 .input_style:focus{
-    border-color: #4f46e5; /* фіолетова рамка при фокусі */
-    box-shadow: 0 0 4px rgba(79, 70, 229, 0.5); /* підсвітка */
+    border-color: #4f46e5; /* purple border on focus */
+    box-shadow: 0 0 4px rgba(79, 70, 229, 0.5); /* glow */
 }
 .create_playlist_container .added_track_info{
     /* Artist */

@@ -13,11 +13,11 @@ namespace soundcloud_back.Validators.Track
             //RuleFor(x => x.Url)
             //    .NotEmpty()
             //    .Must(u => Uri.IsWellFormedUriString(u, UriKind.Absolute))
-            //    .WithMessage("URL має бути валідним");
+            //    .WithMessage("URL must be valid");
             //
             //RuleFor(x => x.Duration)
             //    .Must(d => d > TimeSpan.Zero)
-            //    .WithMessage("Тривалість має бути більше 0");
+            //    .WithMessage("Duration must be greater than 0");
 
             //RuleFor(x => x.AlbumId)
             //    .GreaterThan(0);

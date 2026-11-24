@@ -12,10 +12,10 @@ import "../../styles/main_pages/people/layout.css";
 
 interface Props {
     userId: number;
-    /** Свій профіль: показуємо LIKES (бекенд віддає лайки лише поточного користувача) */
+    /** Own profile: show LIKES (the backend returns likes only for the current user) */
     isOwn: boolean;
     tracksCount: number;
-    /** Зовнішня зміна кількості підписників (кнопка Follow у шапці чужого профілю) */
+    /** External change of the follower count (Follow button in another user's profile header) */
     followersVersion?: number;
 }
 
@@ -23,16 +23,16 @@ const LIKES_PREVIEW = 3;
 const FOLLOWERS_PREVIEW = 5;
 const FOLLOWING_PREVIEW = 2;
 
-// Права панель профілю з макету «profile PEOPLE»:
-// Followers / Following / Tracks, LIKES, аватари підписників, список підписок з кнопкою Follow.
+// Right profile panel from the design «profile PEOPLE»:
+// Followers / Following / Tracks, LIKES, follower avatars, following list with a Follow.
 const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, followersVersion = 0 }) => {
-    // не показуємо кнопку Follow навпроти самого себе (бек відповідає 400)
+    // don't show the Follow button next to yourself (the backend responds 400)
     const myId = useSelector((state: RootState) => state.user.user?.id);
     const navigate = useNavigate();
     const [followers, setFollowers] = useState<IUserFollow[]>([]);
     const [following, setFollowing] = useState<IUserFollow[]>([]);
     const [likes, setLikes] = useState<ITrack[]>([]);
-    // Чи підписаний поточний користувач на людей зі списку Following
+    // Whether the current user follows the people in the list Following
     const [followed, setFollowed] = useState<Record<number, boolean>>({});
 
     const base = isOwn ? "" : `/user/${userId}`;

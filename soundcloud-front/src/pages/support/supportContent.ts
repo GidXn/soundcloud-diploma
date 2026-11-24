@@ -1,5 +1,5 @@
-// Тексти розділу підтримки взяті з макету Figma (секція "Support").
-// Сторінка User agreement у макеті відсутня, тому її текст — нейтральна заглушка.
+// Support section texts are taken from the Figma design (section "Support").
+// There is no User agreement page in the design, so its text is a neutral placeholder.
 
 export type SupportLine =
     | string
@@ -484,7 +484,7 @@ const advertising: SupportPageData = {
     ],
 };
 
-// ЗАГЛУШКА: сторінки User agreement немає в макеті. Текст нейтральний, замінити на фінальний.
+// PLACEHOLDER: there is no User agreement page in the design. The text is neutral, replace it with the final one.
 const userAgreement: SupportPageData = {
     slug: "user-agreement",
     title: "User Agreement",

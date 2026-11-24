@@ -8,12 +8,12 @@ namespace soundcloud_back.Validators.Album
         public CreateAlbumValidator()
         {
             RuleFor(x => x.Title)
-                .NotEmpty().WithMessage("Назва альбому обов'язкова")
+                .NotEmpty().WithMessage("Album title is required")
                 .MaximumLength(200);
 
-            // якщо колонка Description у БД NOT NULL — NotEmpty(); інакше лиши тільки MaximumLength
+            // if the Description column in the DB is NOT NULL, use NotEmpty(); otherwise keep only MaximumLength
             RuleFor(x => x.Description)
-                .NotEmpty().WithMessage("Опис альбому обов'язковий")
+                .NotEmpty().WithMessage("Album description is required")
                 .MaximumLength(1000);
         }
     }

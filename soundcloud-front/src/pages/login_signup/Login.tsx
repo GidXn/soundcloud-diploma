@@ -25,12 +25,12 @@ const Login: React.FC = () => {
         try {
             const data = await login(email, password);
             if (!data.token) {
-                alert("Помилка: токен не отримано");
+                alert("Error: token not received");
                 return;
             }
             const user = normalizeUser(data.token);
             if (!user) {
-                alert("Помилка: не вдалося отримати дані користувача");
+                alert("Error: failed to get user data");
                 return;
             }
             localStorage.setItem("token", data.token);
@@ -41,7 +41,7 @@ const Login: React.FC = () => {
             if (err instanceof AxiosError && err.response?.status === 401) {
                 alert("The username or password you entered is incorrect.");
             } else {
-                alert("Помилка логіну: " + (err as AxiosError).message);
+                alert("Login error: " + (err as AxiosError).message);
             }
         }
     };

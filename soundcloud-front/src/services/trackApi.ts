@@ -16,7 +16,7 @@ export const trackService = {
         }
     },
 
-    // Отримати треки поточного користувача
+    // Get the current user's tracks
     async getMyTracks(): Promise<ITrack[]> {
         try {
             const res = await api.get(`/Track/my`)
@@ -35,7 +35,7 @@ export const trackService = {
             return 0;
         }
     },
-    // Отримати всі треки конкретного користувача
+    // Get all tracks of a specific user
     getAllByUser: async (userId: number): Promise<ITrack[]> => {
         const res = await api.get<ITrack[]>(`/track/user/${userId}`);
         return res.data;
@@ -43,7 +43,7 @@ export const trackService = {
 
 
 
-    // Створити новий трек (усі поля обов'язкові)
+    // Create a new track (all fields are required)
     async createTrack(
         title: string,
         albumId: number | null | undefined,
@@ -51,7 +51,7 @@ export const trackService = {
         cover: File,
         genreId: number
     ) {
-        // Перевірка всіх обов'язкових полів
+        // Check all required fields
         if (!title || !file || !cover || genreId === undefined) {
             throw new Error("Missing required fields for track creation");
         }
@@ -88,7 +88,7 @@ export const trackService = {
     },
 
     async like(trackId: number) {
-        return api.post(`/Track/${trackId}/like`); // api бере актуальний токен на кожен запит
+        return api.post(`/Track/${trackId}/like`); // api takes the current token on every request
     },
     async unlike(trackId: number) {
         return api.delete(`/Track/${trackId}/like`);
@@ -103,7 +103,7 @@ export const trackService = {
     },
     async getLikedTracks(): Promise<ITrack[]> {
         try {
-            const res = await api.get("/Track/liked"); // точно як у Swagger
+            const res = await api.get("/Track/liked"); // exactly as in Swagger
             return res.data;
         } catch (error) {
             console.error("Failed to fetch liked tracks", error);

@@ -8,13 +8,13 @@ export interface PlayerContextType {
     history: ITrack[];
     playlist: ITrack[];
     currentIndex: number;
-    currentAlbumId: number | null; // завжди присутнє, може бути null
+    currentAlbumId: number | null; // always present, can be null
     audioRef: RefObject<HTMLAudioElement | null>;
-    volume: number; // нове поле
+    volume: number; // new field
 
     playTrack: (track: ITrack, playlist?: ITrack[], albumId?: number | null) => void;
     playAlbum: (album: IAlbum, tracks?: ITrack[]) => void;
-    pauseTrack: () => void; // без аргументів
+    pauseTrack: () => void; // no arguments
     togglePlay: () => void;
     addToHistory: (track: ITrack) => void;
     nextTrack: () => void;
@@ -22,6 +22,6 @@ export interface PlayerContextType {
     refreshHistory: () => Promise<void>;
     initHistory:()=>void;
     clearTrack: () => void;
-    setVolume: (volume: number) => void; // новий метод
+    setVolume: (volume: number) => void; // new method
     setCurrentTrack: (track: ITrack | null) => void;
 }

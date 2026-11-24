@@ -16,7 +16,7 @@ const CategoriesPage = () => {
             const res = await adminApi.getCategories();
             setCategories(res.data);
         } catch {
-            message.error("Не вдалося завантажити категорії");
+            message.error("Failed to load categories");
         }
         setLoading(false);
     };
@@ -36,14 +36,14 @@ const CategoriesPage = () => {
                     slug: values.slug,
                     imageFile: file,
                 });
-                message.success("Категорію оновлено");
+                message.success("Category updated");
             } else {
                 await adminApi.createCategory({
                     name: values.name,
                     slug: values.slug,
                     imageFile: file,
                 });
-                message.success("Категорію створено");
+                message.success("Category created");
             }
 
             setIsModalVisible(false);
@@ -51,17 +51,17 @@ const CategoriesPage = () => {
             setEditingCategory(null);
             loadCategories();
         } catch (err) {
-            message.error("Помилка при збереженні категорії");
+            message.error("Failed to save category");
         }
     };
 
     const handleDelete = async (id: number) => {
         try {
             await adminApi.deleteCategory(id);
-            message.success("Категорію видалено");
+            message.success("Category deleted");
             loadCategories();
         } catch {
-            message.error("Не вдалося видалити категорію");
+            message.error("Failed to delete category");
         }
     };
 
@@ -110,7 +110,7 @@ const CategoriesPage = () => {
                     setIsModalVisible(true);
                 }}
             >
-                Додати категорію
+                Add category
             </Button>
             <Table
                 rowKey="id"
@@ -120,21 +120,21 @@ const CategoriesPage = () => {
             />
 
             <Modal
-                title={editingCategory ? "Редагувати категорію" : "Створити категорію"}
+                title={editingCategory ? "Edit category" : "Create category"}
                 open={isModalVisible}
                 onOk={handleSave}
                 onCancel={() => setIsModalVisible(false)}
             >
                 <Form form={form} layout="vertical">
-                    <Form.Item name="name" label="Name" rules={[{ required: true, message: "Введіть назву" }]}>
+                    <Form.Item name="name" label="Name" rules={[{ required: true, message: "Enter a name" }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="slug" label="Slug" rules={[{ required: true, message: "Введіть slug" }]}>
+                    <Form.Item name="slug" label="Slug" rules={[{ required: true, message: "Enter slug" }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item name="imageFile" label="Image">
                         <Upload beforeUpload={() => false} maxCount={1}>
-                            <Button icon={<UploadOutlined />}>Завантажити</Button>
+                            <Button icon={<UploadOutlined />}>Upload</Button>
                         </Upload>
                     </Form.Item>
                 </Form>

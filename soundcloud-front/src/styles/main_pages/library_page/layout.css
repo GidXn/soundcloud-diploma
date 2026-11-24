@@ -360,6 +360,6 @@
 }
 .body_info_container .track_card_container {
     flex: 0 0 calc(100% / 7 - 20px);
-    /* 100%/7 – ширина, мінус gap */
+    /* 100%/7 – width, minus gap */
     box-sizing: border-box;
 }

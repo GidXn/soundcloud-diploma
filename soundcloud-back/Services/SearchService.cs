@@ -17,7 +17,7 @@ public class SearchService : ISearchService
     int trackPage = 1, int trackPageSize = 8,
     int albumPage = 1, int albumPageSize = 6,
     int playlistPage = 1, int playlistPageSize = 6,
-    int userPage = 1, int userPageSize = 6, // додано
+    int userPage = 1, int userPageSize = 6, // added
     string[]? types = null)
     {
         if (string.IsNullOrWhiteSpace(q) || q.Trim().Length < 2)

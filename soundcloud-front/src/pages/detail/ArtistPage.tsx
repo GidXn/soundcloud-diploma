@@ -11,10 +11,10 @@ import {
 import "../../styles/main_pages/catalog/layout.css";
 import "../../styles/detail/layout.css";
 
-const PAGE_SIZE = 18; // як у макеті
+const PAGE_SIZE = 18; // as in the design
 
-/* Сторінка виконавця (Figma: «Artists when click»).
-   Окремої сутності «артист» на бекенді немає: артист — це автор треків (як на сторінці Artists). */
+/* Artist page (Figma: «Artists when click»).
+   There is no separate «artist» entity on the backend: an artist is a track author (as on the page Artists). */
 const ArtistPage: React.FC = () => {
     const { name = "" } = useParams<{ name: string }>();
     const [all, setAll] = useState<ITrack[]>([]);
@@ -45,8 +45,8 @@ const ArtistPage: React.FC = () => {
 
     const { playing, listen, disabled } = useListen(tracks);
 
-    if (loading) return <main className="catalog_page"><div className="catalog_state">Завантаження…</div></main>;
-    if (!artist) return <main className="catalog_page"><div className="catalog_state">Виконавця не знайдено</div></main>;
+    if (loading) return <main className="catalog_page"><div className="catalog_state">Loading…</div></main>;
+    if (!artist) return <main className="catalog_page"><div className="catalog_state">Artist not found</div></main>;
 
     const totalPages = Math.max(1, Math.ceil(tracks.length / PAGE_SIZE));
     const visible = tracks.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -64,7 +64,7 @@ const ArtistPage: React.FC = () => {
                 disabled={disabled}
                 onListen={listen}
                 onMore={copyPageLink}
-                moreTitle="Скопіювати посилання"
+                moreTitle="Copy link"
             />
 
             <DetailBanner variant="nrj" />

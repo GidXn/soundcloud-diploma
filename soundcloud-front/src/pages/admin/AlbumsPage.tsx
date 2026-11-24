@@ -18,7 +18,7 @@ const AlbumsPage = () => {
             const res = await adminApi.getAlbumsForAdmin();
             setAlbums(res.data);
         } catch {
-            message.error("Не вдалося завантажити альбоми");
+            message.error("Failed to load albums");
         }
         setLoading(false);
     };
@@ -40,12 +40,12 @@ const AlbumsPage = () => {
 
             await adminApi.createAlbum(formData);
 
-            message.success("Альбом створено");
+            message.success("Album created");
             setIsModalVisible(false);
             form.resetFields();
             loadAlbums();
         } catch (err) {
-            message.error("Помилка при створенні альбому");
+            message.error("Failed to create album");
         }
     };
 
@@ -71,20 +71,20 @@ const AlbumsPage = () => {
             };
 
             await adminApi.updateAlbum(editingAlbum.id, payload);
-            message.success("Альбом оновлено");
+            message.success("Album updated");
             setIsEditModalVisible(false);
             setEditingAlbum(null);
             editForm.resetFields();
             loadAlbums();
         } catch {
-            message.error("Помилка при оновленні альбому");
+            message.error("Failed to update album");
         }
     };
 
     // ===== Delete =====
     const handleDelete = async (id: number) => {
         await adminApi.deleteAlbum(id);
-        message.success("Альбом видалено");
+        message.success("Album deleted");
         loadAlbums();
     };
 
@@ -92,10 +92,10 @@ const AlbumsPage = () => {
     const handleUploadCover = async (id: number, file: File) => {
         try {
             await adminApi.uploadAlbumCover(id, file);
-            message.success("Обкладинка оновлена");
+            message.success("Cover updated");
             loadAlbums();
         } catch {
-            message.error("Помилка при завантаженні обкладинки");
+            message.error("Failed to upload cover");
         }
     };
 

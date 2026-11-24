@@ -11,8 +11,8 @@ import "../../styles/main_pages/people/layout.css";
 
 const PAGE_SIZE = 30;
 
-// «Топ 2026» (і інші роки з розгорнутого меню): треки, завантажені в цьому році,
-// від найпопулярніших. Якщо бекенд не віддає createdAt — показуємо всі треки.
+// «Top 2026» (and other years from the full menu): tracks uploaded this year,
+// most popular first. If the backend doesn't return createdAt, show all tracks.
 const TopYearPage: React.FC = () => {
     const { year: yearParam } = useParams();
     const year = Number(yearParam) || new Date().getFullYear();
@@ -69,8 +69,8 @@ const TopYearPage: React.FC = () => {
         <main className="catalog_page people_page">
             <h1 className="catalog_title people_title">{year}</h1>
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
-            {!loading && top.length === 0 && <div className="catalog_state">За {year} рік треків поки немає</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && top.length === 0 && <div className="catalog_state">No tracks for {year} yet</div>}
 
             <ol className="year_list">
                 {visible.map((track) => (
@@ -87,7 +87,7 @@ const TopYearPage: React.FC = () => {
                             <button
                                 className="year_like"
                                 onClick={(e) => toggleLike(e, track)}
-                                aria-label={liked.has(track.id) ? "Прибрати лайк" : "Лайк"}
+                                aria-label={liked.has(track.id) ? "Remove like" : "Like"}
                             >
                                 <HeartIcon size={24} color={liked.has(track.id) ? "#9E7FCF" : "#FFF"} filled={liked.has(track.id)} />
                             </button>

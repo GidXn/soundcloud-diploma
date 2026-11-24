@@ -11,7 +11,7 @@ interface Props {
     mode: "following" | "followers";
 }
 
-// Сторінки Following / Followers (макет: сітка 6 колонок, круглі аватари 230px)
+// Following / Followers pages (design: 6-column grid, round avatars 230px)
 const FollowListPage: React.FC<Props> = ({ mode }) => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -47,10 +47,10 @@ const FollowListPage: React.FC<Props> = ({ mode }) => {
         <main className="catalog_page people_page">
             <h1 className="catalog_title people_title">{mode === "following" ? "Following" : "Followers"}</h1>
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
             {!loading && users.length === 0 && (
                 <div className="catalog_state">
-                    {mode === "following" ? "Ви ще ні на кого не підписані" : "Підписників поки немає"}
+                    {mode === "following" ? "You don't follow anyone yet" : "No followers yet"}
                 </div>
             )}
 

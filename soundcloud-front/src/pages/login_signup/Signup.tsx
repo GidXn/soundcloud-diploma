@@ -47,12 +47,12 @@ const Signup: React.FC = () => {
         try {
             const data = await register(username, email, password, confirmPassword);
             if (!data.token) {
-                alert("Помилка: токен не отримано");
+                alert("Error: token not received");
                 return;
             }
             const user = normalizeUser(data.token);
             if (!user) {
-                alert("Помилка: не вдалося отримати дані користувача");
+                alert("Error: failed to get user data");
                 return;
             }
             localStorage.setItem("token", data.token);
@@ -62,9 +62,9 @@ const Signup: React.FC = () => {
             const axiosErr = err as AxiosError<{ error?: string; message?: string }>;
             const apiMsg = axiosErr.response?.data?.error ?? axiosErr.response?.data?.message ?? "";
             const status = axiosErr.response?.status;
-            if ((status === 400 || status === 409) && apiMsg.includes("Google-акаунта")) {
+            if ((status === 400 || status === 409) && apiMsg.includes("Google-account")) {
                 alert(
-                    "Цей email вже прив'язаний до Google. Увійдіть через Google, а потім у профілі встановіть локальний пароль (Меню → Профіль → Встановити пароль)."
+                    "This email is already linked to Google. Sign in with Google, then set a local password in your profile (Menu → Profile → Set password)."
                 );
                 return;
             }
@@ -82,10 +82,10 @@ const Signup: React.FC = () => {
                 return;
             }
             if ((status === 400 || status === 409) && apiMsg) {
-                alert("Помилка реєстрації: " + apiMsg);
+                alert("Sign-up error: " + apiMsg);
                 return;
             }
-            alert("Помилка реєстрації: " + (axiosErr.message || "невідома помилка"));
+            alert("Sign-up error: " + (axiosErr.message || "unknown error"));
         }
     };
 

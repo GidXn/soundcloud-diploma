@@ -17,7 +17,7 @@ const UsersPage = () => {
             const res = await adminApi.getUsers();
             setUsers(res.data);
         } catch {
-            message.error("Не вдалося завантажити користувачів");
+            message.error("Failed to load users");
         }
         setLoading(false);
     };
@@ -28,7 +28,7 @@ const UsersPage = () => {
 
     const handleDelete = async (id: number) => {
         await adminApi.deleteUser(id);
-        message.success("Користувача видалено");
+        message.success("User deleted");
         loadUsers();
     };
 
@@ -37,7 +37,7 @@ const UsersPage = () => {
         form.setFieldsValue({
             username: user.username,
             email: user.email,
-            // у формі тримаємо читабельне значення, але на бек підемо з 0/2
+            // the form keeps a readable value, but the backend gets 0/2
             role: user.role === 2 || user.role === "Admin" ? "Admin" : "User",
         });
         setModalVisible(true);
@@ -50,28 +50,28 @@ const UsersPage = () => {
             if (editingUser) {
                 const { password, confirmPassword, role, ...updateData } = values;
 
-                // Оновлення основних даних
+                // Update the main data
                 await adminApi.updateUser(editingUser.id, updateData);
 
-                // Мапимо текстову роль у код: 0 = User, 2 = Admin
+                // Map the text role to a code: 0 = User, 2 = Admin
                 const newRoleCode = role === "Admin" || role === 2 ? 2 : 0;
                 const currentRoleCode =
                     editingUser.role === "Admin" || editingUser.role === 2 ? 2 : 0;
 
-                // Якщо змінилася роль — окремий виклик на бек
+                // If the role changed, a separate backend call
                 if (newRoleCode !== currentRoleCode) {
                     await adminApi.changeUserRole(editingUser.id, newRoleCode);
                 }
 
-                message.success("Користувача оновлено");
+                message.success("User updated");
             } else {
-                // Створення нового користувача: обов'язково password та confirmPassword
+                // Creating a new user: password and confirmPassword
                 if (!values.password || !values.confirmPassword) {
-                    message.error("Введіть пароль та підтвердження");
+                    message.error("Enter a password and confirmation");
                     return;
                 }
                 if (values.password !== values.confirmPassword) {
-                    message.error("Паролі не співпадають");
+                    message.error("Passwords don't match");
                     return;
                 }
                 await adminApi.createUser({
@@ -80,7 +80,7 @@ const UsersPage = () => {
                     password: values.password,
                     confirmPassword: values.confirmPassword,
                 });
-                message.success("Користувача створено");
+                message.success("User created");
             }
 
             setModalVisible(false);
@@ -88,7 +88,7 @@ const UsersPage = () => {
             setEditingUser(null);
             loadUsers();
         } catch (error) {
-            message.error("Не вдалося виконати операцію");
+            message.error("Operation failed");
             console.log(error);
         }
     };
@@ -99,7 +99,7 @@ const UsersPage = () => {
         { title: "Username", dataIndex: "username" },
         { title: "Role", dataIndex: "role" },
         {
-            title: "Дії",
+            title: "Actions",
             render: (_: any, record: any) => (
                 <Space>
                     <Button onClick={() => handleEdit(record)}>Edit</Button>
@@ -112,13 +112,13 @@ const UsersPage = () => {
     return (
         <>
             <Button type="primary" onClick={() => setModalVisible(true)} style={{ marginBottom: 16 }}>
-                Додати користувача
+                Add user
             </Button>
 
             <Table rowKey="id" columns={columns} dataSource={users} loading={loading} />
 
             <Modal
-                title={editingUser ? "Редагувати користувача" : "Додати користувача"}
+                title={editingUser ? "Edit user" : "Add user"}
                 open={modalVisible}
                 onCancel={() => {
                     setModalVisible(false);
@@ -131,7 +131,7 @@ const UsersPage = () => {
                     <Form.Item
                         label="Username"
                         name="username"
-                        rules={[{ required: true, message: "Введіть username" }]}
+                        rules={[{ required: true, message: "Enter username" }]}
                     >
                         <Input />
                     </Form.Item>
@@ -139,7 +139,7 @@ const UsersPage = () => {
                     <Form.Item
                         label="Email"
                         name="email"
-                        rules={[{ required: true, message: "Введіть email" }]}
+                        rules={[{ required: true, message: "Enter email" }]}
                     >
                         <Input />
                     </Form.Item>
@@ -147,7 +147,7 @@ const UsersPage = () => {
                     <Form.Item
                         label="Role"
                         name="role"
-                        rules={[{ required: true, message: "Оберіть роль" }]}
+                        rules={[{ required: true, message: "Select a role" }]}
                     >
                         <Select>
                             <Option value="User">User</Option>
@@ -160,7 +160,7 @@ const UsersPage = () => {
                             <Form.Item
                                 label="Password"
                                 name="password"
-                                rules={[{ required: true, message: "Введіть пароль" }]}
+                                rules={[{ required: true, message: "Enter a password" }]}
                             >
                                 <Input.Password />
                             </Form.Item>
@@ -168,7 +168,7 @@ const UsersPage = () => {
                             <Form.Item
                                 label="Confirm Password"
                                 name="confirmPassword"
-                                rules={[{ required: true, message: "Підтвердіть пароль" }]}
+                                rules={[{ required: true, message: "Confirm password" }]}
                             >
                                 <Input.Password />
                             </Form.Item>

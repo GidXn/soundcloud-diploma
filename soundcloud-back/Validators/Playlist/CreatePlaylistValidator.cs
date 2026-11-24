@@ -8,7 +8,7 @@ namespace soundcloud_back.Validators.Playlist
         public CreatePlaylistValidator()
         {
             RuleFor(x => x.Name)
-                .NotEmpty().WithMessage("Назва плейлиста обов'язкова")
+                .NotEmpty().WithMessage("Playlist title is required")
                 .MaximumLength(200);
         }
     }

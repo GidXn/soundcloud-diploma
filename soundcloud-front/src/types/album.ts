@@ -4,11 +4,11 @@ export interface IAlbum {
     id: number;
     title: string;
     description?: string;
-    createdAt?: string; // або Date, якщо будеш парсити
+    createdAt?: string; // or Date, if you parse it
     updatedAt: string;
     ownerId?: number;
     ownerName?: string;
     coverUrl?: string;
     isPublic?: boolean;
-    tracks?: ITrack[]; // масив треків, якщо завантажуємо разом з альбомом
+    tracks?: ITrack[]; // array of tracks, if loaded together with the album
 }

@@ -5,48 +5,48 @@ using soundcloud_back.Models.Track;
 namespace soundcloud_back.Services.Interfaces
 {
     /// <summary>
-    /// Сервіс для роботи з треками
+    /// Service for working with tracks
     /// </summary>
     public interface ITrackService
     {
-        // Отримати всі треки
+        // Get all tracks
         Task<IEnumerable<TrackDto>> GetAllByUserAsync(int userId);
 
         Task<IEnumerable<TrackDto>> GetAllAsync();
 
 
-        // Отримати трек за ID
+        // Get a track by ID
         Task<TrackDto?> GetByIdAsync(int id);
         Task<TrackDto> GetByIdInternalAsync(int id, bool includeUserLikes);
 
-        // Отримати всі треки (для фронтенду)
+        // Get all tracks (for the frontend)
         Task<IEnumerable<TrackDto>> GetAllTracksAsync();
 
-        // Створити трек
+        // Create a track
         Task<TrackDto> CreateAsync(CreateTrackDto dto);
 
-        // Створення треку з файлом
+        // Create a track with a file
         Task<TrackDto> CreateAsyncFile(CreateTrackDto dto);
 
-        // Оновити трек
+        // Update a track
         Task<TrackDto> UpdateAsyncFile(int trackId, UpdateTrackDto dto);
 
-        // Видалити трек
+        // Delete a track
         Task DeleteAsync(int trackId);
 
-        // Приховати/показати трек
+        // Hide/show a track
         Task HideAsync(int id);
         Task UnhideAsync(int id);
 
-        // Оновити обкладинку
+        // Update the cover
         Task SetImageAsync(int trackId, string imageUrl);
 
-        // Лайки і прослуховування
+        // Likes and plays
         Task LikeAsync(int trackId);
         Task UnlikeAsync(int trackId);
         Task AddPlayAsync(int trackId);
 
-        // Статистика
+        // Statistics
         Task<TrackStatsDto> GetTrackStatsAsync(int trackId);
         Task<AuthorStatsDto> GetAuthorStatsAsync(int authorId);
 

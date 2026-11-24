@@ -10,25 +10,25 @@ namespace soundcloud_back.Models.Track
         [MaxLength(200)]
         public string Title { get; set; }
 
-        // Тепер обов'язково передаємо AuthorId
+        // Now we always pass AuthorId
 
-        // Для файлу треку
+        // For the track file
         [Required]
         public IFormFile File { get; set; }
 
-        // Обкладинка
+        // Cover
         [Required]
         public IFormFile Cover { get; set; }
 
 
-        // Альбом (обов’язково)
+        // Album (required)
         //[Required]
         //public int AlbumId { get; set; }
 
-        // Опційно: жанр
+        // Optional: genre
         public int? GenreId { get; set; }
 
-        // Тут додаємо список ID альбомів
+        // Here we add the list of album IDs
         public List<int>? AlbumIds { get; set; }
     }
 }

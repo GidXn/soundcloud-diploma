@@ -122,14 +122,14 @@
     line-height: 32px;
 }
 
-:root { --oauth-h: 48px; } /* одна точка вх */
+:root { --oauth-h: 48px; } /* single entry point */
 
-/* зовнішній фіолетовий овал */
+/* outer purple oval */
 .login_third_google_button{
     position: relative;
     height: var(--oauth-h);
     width: var(--oauth-h);
-    padding: 0;                 /* без внутрішніх відступів */
+    padding: 0;                 /* no inner padding */
     background: rgba(75, 53, 131, 0.14);
     border-radius: 50%;
     display: flex;
@@ -140,10 +140,10 @@
     transition: all 0.3s ease;
 }
 
-/* обгортка */
+/* wrapper */
 .oauth-wrap{ position: relative; width: 100%; height: var(--oauth-h); }
 
-/* видима “красива” кнопка */
+/* visible “pretty” button */
 .oauth-btn{
     width: var(--oauth-h);
     height: var(--oauth-h);
@@ -192,14 +192,14 @@
     filter: brightness(0) saturate(100%) invert(100%);
 }
 
-/* прозорий шар із GoogleLogin поверх — рівно в розміри контейнера */
+/* transparent GoogleLogin layer on top, exactly the size of the container */
 .oauth-overlay{
     position: absolute; inset: 0;
-    opacity: 0;                 /* невидимий */
+    opacity: 0;                 /* invisible */
     cursor: pointer;
 }
 
-/*  внутрішні обгортки Google на всю висоту/ширину */
+/*  Google's inner wrappers at full height/width */
 .oauth-overlay > div,
 .oauth-overlay iframe{
     width: 100% !important;
@@ -219,7 +219,7 @@
 /*    justify-content: center;*/
 /*    gap: 14px;*/
 /*    padding: 16px 24px;*/
-/*    background: #5241B3;   !* той самий фіолетовий *!*/
+/*    background: #5241B3;   !* the same purple *!*/
 /*    color: #fff;*/
 /*    border: 0;*/
 /*    border-radius: 100px;*/
@@ -232,7 +232,7 @@
 /*.oauth-overlay {*/
 /*    position: absolute;*/
 /*    inset: 0;*/
-/*    opacity: 0;            !* повністю невидимий шар з Google iframe *!*/
+/*    opacity: 0;            !* fully invisible layer with Google iframe *!*/
 /*    cursor: pointer;*/
 /*}*/
 /*.oauth-overlay > div { width: 100% !important; height: 100% !important; }*/

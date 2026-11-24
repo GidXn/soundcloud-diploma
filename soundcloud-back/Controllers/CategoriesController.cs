@@ -14,11 +14,11 @@ public class CategoriesController : ControllerBase
     public CategoriesController(ICategoryService service) => _service = service;
 
     [HttpGet]
-    [SwaggerOperation(Summary = "Список категорій")]
+    [SwaggerOperation(Summary = "Category list")]
     public async Task<IActionResult> GetAll() => Ok(await _service.GetAllAsync());
 
     [HttpGet("{id:int}")]
-    [SwaggerOperation(Summary = "Категорія за ID")]
+    [SwaggerOperation(Summary = "Category by ID")]
     public async Task<IActionResult> GetById(int id)
     {
         var res = await _service.GetByIdAsync(id);
@@ -27,7 +27,7 @@ public class CategoriesController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpPost]
-    [SwaggerOperation(Summary = "Створити категорію [Admin]")]
+    [SwaggerOperation(Summary = "Create a category [Admin]")]
     public async Task<IActionResult> Create([FromForm] CategoryCreateModel model)
     {
         var id = await _service.CreateAsync(model);
@@ -36,7 +36,7 @@ public class CategoriesController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
-    [SwaggerOperation(Summary = "Оновити категорію [Admin]")]
+    [SwaggerOperation(Summary = "Update a category [Admin]")]
     public async Task<IActionResult> Update(int id, [FromForm] CategoryUpdateModel model)
     {
         await _service.UpdateAsync(id, model);
@@ -45,7 +45,7 @@ public class CategoriesController : ControllerBase
 
     [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
-    [SwaggerOperation(Summary = "Видалити категорію [Admin]")]
+    [SwaggerOperation(Summary = "Delete a category [Admin]")]
     public async Task<IActionResult> Delete(int id)
     {
         await _service.DeleteAsync(id);

@@ -4,6 +4,6 @@ namespace soundcloud_back.Models.Auth
     {
         public int Id { get; set; }
         public string Username { get; set; } = "";
-        public string? AvatarUrl { get; set; } // Фото користувача
+        public string? AvatarUrl { get; set; } // User photo
     }
 }

@@ -69,7 +69,7 @@ export const albumService = {
         await api.post(`/Album/${albumId}/tracks/${trackId}`);
     },
 
-    // Отримати всі альбоми конкретного користувача
+    // Get all albums of a specific user
     getAllByUser: async (userId: number): Promise<IAlbum[]> => {
         const res = await api.get<IAlbum[]>(`/album/user/${userId}`);
         return res.data;

@@ -230,7 +230,7 @@
     margin-bottom: 32px;
 
     width: 1170px;
-    height: auto;        /* висота підлаштовується під контент */
+    height: auto;        /* height adapts to the content */
     max-height: 476px;
 
 
@@ -270,7 +270,7 @@
     gap: 24px;
 
     width: 905px;
-    height: auto;        /* висота підлаштовується під контент */
+    height: auto;        /* height adapts to the content */
     max-height: 476px;
 
 
@@ -497,7 +497,7 @@
 .profile_page_user_avatar_style{
     width: 100%;
     height: 100%;
-    object-fit: cover; /* зберігає пропорції, заповнюючи контейнер */
+    object-fit: cover; /* keeps proportions while filling the container */
     border-radius: 100%;
 
 }
@@ -854,7 +854,7 @@
 
     width: 100%;
     height: 100%;
-    object-fit: cover; /* зберігає пропорції, заповнюючи контейнер */
+    object-fit: cover; /* keeps proportions while filling the container */
     border-radius: 100%;
 
 }
@@ -1163,7 +1163,7 @@
     /* Auto layout */
     display: flex;
     flex-direction: column;
-    align-items: center;       /* центрує по горизонталі */
+    align-items: center;       /* centers horizontally */
     justify-content: center;
     padding: 0px;
     gap: 32px;
@@ -1643,21 +1643,21 @@
 
 
 
-/* Контейнер правого сайдбару */
+/* Right sidebar container */
 .profile_page_right_sidebar {
-    position: absolute; /* або fixed якщо треба фіксувати на екрані */
-    top: 738px;         /* відступ зверху */
-    left: 1370px;       /* відступ від лівого краю */
+    position: absolute; /* or fixed if it must be fixed on screen */
+    top: 738px;         /* top offset */
+    left: 1370px;       /* offset from the left edge */
 
     display: flex;
-    flex-direction: column; /* вертикально один під одним */
-    gap: 24px;              /* відстань між блоками */
-    width: 332px;           /* ширина панелі «profile PEOPLE» з макету */
+    flex-direction: column; /* stacked vertically */
+    gap: 24px;              /* gap between blocks */
+    width: 332px;           /* width of the «profile PEOPLE» panel from the design */
 
-    /* Важливо: прибрати всі top/left у внутрішніх блоках */
+    /* Important: remove all top/left in the inner blocks */
 }
 
-/* Біо користувача */
+/* User bio */
 .profile_page_bio_container {
     width: 100%;
     min-height: 40px;
@@ -1668,7 +1668,7 @@
     white-space: normal;
 }
 
-/* Following блок */
+/* Following block */
 .profile_page_following_users_container {
     width: auto;
     display: flex;
@@ -1709,7 +1709,7 @@
     order: 0;
     flex-grow: 0;
 }
-/* Likes блок */
+/* Likes block */
 .profile_page_likes_users_container {
     width: 100%;
     display: flex;
@@ -2244,7 +2244,7 @@
     order: 1;
     align-self: stretch;
     flex-grow: 0;
-    appearance: none; /* прибираємо стандартну стрілку */
+    appearance: none; /* remove the default arrow */
     -webkit-appearance: none;
     -moz-appearance: none;
 
@@ -2283,13 +2283,13 @@
     align-self: stretch;
     flex-grow: 0;
     color: #C9D4FF;
-    -webkit-appearance: none; /* для Chrome, Safari, Opera */
-    -moz-appearance: none;    /* для Firefox */
+    -webkit-appearance: none; /* for Chrome, Safari, Opera */
+    -moz-appearance: none;    /* for Firefox */
     appearance: none;
 }
 .song_info_container .input_upload_track_container:focus{
-    border-color: #4f46e5; /* фіолетова рамка при фокусі */
-    box-shadow: 0 0 4px rgba(79, 70, 229, 0.5); /* підсвітка */
+    border-color: #4f46e5; /* purple border on focus */
+    box-shadow: 0 0 4px rgba(79, 70, 229, 0.5); /* glow */
     outline: none;
 }
 .song_info_container .input_upload_track_container option {
@@ -2774,26 +2774,26 @@
     display: block;
 }
 
-/* Overlay на всю картинку */
+/* Overlay over the whole image */
 .profile_page_track_image_overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(82, 65, 179, 0.3); /* напівпрозорий чорний */
-    border-radius: 10px; /* щоб збігалося з картинкою */
+    background: rgba(82, 65, 179, 0.3); /* semi-transparent black */
+    border-radius: 10px; /* to match the image */
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
-    opacity: 0; /* спочатку невидимий */
-    transition: opacity 0.3s ease; /* плавна анімація */
+    opacity: 0; /* initially invisible */
+    transition: opacity 0.3s ease; /* smooth animation */
 
 }
 
 .profile_page_track_image_wrapper:hover .profile_page_track_image_overlay {
-    opacity: 1; /* показати при наведенні */
+    opacity: 1; /* show on hover */
 }
 
 .profile_page_track_image_overlay .img_style{

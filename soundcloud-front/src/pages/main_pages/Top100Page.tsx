@@ -16,7 +16,7 @@ const HeartIcon: React.FC<{ filled?: boolean }> = ({ filled }) => (
     </svg>
 );
 
-// Топ 100 = 100 треків з найбільшою кількістю прослуховувань
+// Top 100 = 100 tracks with the most plays
 const Top100Page: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const [liked, setLiked] = useState<Set<number>>(new Set());
@@ -63,8 +63,8 @@ const Top100Page: React.FC = () => {
 
             <RadioBanner title="XIT FM" subtitle="Good vibes only" logo={<XitLogo />} />
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
-            {!loading && top.length === 0 && <div className="catalog_state">Треків поки немає</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && top.length === 0 && <div className="catalog_state">No tracks yet</div>}
 
             <ol className="top_list">
                 {top.map((track) => (
@@ -85,7 +85,7 @@ const Top100Page: React.FC = () => {
                         <button
                             className="top_like"
                             onClick={(e) => toggleLike(e, track)}
-                            aria-label={liked.has(track.id) ? "Прибрати лайк" : "Лайк"}
+                            aria-label={liked.has(track.id) ? "Remove like" : "Like"}
                         >
                             <HeartIcon filled={liked.has(track.id)} />
                         </button>

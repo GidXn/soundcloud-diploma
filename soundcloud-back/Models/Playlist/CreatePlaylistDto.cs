@@ -9,11 +9,11 @@ namespace soundcloud_back.Models.Playlist
         [MaxLength(200)]
         public string Name { get; set; }
 
-        // Власник
+        // Owner
         [Required]
         public int OwnerId { get; set; }
 
-        // Файл обкладинки
+        // Cover file
         public IFormFile? Cover { get; set; }
         public string? CoverUrl { get; set; }
     }

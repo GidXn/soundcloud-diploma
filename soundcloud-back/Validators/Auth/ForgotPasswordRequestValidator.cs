@@ -8,8 +8,8 @@ namespace soundcloud_back.Validators.Auth
         public ForgotPasswordRequestValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email обов'язковий")
-                .EmailAddress().WithMessage("Некоректний формат Email");
+                .NotEmpty().WithMessage("Email is required")
+                .EmailAddress().WithMessage("Invalid format Email");
         }
     }
 }

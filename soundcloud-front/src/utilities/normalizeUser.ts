@@ -7,7 +7,7 @@ export const normalizeUser = (token: string): IUser | null => {
     const roleClaim = payload.role || payload["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] || "User";
 
     return {
-        // у JWT бекенду id лежить у claim "nameid" (поля "id" немає)
+        // in the backend JWT the id is in the "nameid" claim (there is no "id" field)
         id: Number(payload.id ?? payload.nameid ?? payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"]),
         username: payload.unique_name || payload.username || "",
         email: payload.email,

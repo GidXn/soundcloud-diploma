@@ -68,7 +68,7 @@ html, body {
     margin-top: auto;
 }
 
-/* Player завжди поверх у низу */
+/* Player always on top at the bottom */
 .player_container {
     position: fixed;
     left: 176px;

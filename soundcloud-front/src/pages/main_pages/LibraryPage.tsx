@@ -57,7 +57,7 @@ const LibraryPage: React.FC = () => {
 
 
     useEffect(() => {
-        // функція для оновлення кнопок конкретного контейнера
+        // function to update the buttons of a specific container
         const attachScrollListener = (
             ref: React.RefObject<HTMLDivElement | null>,
             setLeft: React.Dispatch<React.SetStateAction<boolean>>,
@@ -65,7 +65,7 @@ const LibraryPage: React.FC = () => {
         ) => {
             const container = ref.current;
             if (!container) return () => {
-            }; // повертаємо пустий cleanup
+            }; // return an empty cleanup
 
             const updateButtons = () => {
                 setLeft(container.scrollLeft > 0);
@@ -83,14 +83,14 @@ const LibraryPage: React.FC = () => {
             };
         };
 
-        // підключаємо обидва контейнера
+        // attach both containers
         const cleanupMore = attachScrollListener(scrollMore, setShowLeftMore, setShowRightMore);
         const cleanupLike = attachScrollListener(scrollLike, setShowLeftLike, setShowRightLike);
         const cleanupFollowing = attachScrollListener(scrollFollowing, setShowLeftFollowing, setShowRightFollowing);
         const cleanupAlbums = attachScrollListener(scrollAlbums, setShowLeftAlbums, setShowRightAlbums);
         const cleanupPlaylists = attachScrollListener(scrollPlaylists, setShowLeftPlaylists, setShowRightPlaylists);
 
-        // повертаємо cleanup обох
+        // return cleanup for both
         return () => {
             cleanupMore?.();
             cleanupLike?.();
@@ -112,10 +112,10 @@ const LibraryPage: React.FC = () => {
 
 
     useEffect(() => {
-        // коли змінюється activeTab — скролимо вгору
+        // when activeTab changes, scroll to the top
         window.scrollTo({
             top: 0,
-            behavior: "smooth" // можна "auto" якщо не хочеш анімації
+            behavior: "smooth" // can be "auto" if you don't want animation
         });
     }, [activeTab]);
 
@@ -137,7 +137,7 @@ const LibraryPage: React.FC = () => {
                 setTracks(likedTracks);
 
             } catch (error) {
-                console.error("Помилка при завантаженні улюблених треків:", error);
+                console.error("Failed to load favorite tracks:", error);
             } finally {
                 setLoading(false);
             }
@@ -151,7 +151,7 @@ const LibraryPage: React.FC = () => {
         return `http://localhost:5122/${track.imageUrl}`;
     };
     const getUserAvatarUrl = (user: IUserFollow) => {
-        if (!user.avatarUrl) return "/default-cover.png"; // запасна картинка
+        if (!user.avatarUrl) return "/default-cover.png"; // fallback image
         return `http://localhost:5122${user.avatarUrl}`;
     };
     useEffect(() => {
@@ -170,14 +170,14 @@ const LibraryPage: React.FC = () => {
                     }))
                 );
             } catch (error) {
-                console.error("Помилка при отриманні списку Following:", error);
+                console.error("Failed to get the list Following:", error);
             }
         };
 
         fetchFollowingUsers();
     }, [user]);
 
-    // метод для переходу на профіль
+    // method to go to the profile
 
     const goToUserProfile = (userId: number) => {
         navigate(`/user/${userId}`);

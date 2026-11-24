@@ -21,22 +21,22 @@ namespace soundcloud_back.Controllers
             _albumService = albumService;
         }
 
-        // ===== Отримати всі альбоми користувача за ID  =====
+        // ===== Get all albums of a user by ID  =====
 
 
         [HttpGet("user/{userId:int}")]
-        [SwaggerOperation(OperationId = "GetAlbumsByUser", Summary = "Отримати всі альбоми користувача за ID")]
+        [SwaggerOperation(OperationId = "GetAlbumsByUser", Summary = "Get all albums of a user by ID")]
         public async Task<IActionResult> GetByUserId(int userId)
         {
             var albums = await _albumService.GetAllByUserAsync(userId);
-            // Порожній список — не помилка
+            // An empty list is not an error
             return Ok(albums);
         }
 
-        // ===== CRUD для поточного користувача =====
+        // ===== CRUD for the current user =====
 
         [HttpGet]
-        [SwaggerOperation(OperationId = "GetAlbums", Summary = "Отримати всі альбоми користувача")]
+        [SwaggerOperation(OperationId = "GetAlbums", Summary = "Get all albums of the user")]
         public async Task<IActionResult> GetAll()
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -46,11 +46,11 @@ namespace soundcloud_back.Controllers
             }
 
             var userId = int.Parse(userIdClaim.Value);
-            var albums = await _albumService.GetAllByUserAsync(userId); // новий метод враховує IsPublic
+            var albums = await _albumService.GetAllByUserAsync(userId); // the new method takes into account IsPublic
             return Ok(albums);
         }
         [HttpGet("public")]
-        [SwaggerOperation(OperationId = "GetAllAlbums", Summary = "Отримати всі публічні альбоми користувачів")]
+        [SwaggerOperation(OperationId = "GetAllAlbums", Summary = "Get all public albums of users")]
         public async Task<IActionResult> GetAllPublicAlbums()
         {
             var albums = await _albumService.GetAllPublicAlbumsAsync(); 
@@ -59,7 +59,7 @@ namespace soundcloud_back.Controllers
 
 
         [HttpGet("{id:int}")]
-        [SwaggerOperation(OperationId = "GetAlbumById", Summary = "Отримати альбом за ID")]
+        [SwaggerOperation(OperationId = "GetAlbumById", Summary = "Get an album by ID")]
         public async Task<IActionResult> GetById(int id)
         {
             var album = await _albumService.GetByIdAsync(id);
@@ -70,7 +70,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpPost]
-        [SwaggerOperation(OperationId = "CreateAlbum", Summary = "Створити новий альбом")]
+        [SwaggerOperation(OperationId = "CreateAlbum", Summary = "Create a new album")]
         public async Task<IActionResult> Create([FromForm] CreateAlbumDto dto)
         {
             var created = await _albumService.CreateAsync(dto);
@@ -78,7 +78,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpPut("{id:int}")]
-        [SwaggerOperation(OperationId = "UpdateAlbum", Summary = "Оновити альбом за ID")]
+        [SwaggerOperation(OperationId = "UpdateAlbum", Summary = "Update an album by ID")]
         public async Task<IActionResult> Update(int id, [FromBody] CreateAlbumDto dto)
         {
             await _albumService.UpdateAsync(id, dto);
@@ -86,7 +86,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        [SwaggerOperation(OperationId = "DeleteAlbum", Summary = "Видалити альбом за ID")]
+        [SwaggerOperation(OperationId = "DeleteAlbum", Summary = "Delete an album by ID")]
         public async Task<IActionResult> Delete(int id)
         {
             await _albumService.DeleteAsync(id);
@@ -95,7 +95,7 @@ namespace soundcloud_back.Controllers
 
         [HttpPost("{id:int}/cover")]
         [Consumes("multipart/form-data")]
-        [SwaggerOperation(Summary = "Завантажити обкладинку альбому")]
+        [SwaggerOperation(Summary = "Upload an album cover")]
         public async Task<IActionResult> UploadCover(int id, IFormFile file, [FromServices] IImageStorage storage)
         {
             if (file is null || file.Length == 0) return BadRequest("No file");
@@ -106,21 +106,21 @@ namespace soundcloud_back.Controllers
             return Ok(new { coverUrl = url });
         }
 
-        // ===== Admin: всі альбоми =====
+        // ===== Admin: all albums =====
         [Authorize(Roles = "Admin")]
         [HttpGet("admin/all")]
-        [SwaggerOperation(OperationId = "GetAllAlbumsForAdmin", Summary = "Отримати всі альбоми для адміна")]
+        [SwaggerOperation(OperationId = "GetAllAlbumsForAdmin", Summary = "Get all albums for the admin")]
         public async Task<IActionResult> GetAllForAdmin()
         {
             var albums = await _albumService.GetAllAlbumsForAdminAsync();
             return Ok(albums);
         }
 
-        // ===== Нові методи для треків =====
+        // ===== New methods for tracks =====
 
-        // Отримати всі треки альбому
+        // Get all tracks of an album
         [HttpGet("{albumId:int}/tracks")]
-        [SwaggerOperation(OperationId = "GetTracksByAlbum", Summary = "Отримати всі треки альбому")]
+        [SwaggerOperation(OperationId = "GetTracksByAlbum", Summary = "Get all tracks of an album")]
         public async Task<IActionResult> GetTracks(int albumId)
         {
             var album = await _albumService.GetByIdAsync(albumId);
@@ -134,9 +134,9 @@ namespace soundcloud_back.Controllers
             return Ok(tracks);
         }
 
-        // Додати трек у альбом
+        // Add a track to an album
         [HttpPost("{albumId:int}/tracks/{trackId:int}")]
-        [SwaggerOperation(OperationId = "AddTrackToAlbum", Summary = "Додати трек у альбом")]
+        [SwaggerOperation(OperationId = "AddTrackToAlbum", Summary = "Add a track to an album")]
         public async Task<IActionResult> AddTrack(int albumId, int trackId)
         {
             var album = await _albumService.GetByIdAsync(albumId);
@@ -150,9 +150,9 @@ namespace soundcloud_back.Controllers
             return NoContent();
         }
 
-        // Видалити трек з альбому
+        // Remove a track from an album
         [HttpDelete("{albumId:int}/tracks/{trackId:int}")]
-        [SwaggerOperation(OperationId = "RemoveTrackFromAlbum", Summary = "Видалити трек з альбому")]
+        [SwaggerOperation(OperationId = "RemoveTrackFromAlbum", Summary = "Remove a track from an album")]
         public async Task<IActionResult> RemoveTrack(int albumId, int trackId)
         {
             var album = await _albumService.GetByIdAsync(albumId);

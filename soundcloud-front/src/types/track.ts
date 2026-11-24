@@ -3,7 +3,7 @@ export interface ITrack {
     title: string;
     author: string;
     playCount: number;
-    createdAt?: string; // ISO, дата завантаження
+    createdAt?: string; // ISO, upload date
     genre: string;
     duration: string;
     isHidden: boolean;
@@ -11,6 +11,6 @@ export interface ITrack {
     url: string;
     imageUrl?: string;
 
-    // нове поле
-    isLikedByCurrentUser?: boolean;  // опціонально, бо може бути undefined
+    // new field
+    isLikedByCurrentUser?: boolean;  // optional, because it can be undefined
 }

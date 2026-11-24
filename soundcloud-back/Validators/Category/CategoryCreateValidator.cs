@@ -9,25 +9,25 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateModel>
     {
         RuleFor(x => x.Name)
             .NotEmpty()
-            .WithMessage("Ім'я є обов'язковим.")
+            .WithMessage("Name is required.")
             .MaximumLength(100)
-            .WithMessage("Ім'я не повинно перевищувати 100 символів.");
+            .WithMessage("Name must not exceed 100 characters.");
         RuleFor(x => x.Slug)
             .NotEmpty()
-            .WithMessage("Слаг є обов'язковим.")
+            .WithMessage("Slug is required.")
             .MinimumLength(3)
-            .WithMessage("Слаг повинен містити не менше 3 символів.")
+            .WithMessage("Slug must be at least 3 characters.")
             .MaximumLength(100)
-            .WithMessage("Слаг не повинен перевищувати 100 символів.");
+            .WithMessage("Slug must not exceed 100 characters.");
         RuleFor(x => x.ImageFile)
             .NotEmpty()
-            .WithMessage("Фото є обов'язковим.")
+            .WithMessage("Photo is required.")
             .Must(BeAValidImage)
-            .WithMessage("Файл зображення має бути коректним зображенням.");
+            .WithMessage("The image file must be a valid image.");
     }
     private bool BeAValidImage(IFormFile? file)
     {
-        if (file == null) return true; // Дозволити null файли
+        if (file == null) return true; // Allow null files
         var validImageTypes = new[] { "image/jpeg", "image/png", "image/webp", "image/gif" };
         return validImageTypes.Contains(file.ContentType);
     }

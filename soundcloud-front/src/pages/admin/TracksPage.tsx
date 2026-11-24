@@ -11,7 +11,7 @@ const TracksPage = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [editingTrack, setEditingTrack] = useState<any>(null);
 
-// Відкриття модалки для редагування
+// Open the modal for editing
     const handleEdit = (track: any) => {
         setEditingTrack(track);
         setIsModalVisible(true);
@@ -20,24 +20,24 @@ const TracksPage = () => {
             duration: track.duration,
             albumId: track.albumId,
             genreId: track.genreId,
-            // файли не встановлюємо, їх потрібно заново вибрати
+            // files are not set, they have to be selected again
         });
     };
     const handleSave = async (values: any) => {
         try {
             const { title, duration, albumId, file, cover, genreId } = values;
 
-            // Перетворюємо genreId і albumId на числа
+            // Convert genreId and albumId to numbers
             const genreIdNumber = Number(genreId);
             const albumIdNumber = Number(albumId);
 
             if (!genreIdNumber) {
-                message.error("Всі обов'язкові поля повинні бути заповнені");
+                message.error("All required fields must be filled in");
                 return;
             }
 
             if (editingTrack) {
-                // Редагування треку
+                // Editing a track
                 await adminApi.updateTrack(editingTrack.id, {
                     title,
                     duration,
@@ -46,9 +46,9 @@ const TracksPage = () => {
                     cover: cover?.[0]?.originFileObj,
                     genreId: genreIdNumber
                 });
-                message.success("Трек оновлено");
+                message.success("Track updated");
             } else {
-                // Створення треку
+                // Creating a track
                 await adminApi.createTrack(
                     title,
                     duration,
@@ -57,17 +57,17 @@ const TracksPage = () => {
                     cover[0].originFileObj,
                     genreIdNumber
                 );
-                message.success("Трек створено");
+                message.success("Track created");
             }
 
-            // Закриваємо модалку і очищаємо форму
+            // Close the modal and clear the form
             setIsModalVisible(false);
             setEditingTrack(null);
             form.resetFields();
             loadTracks();
         } catch (error) {
             console.error("Failed to save track", error);
-            message.error("Не вдалося зберегти трек");
+            message.error("Failed to save track");
         }
     };
     const loadTracks = async () => {
@@ -76,7 +76,7 @@ const TracksPage = () => {
             const res = await adminApi.getTracks();
             setTracks(res.data);
         } catch {
-            message.error("Не вдалося завантажити треки");
+            message.error("Failed to load tracks");
         }
         setLoading(false);
     };
@@ -88,21 +88,21 @@ const TracksPage = () => {
     // const handleCreate = async (values: any) => {
     //     try {
     //         const { title, duration, albumId, file } = values;
-    //         const realFile = file[0].originFileObj; // правильний доступ
+    //         const realFile = file[0].originFileObj; // correct access
     //
     //         await adminApi.createTrack(title, duration, albumId, realFile);
-    //         message.success("Трек створено");
+    //         message.success("Track created");
     //         setIsModalVisible(false);
     //         form.resetFields();
     //         loadTracks();
     //     } catch {
-    //         message.error("Не вдалося створити трек");
+    //         message.error("Failed to create track");
     //     }
     // };
 
     const handleDelete = async (id: number) => {
         await adminApi.deleteTrack(id);
-        message.success("Трек видалено");
+        message.success("Track deleted");
         loadTracks();
     };
 
@@ -110,23 +110,23 @@ const TracksPage = () => {
         try {
             if (hidden) {
                 await adminApi.unhideTrack(id);
-                message.success("Трек відновлено");
+                message.success("Track restored");
             } else {
                 await adminApi.hideTrack(id);
-                message.success("Трек приховано");
+                message.success("Track hidden");
             }
             loadTracks();
         } catch {
-            message.error("Не вдалося змінити статус треку");
+            message.error("Failed to change track status");
         }
     };
 
     const handleUploadCover = async (id: number, file: File) => {
         try {
             await adminApi.uploadTrackCover(id, file);
-            message.success("Обкладинку завантажено");
+            message.success("Cover uploaded");
         } catch {
-            message.error("Не вдалося завантажити обкладинку");
+            message.error("Failed to upload cover");
         }
     };
 
@@ -193,32 +193,32 @@ const TracksPage = () => {
                 >
                     <Form
                         form={form}
-                        onFinish={handleSave} // універсальна функція для створення/редагування
+                        onFinish={handleSave} // universal function for create/edit
                         layout="vertical"
                     >
                         <Form.Item
                             name="title"
-                            rules={[{ required: true, message: "Введіть назву" }]}
+                            rules={[{ required: true, message: "Enter a name" }]}
                         >
                             <Input placeholder="Title" />
                         </Form.Item>
 
                         <Form.Item
                             name="duration"
-                            rules={[{ required: true, message: "Вкажіть тривалість" }]}
+                            rules={[{ required: true, message: "Enter the duration" }]}
                         >
                             <Input placeholder="00:03:25" />
                         </Form.Item>
 
                         <Form.Item
                             name="albumId"
-                            rules={[{ required: true, message: "Вкажіть AlbumId" }]}
+                            rules={[{ required: true, message: "Enter AlbumId" }]}
                         >
                             <Input type="number" placeholder="AlbumId" />
                         </Form.Item>
                         <Form.Item
                             name="genreId"
-                            rules={[{ required: true, message: "Вкажіть GenreId" }]}
+                            rules={[{ required: true, message: "Enter GenreId" }]}
                         >
                             <InputNumber placeholder="GenreId" />
                         </Form.Item>
@@ -226,11 +226,11 @@ const TracksPage = () => {
                             name="file"
                             valuePropName="fileList"
                             getValueFromEvent={normFile}
-                            rules={editingTrack ? [] : [{ required: true, message: "Оберіть файл" }]}
+                            rules={editingTrack ? [] : [{ required: true, message: "Select a file" }]}
                         >
                             <Upload beforeUpload={() => false} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>
-                                    {editingTrack ? "Оновити файл" : "Вибрати файл"}
+                                    {editingTrack ? "Update file" : "Choose file"}
                                 </Button>
                             </Upload>
                         </Form.Item>
@@ -242,14 +242,14 @@ const TracksPage = () => {
                         >
                             <Upload beforeUpload={() => false} maxCount={1}>
                                 <Button icon={<UploadOutlined />}>
-                                    {editingTrack ? "Оновити обкладинку" : "Вибрати обкладинку"}
+                                    {editingTrack ? "Update cover" : "Choose cover"}
                                 </Button>
                             </Upload>
                         </Form.Item>
 
                         <Form.Item>
                             <Button type="primary" htmlType="submit" block>
-                                {editingTrack ? "Зберегти" : "Створити"}
+                                {editingTrack ? "Save" : "Create"}
                             </Button>
                         </Form.Item>
                     </Form>

@@ -9,36 +9,36 @@ namespace soundcloud_back.Models.Track
 
         public string Title { get; set; }
 
-        // Тепер Author — це зв’язок з User
+        // Now Author is a relation to User
         public int AuthorId { get; set; }
 
-        // Опційно: ім’я автора для фронтенду
+        // Optional: author name for the frontend
         public string Author { get; set; }
         public int? GenreId { get; set; }
 
-        // Опційно: категорія для фронтенду
+        // Optional: category for the frontend
         public string? Genre { get; set; }
 
         public TimeSpan Duration { get; set; }
 
         public bool IsHidden { get; set; }
 
-        // Зв’язок з альбомом
+        // Relation to the album
         //public int AlbumId { get; set; }
 
         public string? Url { get; set; }
 
         public string? ImageUrl { get; set; }
 
-        // Нове поле: кількість прослуховувань
+        // New field: play count
         public int PlayCount { get; set; }
 
-        // Дата завантаження (для «Топ року»)
+        // Upload date (for «Top of the year»)
         public DateTime CreatedAt { get; set; }
 
         public List<AlbumDto>? Albums { get; set; } = new List<AlbumDto>();
 
-        public int LikesCount { get; set; }              // кількість лайків
-        public bool IsLikedByCurrentUser { get; set; }  // чи лайкнув поточний користувач
+        public int LikesCount { get; set; }              // like count
+        public bool IsLikedByCurrentUser { get; set; }  // whether the current user liked it
     }
 }

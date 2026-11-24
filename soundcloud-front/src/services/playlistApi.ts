@@ -1,13 +1,13 @@
 import { IPlaylist } from "../types/playlist";
 import api from "../utilities/axiosInstance.ts";
-import { ITrack } from "../types/track"; // шлях підкоригуй під свій проект
+import { ITrack } from "../types/track"; // adjust the path to your project
 
-// Новий інтерфейс для створення плейліста
+// New interface for creating a playlist
 export interface ICreatePlaylist {
     name: string;
     ownerId: number;
     cover?:string;
-    coverUrl?: string; // додали опційне поле
+    coverUrl?: string; // added an optional field
 }
 
 export const playlistService = {
@@ -42,7 +42,7 @@ export const playlistService = {
             throw err;
         }
     },
-    // --- нові методи для треків у плейліст ---
+    // --- new methods for playlist tracks ---
     addTrack: async (playlistId: number, trackId: number): Promise<void> => {
         await api.post(`/Playlist/${playlistId}/tracks/${trackId}`);
     },
@@ -53,7 +53,7 @@ export const playlistService = {
         return data;
     },
 
-    // Отримати всі плейлисти конкретного користувача
+    // Get all playlists of a specific user
     getAllByUser: async (userId: number): Promise<IPlaylist[]> => {
         const res = await api.get<IPlaylist[]>(`/playlist/user/${userId}`);
         return res.data;

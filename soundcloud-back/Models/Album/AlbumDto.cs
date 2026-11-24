@@ -10,15 +10,15 @@
 
         public DateTime CreatedAt { get; set; }
 
-        // Нові поля для зв’язку з користувачем
+        // New fields for the relation to the user
         public int OwnerId { get; set; }
 
-        // Опційно: ім'я власника для відображення на фронтенді
+        // Optional: owner name for display on the frontend
         public string OwnerName { get; set; }
 
         public string? CoverUrl { get; set; }
 
-        // Нове поле: публічність альбому
+        // New field: album visibility
         public bool IsPublic { get; set; }
     }
 }

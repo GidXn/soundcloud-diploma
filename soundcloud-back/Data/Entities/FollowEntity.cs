@@ -9,14 +9,14 @@ namespace soundcloud_back.Data.Entities
         public int Id { get; set; }
 
         [Required]
-        public int FollowerId { get; set; }   // хто підписується мої підписники
+        public int FollowerId { get; set; }   // who follows: my followers
 
         [Required]
-        public int FollowingId { get; set; }  // на кого підписується мої підписки
+        public int FollowingId { get; set; }  // whom they follow: my followings
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        // Навігаційні властивості
+        // Navigation properties
         [ForeignKey(nameof(FollowerId))]
         public UserEntity Follower { get; set; }
 

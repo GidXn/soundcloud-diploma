@@ -7,10 +7,10 @@ import { buildArtists, formatDuration, trackImageUrl } from "../catalog/catalogU
 import { NrjLogo, XitLogo } from "../catalog/RadioBanner";
 import "../../styles/detail/layout.css";
 
-/* Спільні блоки сторінок, що відкриваються по кліку: трек, альбом, виконавець, жанр, чарт.
-   Розміри зняті з кадрів Figma «Click to» (1920px, контент 1528px). */
+/* Shared blocks of the pages opened on click: track, album, artist, genre, chart.
+   Sizes taken from the Figma «Click to» frames (1920px, content 1528px). */
 
-// ---------- Іконки ----------
+// ---------- Icons ----------
 export const BackIcon: React.FC = () => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7.825 13L13.425 18.6L12 20L4 12L12 4L13.425 5.4L7.825 11H20V13H7.825Z" fill="#000" />
@@ -59,9 +59,9 @@ export const HeartIcon: React.FC<{ filled?: boolean }> = ({ filled }) => (
     </svg>
 );
 
-// ---------- Утиліти ----------
+// ---------- Utilities ----------
 
-// Рядок метаданих через крапку: «2026 • 03:35 • EJ Retro»
+// Metadata row separated by dots: «2026 • 03:35 • EJ Retro»
 export const MetaLine: React.FC<{ items: (React.ReactNode | null | undefined | false)[] }> = ({ items }) => {
     const list = items.filter((x) => x !== null && x !== undefined && x !== false && x !== "");
     return (
@@ -76,7 +76,7 @@ export const MetaLine: React.FC<{ items: (React.ReactNode | null | undefined | f
     );
 };
 
-// Сумарна тривалість треків «m:ss» або «h:mm:ss»
+// Total track duration «m:ss» or «h:mm:ss»
 export const totalDuration = (tracks: ITrack[]): string => {
     let sec = 0;
     for (const t of tracks) {
@@ -104,7 +104,7 @@ export const trackLink = (t: ITrack) => `/track/${t.id}`;
 export const artistLink = (name: string) => `/artist/${encodeURIComponent(name)}`;
 export const genreLink = (name: string) => `/genre/${encodeURIComponent(name)}`;
 
-// ---------- Лайки (спільний стан для списку треків) ----------
+// ---------- Likes (shared state for the track list) ----------
 export const useLikes = (tracks: ITrack[]) => {
     const [liked, setLiked] = useState<Set<number>>(new Set());
 
@@ -131,16 +131,16 @@ export const useLikes = (tracks: ITrack[]) => {
     return { liked, toggle };
 };
 
-// ---------- Шапка сторінки (обкладинка + назва + Listen) ----------
+// ---------- Page header (cover + title + Listen) ----------
 interface DetailHeroProps {
     cover: string;
-    coverRound?: boolean;          // трек — обкладинка з радіусом 24
+    coverRound?: boolean;          // track: cover with radius 24
     label: string;                 // «Track», «Album», «Artists», «playlist»
     title: string;
-    subtitle?: React.ReactNode;    // виконавець під назвою (тільки трек)
-    metaLabel?: React.ReactNode;   // перший рядок під кнопками
+    subtitle?: React.ReactNode;    // artist under the title (track only)
+    metaLabel?: React.ReactNode;   // first row under the buttons
     metaLabelMuted?: boolean;
-    meta?: React.ReactNode;        // другий рядок під кнопками
+    meta?: React.ReactNode;        // second row under the buttons
     playing: boolean;
     disabled?: boolean;
     onListen: () => void;
@@ -155,7 +155,7 @@ export const DetailHero: React.FC<DetailHeroProps> = ({
     const navigate = useNavigate();
     return (
         <section className="detail_hero">
-            <button className="detail_back" onClick={() => navigate(-1)} aria-label="Назад">
+            <button className="detail_back" onClick={() => navigate(-1)} aria-label="Back">
                 <BackIcon />
             </button>
             <div className="detail_hero_row">
@@ -178,7 +178,7 @@ export const DetailHero: React.FC<DetailHeroProps> = ({
                             {playing ? <PauseIcon /> : <PlayIcon />}
                             <span>{playing ? "Pause" : "Listen"}</span>
                         </button>
-                        <button className="detail_more" onClick={onMore} title={moreTitle} aria-label={moreTitle || "Ще"}>
+                        <button className="detail_more" onClick={onMore} title={moreTitle} aria-label={moreTitle || "More"}>
                             <DotsIcon />
                         </button>
                     </div>
@@ -194,7 +194,7 @@ export const DetailHero: React.FC<DetailHeroProps> = ({
     );
 };
 
-// ---------- Банери радіо (NRJ FM / XIT FM), 1528x170 ----------
+// ---------- Radio banners (NRJ FM / XIT FM), 1528x170 ----------
 export const DetailBanner: React.FC<{ variant: "nrj" | "xit" }> = ({ variant }) =>
     variant === "nrj" ? (
         <div className="detail_banner detail_banner_nrj">
@@ -215,10 +215,10 @@ export const DetailBanner: React.FC<{ variant: "nrj" | "xit" }> = ({ variant }) 
         </div>
     );
 
-// ---------- Список треків ----------
+// ---------- Track list ----------
 interface TrackTableProps {
     tracks: ITrack[];
-    playlist?: ITrack[];  // що грати далі (за замовчуванням — сам список)
+    playlist?: ITrack[];  // what to play next (defaults to the list itself)
     albumId?: number | null;
 }
 
@@ -241,7 +241,7 @@ export const TrackTable: React.FC<TrackTableProps> = ({ tracks, playlist, albumI
                         <button
                             className="detail_track_title"
                             onClick={(e) => { e.stopPropagation(); navigate(trackLink(track)); }}
-                            title="Сторінка треку"
+                            title="Track page"
                         >
                             {track.title}
                         </button>
@@ -261,7 +261,7 @@ export const TrackTable: React.FC<TrackTableProps> = ({ tracks, playlist, albumI
                             <button
                                 className="detail_track_like"
                                 onClick={(e) => { e.stopPropagation(); toggle(track); }}
-                                aria-label={liked.has(track.id) ? "Прибрати лайк" : "Лайк"}
+                                aria-label={liked.has(track.id) ? "Remove like" : "Like"}
                             >
                                 <HeartIcon filled={liked.has(track.id)} />
                             </button>
@@ -281,10 +281,10 @@ export const ShowMoreButton: React.FC<{ onClick: () => void }> = ({ onClick }) =
     </button>
 );
 
-// ---------- Горизонтальна карусель зі стрілками та смугою прогресу ----------
+// ---------- Horizontal carousel with arrows and a progress bar ----------
 interface CarouselProps {
     title: string;
-    action?: React.ReactNode;   // кнопка «See all» праворуч від заголовка
+    action?: React.ReactNode;   // «See all» button to the right of the heading
     variant: "cards" | "cards-lg" | "artists";
     children: React.ReactNode;
 }
@@ -327,10 +327,10 @@ export const Carousel: React.FC<CarouselProps> = ({ title, action, variant, chil
                 </div>
                 {scrollable && (
                     <>
-                        <button className="detail_carousel_arrow left" onClick={() => scroll(-1)} aria-label="Назад">
+                        <button className="detail_carousel_arrow left" onClick={() => scroll(-1)} aria-label="Back">
                             <ChevronIcon dir="left" />
                         </button>
-                        <button className="detail_carousel_arrow right" onClick={() => scroll(1)} aria-label="Далі">
+                        <button className="detail_carousel_arrow right" onClick={() => scroll(1)} aria-label="Next">
                             <ChevronIcon dir="right" />
                         </button>
                     </>
@@ -343,7 +343,7 @@ export const Carousel: React.FC<CarouselProps> = ({ title, action, variant, chil
     );
 };
 
-// Картка треку/альбому: квадратна обкладинка, назва, «рік • автор»
+// Track/album card: square cover, title, «year • author»
 export const MediaCard: React.FC<{
     cover: string;
     title: string;
@@ -373,7 +373,7 @@ export const ArtistCard: React.FC<{ name: string; photo: string; onClick: () => 
     </button>
 );
 
-// Блок «Artists» з кнопкою «See all» — однаковий на всіх сторінках
+// «Artists» block with a «See all» button, the same on all pages
 export const ArtistsCarousel: React.FC<{ tracks: ITrack[]; exclude?: string }> = ({ tracks, exclude }) => {
     const navigate = useNavigate();
     const artists = buildArtists(tracks).filter((a) => a.name !== exclude).slice(0, 18);
@@ -391,7 +391,7 @@ export const ArtistsCarousel: React.FC<{ tracks: ITrack[]; exclude?: string }> =
     );
 };
 
-// Кнопка «Listen»: грає список з початку або ставить на паузу/продовжує, якщо вже грає трек з нього
+// «Listen» button: plays the list from the start, or pauses/resumes if a track from it is already playing
 export const useListen = (list: ITrack[], albumId: number | null = null, first?: ITrack | null) => {
     const current = usePlayerStore((s) => s.track);
     const isPlaying = usePlayerStore((s) => s.isPlaying);
@@ -413,7 +413,7 @@ export const useListen = (list: ITrack[], albumId: number | null = null, first?:
     return { playing, listen, disabled: list.length === 0 && !first };
 };
 
-// Копіює посилання на сторінку (кнопка «…»)
+// Copies the page link (button «…»)
 export const copyPageLink = () => {
     navigator.clipboard?.writeText(window.location.href).catch(() => undefined);
 };

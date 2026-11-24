@@ -38,9 +38,9 @@ namespace soundcloud_back.Services.Implementations
             return (int.Parse(idStr), role);
         }
 
-        // ===== CRUD для альбомів =====
+        // ===== CRUD for albums =====
 
-        // ============= Отримати альбоми певного користувача ===========
+        // ============= Get albums of a specific user ===========
 
         public async Task<IEnumerable<AlbumDto>> GetAllByUserAsync(int userId)
         {
@@ -203,7 +203,7 @@ namespace soundcloud_back.Services.Implementations
             await _db.SaveChangesAsync();
         }
 
-        // ===== Для адміна =====
+        // ===== For the admin =====
         public async Task<IEnumerable<AlbumDto>> GetAllAlbumsForAdminAsync()
         {
             return await _db.Albums
@@ -224,7 +224,7 @@ namespace soundcloud_back.Services.Implementations
                 .ToListAsync();
         }
 
-        // ===== Методи для треків =====
+        // ===== Track methods =====
 
         public async Task<IEnumerable<TrackDto>> GetTracksByAlbumAsync(int albumId)
         {

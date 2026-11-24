@@ -38,18 +38,18 @@ namespace soundcloud_back.Data.Entities
         [MaxLength(500)]
         public string? Bio { get; set; }
 
-        // нові
+        // new
         public DateTime? UpdatedAt { get; set; }
 
-        // зв’язок: один юзер має багато треків
+        // relation: one user has many tracks
         public ICollection<TrackEntity>? Tracks { get; set; }
         public ICollection<TrackListenEntity>? TrackPlays { get; set; }
 
         public ICollection<AlbumEntity>? Albums { get; set; }
         public ICollection<PlaylistEntity>? Playlists { get; set; }
-        public AuthProvider AuthProvider { get; set; } = AuthProvider.Local; // як створ акаунт
-        public string? GoogleSubject { get; set; }  // стабільний Google sub (payload.Subject)
-        public bool IsLocalPasswordSet { get; set; } = true; // чи є локальний пароль для входу
+        public AuthProvider AuthProvider { get; set; } = AuthProvider.Local; // how the account was created
+        public string? GoogleSubject { get; set; }  // stable Google sub (payload.Subject)
+        public bool IsLocalPasswordSet { get; set; } = true; // whether there is a local password for login
 
 
     }

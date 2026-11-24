@@ -38,19 +38,19 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task AddPlayAsync(int trackId)
         {
-            // Знаходимо трек у базі
+            // Find the track in the DB
             var track = await _db.Tracks
                 .FirstOrDefaultAsync(t => t.Id == trackId);
 
             if (track == null)
                 throw new Exception("Track not found");
 
-            var ownerId = track.AuthorId; // id користувача, який створив трек
+            var ownerId = track.AuthorId; // id the user who created the track
 
-            // Додаємо одне прослуховування до самого треку
+            // Add one play to the track itself
             track.PlayCount += 1;
 
-            // Шукаємо існуючий запис TrackListen для власника
+            // Look for an existing TrackListen record for the owner
             var listen = await _db.TrackListens
                 .FirstOrDefaultAsync(x => x.TrackId == trackId && x.UserId == ownerId);
 
@@ -76,7 +76,7 @@ namespace soundcloud_back.Services.Implementations
         {
             var tracks = await _db.Tracks
                 .AsNoTracking()
-                .Where(t => t.AuthorId == userId) // фільтруємо тільки треки користувача
+                .Where(t => t.AuthorId == userId) // filter only the user's tracks
                 .Include(t => t.AlbumTracks)
                     .ThenInclude(at => at.Album)
                         .ThenInclude(a => a.Owner)
@@ -114,7 +114,7 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task<IEnumerable<TrackDto>> GetAllAsync()
         {
-            var (actorId, _) = GetActor(); // id поточного користувача
+            var (actorId, _) = GetActor(); // id of the current user
 
             return await _db.Tracks
                 .AsNoTracking()
@@ -123,7 +123,7 @@ namespace soundcloud_back.Services.Implementations
                         .ThenInclude(a => a.Owner)
                 .Include(t => t.Author)
                 .Include(t => t.Genre)
-                .Include(t => t.TrackLikes) // підвантажуємо лайки
+                .Include(t => t.TrackLikes) // load likes
                 .Select(t => new TrackDto
                 {
                     Id = t.Id,
@@ -151,7 +151,7 @@ namespace soundcloud_back.Services.Implementations
                         })
                         .ToList(),
 
-                    // ===== нові поля лайків =====
+                    // ===== new like fields =====
                     LikesCount = t.TrackLikes.Count(),
                     IsLikedByCurrentUser = t.TrackLikes.Any(l => l.UserId == actorId)
                 })
@@ -162,7 +162,7 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task<IEnumerable<TrackDto>> GetAllTracksAsync()
         {
-            var (actorId, _) = GetActor(); // id поточного користувача
+            var (actorId, _) = GetActor(); // id of the current user
 
             return await _db.Tracks
                 .AsNoTracking()
@@ -171,7 +171,7 @@ namespace soundcloud_back.Services.Implementations
                 .Include(t => t.AlbumTracks)
                     .ThenInclude(at => at.Album)
                         .ThenInclude(a => a.Owner)
-                .Include(t => t.TrackLikes) // підвантажуємо лайки
+                .Include(t => t.TrackLikes) // load likes
                 .Select(t => new TrackDto
                 {
                     Id = t.Id,
@@ -218,7 +218,7 @@ namespace soundcloud_back.Services.Implementations
                 .Include(t => t.Genre)
                 .Include(t => t.AlbumTracks)
                     .ThenInclude(at => at.Album)
-                        .ThenInclude(a => a.Owner) // без цього OwnerName падав з NullReference (500 на like/unlike)
+                        .ThenInclude(a => a.Owner) // without this OwnerName threw a NullReference (500 on like/unlike)
                 .Include(t => t.TrackLikes)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
@@ -260,7 +260,7 @@ namespace soundcloud_back.Services.Implementations
         {
             var (actorId, actorRole) = GetActor();
 
-            //// Перевіряємо, чи існує альбом і його власника
+            //// Check that the album and its owner exist
             //var album = await _db.Albums.Include(a => a.Owner)
             //    .FirstOrDefaultAsync(a => a.Id == dto.AlbumId)
             //    ?? throw new KeyNotFoundException($"Album {dto.AlbumId} not found");
@@ -268,7 +268,7 @@ namespace soundcloud_back.Services.Implementations
             //if (actorRole != UserRole.Admin && album.OwnerId != actorId)
             //    throw new UnauthorizedAccessException("You are not owner of this album");
 
-            // Перевіряємо користувача-автора
+            // Check the author user
             var author = await _db.Users.FindAsync(actorId)
                 ?? throw new KeyNotFoundException($"Author {actorId} not found");
             TrackEntity tr = new TrackEntity();
@@ -277,7 +277,7 @@ namespace soundcloud_back.Services.Implementations
             {
                 duration = tagFile.Properties.Duration;
             }
-            // Створюємо трек
+            // Create the track
             var track = new TrackEntity
             {
                 Title = dto.Title.Trim(),
@@ -292,10 +292,10 @@ namespace soundcloud_back.Services.Implementations
             _db.Tracks.Add(track);
             await _db.SaveChangesAsync();
 
-            // Додаємо зв'язок трек → альбом
+            // Add the track → album relation
             _db.AlbumTracks.Add(new AlbumTrackEntity
             {
-                //поки коментуємо (помилка 'CreateTrackDto' does not contain a definition for 'AlbumId' and no accessible
+                //commented out for now (error 'CreateTrackDto' does not contain a definition for 'AlbumId' and no accessible
                 //extension method 'AlbumId' accepting a first argument
                 //of type 'CreateTrackDto' could be found (are you missing a using directive or an assembly reference?))
 
@@ -317,10 +317,10 @@ namespace soundcloud_back.Services.Implementations
                 PlayCount = 0,
                 GenreId = (int)track.GenreId,
                 Genre = track.Genre != null ? track.Genre.Name : null,
-                // Альбоми, до яких належить трек
+                // Albums the track belongs to
                 Albums = new List<AlbumDto>
         {
-                    //поки коментуємо (помилка 'CreateTrackDto' does not contain a definition for 'AlbumId' and no accessible
+                    //commented out for now (error 'CreateTrackDto' does not contain a definition for 'AlbumId' and no accessible
                     //extension method 'AlbumId' accepting a first argument
                     //of type 'CreateTrackDto' could be found (are you missing a using directive or an assembly reference?))
             //new AlbumDto
@@ -341,7 +341,7 @@ namespace soundcloud_back.Services.Implementations
         public async Task<TrackDto> CreateAsyncFile(CreateTrackDto dto)
         {
             if (dto.File == null || dto.File.Length == 0)
-                throw new ArgumentException("Файл не надано");
+                throw new ArgumentException("No file provided");
 
             var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "tracks");
             if (!Directory.Exists(uploadsFolder))
@@ -366,7 +366,7 @@ namespace soundcloud_back.Services.Implementations
 
 
 
-            // ===== Обробка обкладинки =====
+            // ===== Cover handling =====
             string? imageUrl = null;
             if (dto.Cover != null && dto.Cover.Length > 0)
             {
@@ -385,7 +385,7 @@ namespace soundcloud_back.Services.Implementations
                 imageUrl = $"/uploads/tracks/cover/{coverFileName}";
             }
 
-            // ===== Створення треку =====
+            // ===== Creating a track =====
             var track = new TrackEntity
             {
                 Title = dto.Title.Trim(),
@@ -399,9 +399,9 @@ namespace soundcloud_back.Services.Implementations
             };
 
             _db.Tracks.Add(track);
-            await _db.SaveChangesAsync(); // зберігаємо трек, щоб отримати Id
+            await _db.SaveChangesAsync(); // save the track to get Id
 
-            // ===== Прив'язка альбомів (many-to-many) =====
+            // ===== Album binding (many-to-many) =====
             List<AlbumEntity> albums = new List<AlbumEntity>();
             if (dto.AlbumIds != null && dto.AlbumIds.Any())
             {
@@ -422,7 +422,7 @@ namespace soundcloud_back.Services.Implementations
                 await _db.SaveChangesAsync();
             }
 
-            // ===== Отримання назви жанру =====
+            // ===== Get the genre name =====
             string? genreName = null;
             if (track.GenreId.HasValue)
             {
@@ -430,7 +430,7 @@ namespace soundcloud_back.Services.Implementations
                 genreName = genre?.Name;
             }
 
-            // ===== Мапимо альбоми у AlbumDto =====
+            // ===== Map albums to AlbumDto =====
             var albumDtos = albums.Select(a => new AlbumDto
             {
                 Id = a.Id,
@@ -442,7 +442,7 @@ namespace soundcloud_back.Services.Implementations
                 IsPublic = a.IsPublic
             }).ToList();
 
-            // ===== Повертаємо TrackDto =====
+            // ===== Return TrackDto =====
             return new TrackDto
             {
                 Id = track.Id,
@@ -463,14 +463,14 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task<TrackDto> UpdateAsyncFile(int trackId, UpdateTrackDto dto)
         {
-            // Знаходимо трек
+            // Find the track
             var track = await _db.Tracks.FindAsync(trackId);
             if (track == null) throw new ArgumentException("Track not found");
 
             var (actorId, actorRole) = GetActor();
             if (track.AuthorId != actorId) throw new UnauthorizedAccessException("You are not the author");
 
-            // ===== Оновлення файлу =====
+            // ===== File update =====
             if (dto.File != null && dto.File.Length > 0)
             {
                 var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "tracks");
@@ -487,14 +487,14 @@ namespace soundcloud_back.Services.Implementations
 
                 track.Url = $"/uploads/tracks/{fileName}";
 
-                // Оновлюємо тривалість
+                // Update the duration
                 using (var tagFile = TagLib.File.Create(filePath))
                 {
                     track.Duration = tagFile.Properties.Duration;
                 }
             }
 
-            // ===== Оновлення обкладинки =====
+            // ===== Cover update =====
             if (dto.Cover != null && dto.Cover.Length > 0)
             {
                 var coverFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", "tracks", "cover");
@@ -517,14 +517,14 @@ namespace soundcloud_back.Services.Implementations
             if (dto.GenreId.HasValue)
                 track.GenreId = dto.GenreId.Value;
 
-            // ===== Оновлення альбомів (many-to-many) =====
+            // ===== Albums update (many-to-many) =====
             if (dto.AlbumIds != null)
             {
-                // Видаляємо старі зв'язки
+                // Remove old relations
                 var existingLinks = _db.AlbumTracks.Where(at => at.TrackId == track.Id);
                 _db.AlbumTracks.RemoveRange(existingLinks);
 
-                // Додаємо нові
+                // Add new ones
                 var albums = await _db.Albums.Where(a => dto.AlbumIds.Contains(a.Id)).ToListAsync();
                 foreach (var album in albums)
                 {
@@ -538,7 +538,7 @@ namespace soundcloud_back.Services.Implementations
 
             await _db.SaveChangesAsync();
 
-            // ===== Підготовка DTO для відповіді =====
+            // ===== Prepare the response DTO =====
             var albumDtos = (await _db.Albums
                 .Include(a => a.Owner)
                 .Where(a => _db.AlbumTracks.Any(at => at.TrackId == track.Id && at.AlbumId == a.Id))
@@ -627,7 +627,7 @@ namespace soundcloud_back.Services.Implementations
                 .FirstOrDefaultAsync(t => t.Id == trackId)
                 ?? throw new KeyNotFoundException($"Track {trackId} not found");
 
-            // Перевірка прав: користувач Admin або власник хоча б одного альбому
+            // Permission check: the user is an Admin or owns at least one album
             if (actorRole != UserRole.Admin && !track.AlbumTracks.Any(at => at.Album.OwnerId == actorId))
                 throw new UnauthorizedAccessException("You are not allowed to set image for this track.");
 
@@ -638,7 +638,7 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task LikeAsync(int trackId)
         {
-            var (userId, _) = GetActor(); // беремо поточного користувача з токена
+            var (userId, _) = GetActor(); // take the current user from the token
 
             var track = await _db.Tracks
                 .Include(t => t.TrackLikes)
@@ -647,7 +647,7 @@ namespace soundcloud_back.Services.Implementations
             if (track == null)
                 throw new KeyNotFoundException("Track not found");
 
-            // Якщо користувач ще не лайкнув цей трек
+            // If the user hasn't liked this track yet
             if (!track.TrackLikes.Any(l => l.UserId == userId))
             {
                 track.TrackLikes.Add(new TrackLikeEntity
@@ -662,7 +662,7 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task UnlikeAsync(int trackId)
         {
-            var (userId, _) = GetActor(); // беремо поточного користувача
+            var (userId, _) = GetActor(); // take the current user
 
             var like = await _db.TrackLikes
                 .FirstOrDefaultAsync(l => l.TrackId == trackId && l.UserId == userId);
@@ -672,10 +672,10 @@ namespace soundcloud_back.Services.Implementations
                 _db.TrackLikes.Remove(like);
                 await _db.SaveChangesAsync();
             }
-            // Якщо лайка немає — нічого не робимо
+            // If there is no like, do nothing
         }
 
-        //Отримати лайкнуті треки поточного користувача
+        //Get the liked tracks of the current user
         public async Task<List<TrackDto>> GetLikedByUserAsync(int userId)
         {
             var likedTracks = await _db.TrackLikes
@@ -686,7 +686,7 @@ namespace soundcloud_back.Services.Implementations
                     Id = track.Id,
                     Title = track.Title,
                     AuthorId = track.AuthorId,
-                    Author = track.Author.Username, // або Name, залежно від твоєї моделі User
+                    Author = track.Author.Username, // or Name, depending on your User
                     GenreId = track.GenreId ?? 0,
                     Genre = track.Genre != null ? track.Genre.Name : "",
                     Duration = track.Duration,
@@ -695,7 +695,7 @@ namespace soundcloud_back.Services.Implementations
                     PlayCount = track.PlayCount,
                     CreatedAt = track.CreatedAt,
                     LikesCount = track.TrackLikes.Count,
-                    IsLikedByCurrentUser = true // бо це лайкнуті треки поточного користувача
+                    IsLikedByCurrentUser = true // because these are the current user's liked tracks
                 })
                 .ToListAsync();
 
@@ -706,9 +706,9 @@ namespace soundcloud_back.Services.Implementations
 
         public async Task<TrackStatsDto> GetTrackStatsAsync(int trackId)
         {
-            // Підвантажуємо трек разом з автором
+            // Load the track together with its author
             var track = await _db.Tracks
-                .Include(t => t.Author) // навігаційна властивість
+                .Include(t => t.Author) // navigation property
                 .FirstOrDefaultAsync(t => t.Id == trackId);
 
             if (track == null)

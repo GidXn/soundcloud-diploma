@@ -8,7 +8,7 @@ import Pagination from "../../components/catalog/Pagination";
 import RadioBanner, { NrjLogo } from "../../components/catalog/RadioBanner";
 import "../../styles/main_pages/catalog/layout.css";
 
-const PAGE_SIZE = 42; // 7 рядів по 6, як у макеті
+const PAGE_SIZE = 42; // 7 rows of 6, as in the design
 
 const ArtistsPage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
@@ -34,8 +34,8 @@ const ArtistsPage: React.FC = () => {
 
             <RadioBanner variant="nrj" title="NRJ FM" subtitle="Good vibes only" logo={<NrjLogo />} />
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
-            {!loading && artists.length === 0 && <div className="catalog_state">Артистів поки немає</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && artists.length === 0 && <div className="catalog_state">No artists yet</div>}
 
             <div className="artists_grid">
                 {visible.map((artist) => (
@@ -43,7 +43,7 @@ const ArtistsPage: React.FC = () => {
                         key={artist.name}
                         className="artist_card"
                         onClick={() => navigate(artistLink(artist.name))}
-                        title={`${artist.name}: ${artist.tracks.length} треків`}
+                        title={`${artist.name}: ${artist.tracks.length} tracks`}
                     >
                         <img
                             className="artist_photo"

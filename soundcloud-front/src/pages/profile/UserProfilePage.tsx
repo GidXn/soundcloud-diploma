@@ -33,11 +33,11 @@ const UserProfilePage: React.FC = () => {
     const [activeTab, setActiveTab] = useState<string>("All");
     const [tracks, setTracks] = useState<ITrack[]>([]);
 
-    // Стан для альбомів і треків по альбомах
+    // State for albums and tracks per album
     const [albums, setAlbums] = useState<IAlbum[]>([]);
     const [albumTracks, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({});
 
-    // Стан для плейлистів і треків по плейлистах
+    // State for playlists and tracks per playlist
     const [playlists, setPlaylists] = useState<IPlaylist[]>([]);
     const [playlistTracks, setPlaylistTracks] = useState<{ [playlistId: number]: ITrack[] }>({});
 
@@ -64,7 +64,7 @@ const UserProfilePage: React.FC = () => {
             .finally(() => setLoading(false));
     }, [id]);
 
-    //для лайків
+    //for likes
     const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
 
     useEffect(() => {
@@ -78,27 +78,27 @@ const UserProfilePage: React.FC = () => {
     }, []);
 
 
-    //для відображення кількості треків певного користувача
+    //to show the track count of a given user
 
     useEffect(() => {
         if (!user) return;
 
         trackService.getAllByUser(Number(user.id))
             .then(setTracks)
-            .catch(err => console.error("Помилка при завантаженні треків користувача:", err));
+            .catch(err => console.error("Failed to load user tracks:", err));
     }, [user]);
 
-    // Завантаження плейлистів і треків користувача
+    // Load the user's playlists and tracks
     useEffect(() => {
         if (!user) return;
 
         const loadUserPlaylistsAndTracks = async () => {
             try {
-                // 1️⃣ Отримати всі плейлисти користувача
+                // 1️⃣ Get all user playlists
                 const userPlaylists = await playlistService.getAllByUser(user.id);
                 setPlaylists(userPlaylists);
 
-                // 2️⃣ Завантажити треки для кожного плейліста
+                // 2️⃣ Load tracks for each playlist
                 const results = await Promise.all(
                     userPlaylists.map(async (pl) => {
                         const tracks = await playlistService.getTracks(pl.id);
@@ -114,23 +114,23 @@ const UserProfilePage: React.FC = () => {
                 setPlaylistTracks(tracksByPlaylist);
             } catch (err) {
                 console.error("Failed to load user playlists and tracks", err);
-                alert("Не вдалося завантажити плейлисти або треки користувача");
+                alert("Failed to load the user's playlists or tracks");
             }
         };
 
         loadUserPlaylistsAndTracks();
     }, [user]);
-    // Завантаження альбомів і треків користувача
+    // Load the user's albums and tracks
     useEffect(() => {
         if (!user) return;
 
         const loadUserAlbumsAndTracks = async () => {
             try {
-                // 1️⃣ Отримуємо всі альбоми користувача
+                // 1️⃣ Get all user albums
                 const userAlbums = await albumService.getAllByUser(user.id);
                 setAlbums(userAlbums);
 
-                // 2️⃣ Для кожного альбому завантажуємо треки
+                // 2️⃣ Load tracks for each album
                 const results = await Promise.all(
                     userAlbums.map(async (a) => {
                         const tracks = await albumService.getTracks(a.id);
@@ -153,18 +153,18 @@ const UserProfilePage: React.FC = () => {
     }, [user]);
 
 
-    //для follow
-    // Кількість підписників і підписок
+    //for follow
+    // Follower and following counts
     const [followersCount, setFollowersCount] = useState<number>(0);
     const [, setFollowingCount] = useState<number>(0);
 
-    // Чи підписаний поточний користувач на користувача профілю
+    // Whether the current user follows the profile user
     const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
-    //кількість підписок і підписників
+    //following and follower counts
     useEffect(() => {
         const fetchFollowCounts = async () => {
-            if (!user) return; // перевірка тут, а не для самого хука
+            if (!user) return; // the check is here, not for the hook itself
             try {
                 const followers = await followService.getFollowersCount(user.id);
                 const following = await followService.getFollowingCount(user.id);
@@ -174,7 +174,7 @@ const UserProfilePage: React.FC = () => {
 
                 console.log("Followers:", followers, "Following:", following);
             } catch (error) {
-                console.error("Помилка при отриманні кількості підписок:", error);
+                console.error("Failed to get following counts:", error);
             }
         };
 
@@ -182,7 +182,7 @@ const UserProfilePage: React.FC = () => {
     }, [user]);
 
 
-    //кнопка підписатись і відписатись
+    //follow and unfollow button
     useEffect(() => {
         if (!user) return;
 
@@ -191,7 +191,7 @@ const UserProfilePage: React.FC = () => {
                 const status = await followService.getFollowStatus(user.id);
                 setIsFollowing(status.isFollowing);
             } catch (error) {
-                console.error("Помилка при отриманні статусу підписки:", error);
+                console.error("Failed to get follow status:", error);
             }
         };
 
@@ -213,7 +213,7 @@ const UserProfilePage: React.FC = () => {
             }
             setIsFollowing(prev => !prev);
         } catch (error) {
-            console.error("Помилка при підписці/відписці:", error);
+            console.error("Failed to follow/unfollow:", error);
         }
     };
 
@@ -227,7 +227,7 @@ const UserProfilePage: React.FC = () => {
     if (!user) return <div>User not found</div>;
 
     const getUserBannerUrl = (user?: IUser | null) => {
-        if (!user || !user.banner) return "/src/images/profile/banner.png"; // дефолтний банер
+        if (!user || !user.banner) return "/src/images/profile/banner.png"; // default banner
         return user.banner.startsWith("http")
             ? user.banner
             : `http://localhost:5122${user.banner}`;
@@ -249,15 +249,15 @@ const UserProfilePage: React.FC = () => {
     const toggleLike = async (track: ITrack) => {
         try {
             if (likedTracksIds.includes(track.id)) {
-                // анлайк
+                // unlike
                 await trackService.unlike(track.id);
                 setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-                track.isLikedByCurrentUser = false; // оновлюємо локально
+                track.isLikedByCurrentUser = false; // update locally
             } else {
-                // лайк
+                // like
                 await trackService.like(track.id);
                 setLikedTracksIds(prev => [...prev, track.id]);
-                track.isLikedByCurrentUser = true; // оновлюємо локально
+                track.isLikedByCurrentUser = true; // update locally
             }
         } catch (err) {
             console.error("Error liking track:", err);
@@ -341,7 +341,7 @@ const UserProfilePage: React.FC = () => {
                                                 alt={p.name}
                                                 className="profile_page_playlist_image"
                                                 onClick={() => {
-                                                    // Якщо плейліст вже грає, ставимо паузу
+                                                    // If the playlist is already playing, pause
                                                     if (
                                                         currentTrack &&
                                                         playlistTracks[p.id]?.some(t => t.id === currentTrack.id) &&
@@ -350,7 +350,7 @@ const UserProfilePage: React.FC = () => {
                                                     ) {
                                                         pauseTrack();
                                                     } else {
-                                                        // Інакше граємо перший трек плейліста
+                                                        // Otherwise play the first track of the playlist
                                                         playTrack(playlistTracks[p.id][0], playlistTracks[p.id], p.id);
                                                     }
                                                 }}
@@ -358,13 +358,13 @@ const UserProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного плейлиста */}
+                                        {/* Tracks of a specific playlist */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     playlistTracks[p.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === p.id &&  // використовуємо currentAlbumId для плейліста
+                                                    currentAlbumId === p.id &&  // use currentAlbumId for the playlist
                                                     isPlaying ? (
                                                         <img
                                                             src={pauseIcon}
@@ -418,7 +418,7 @@ const UserProfilePage: React.FC = () => {
                                                     <img
                                                         src={repeat}
                                                         alt="repeatIcon"
-                                                        id="hover_cursor_player"// 🔹 увімкнути
+                                                        id="hover_cursor_player"// 🔹 enable
                                                     />
                                                 </div>
                                                 <div className="track_more_controls_style">
@@ -445,7 +445,7 @@ const UserProfilePage: React.FC = () => {
                                                 alt={a.title}
                                                 className="profile_page_playlist_image"
                                                 onClick={() => {
-                                                    // Якщо альбом вже грає, ставимо паузу
+                                                    // If the album is already playing, pause
                                                     if (
                                                         currentTrack &&
                                                         albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
@@ -454,7 +454,7 @@ const UserProfilePage: React.FC = () => {
                                                     ) {
                                                         pauseTrack();
                                                     } else {
-                                                        // Інакше граємо перший трек альбому
+                                                        // Otherwise play the first track of the album
                                                         playTrack(albumTracks[a.id][0], albumTracks[a.id], a.id);
                                                     }
                                                 }}
@@ -462,13 +462,13 @@ const UserProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного альбому */}
+                                        {/* Tracks of a specific album */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === a.id &&  // <-- додано
+                                                    currentAlbumId === a.id &&  // <-- added
                                                     isPlaying ? (
                                                         <img
                                                             src={pauseIcon}
@@ -663,7 +663,7 @@ const UserProfilePage: React.FC = () => {
                                                 alt={p.name}
                                                 className="profile_page_playlist_image"
                                                 onClick={() => {
-                                                    // Якщо плейліст вже грає, ставимо паузу
+                                                    // If the playlist is already playing, pause
                                                     if (
                                                         currentTrack &&
                                                         playlistTracks[p.id]?.some(t => t.id === currentTrack.id) &&
@@ -672,7 +672,7 @@ const UserProfilePage: React.FC = () => {
                                                     ) {
                                                         pauseTrack();
                                                     } else {
-                                                        // Інакше граємо перший трек плейліста
+                                                        // Otherwise play the first track of the playlist
                                                         playTrack(playlistTracks[p.id][0], playlistTracks[p.id], p.id);
                                                     }
                                                 }}
@@ -680,13 +680,13 @@ const UserProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного плейлиста */}
+                                        {/* Tracks of a specific playlist */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     playlistTracks[p.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === p.id &&  // використовуємо currentAlbumId для плейліста
+                                                    currentAlbumId === p.id &&  // use currentAlbumId for the playlist
                                                     isPlaying ? (
                                                         <img
                                                             src={pauseIcon}
@@ -740,7 +740,7 @@ const UserProfilePage: React.FC = () => {
                                                     <img
                                                         src={repeat}
                                                         alt="repeatIcon"
-                                                        id="hover_cursor_player"// 🔹 увімкнути
+                                                        id="hover_cursor_player"// 🔹 enable
                                                     />
                                                 </div>
                                                 <div className="track_more_controls_style">
@@ -779,7 +779,7 @@ const UserProfilePage: React.FC = () => {
                                                 alt={a.title}
                                                 className="profile_page_playlist_image"
                                                 onClick={() => {
-                                                    // Якщо альбом вже грає, ставимо паузу
+                                                    // If the album is already playing, pause
                                                     if (
                                                         currentTrack &&
                                                         albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
@@ -788,7 +788,7 @@ const UserProfilePage: React.FC = () => {
                                                     ) {
                                                         pauseTrack();
                                                     } else {
-                                                        // Інакше граємо перший трек альбому
+                                                        // Otherwise play the first track of the album
                                                         playTrack(albumTracks[a.id][0], albumTracks[a.id], a.id);
                                                     }
                                                 }}
@@ -796,13 +796,13 @@ const UserProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного альбому */}
+                                        {/* Tracks of a specific album */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === a.id &&  // <-- додано
+                                                    currentAlbumId === a.id &&  // <-- added
                                                     isPlaying ? (
                                                         <img
                                                             src={pauseIcon}

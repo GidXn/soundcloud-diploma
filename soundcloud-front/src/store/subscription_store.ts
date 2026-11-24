@@ -1,6 +1,6 @@
-// Стан підписки PRO.
-// Бекенд поки не має підписок, тому план зберігається лише в localStorage.
-// Реальну оплату не підключено: "Buy" одразу активує план (демо-режим).
+// Subscription state PRO.
+// The backend has no subscriptions yet, so the plan is stored only in localStorage.
+// Real payment is not connected: "Buy" activates the plan immediately (demo mode).
 import { create } from "zustand";
 
 export type PlanId = "free" | "1m" | "3m" | "6m" | "12m";
@@ -40,7 +40,7 @@ export const PLANS: IPlan[] = [
     { id: "12m", title: "12 MONTH PRO", months: 12, price: "16.0 USD", features: PRO_FEATURES },
 ];
 
-// Демо-промокоди: код -> скільки місяців PRO дає.
+// Demo promo codes: code -> how many months of PRO it gives.
 const PROMO_CODES: Record<string, PlanId> = {
     ALLURE: "1m",
     ALLURE2026: "3m",
@@ -60,7 +60,7 @@ const readStored = (): IStoredSubscription => {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return empty;
         const data = JSON.parse(raw) as IStoredSubscription;
-        // План закінчився -> повертаємось на безкоштовний
+        // The plan has expired -> back to free
         if (data.expiresAt && new Date(data.expiresAt).getTime() < Date.now()) {
             return { ...empty, usedPromoCodes: data.usedPromoCodes ?? [] };
         }
@@ -74,7 +74,7 @@ const save = (data: IStoredSubscription) => {
     try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     } catch {
-        /* localStorage недоступний — стан живе до перезавантаження */
+        /* localStorage unavailable: the state lives until reload */
     }
 };
 

@@ -8,11 +8,11 @@ namespace soundcloud_back.Validators.Auth
         public LoginRequestValidator()
         {
             RuleFor(x => x.Email)
-                .NotEmpty().WithMessage("Email обов'язковий")
-                .EmailAddress().WithMessage("Некоректний формат Email");
+                .NotEmpty().WithMessage("Email is required")
+                .EmailAddress().WithMessage("Invalid format Email");
 
             RuleFor(x => x.Password)
-                .NotEmpty().WithMessage("Password обов'язковий");
+                .NotEmpty().WithMessage("Password is required");
         }
     }
 }

@@ -20,7 +20,7 @@ const ForgotPasswordPage: React.FC = () => {
         } catch (err) {
             setIsLoading(false);
             console.error(err);
-            alert("Помилка відновлення");
+            alert("Recovery error");
         }
     };
 

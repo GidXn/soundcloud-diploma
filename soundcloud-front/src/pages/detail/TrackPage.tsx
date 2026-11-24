@@ -10,9 +10,9 @@ import {
 import "../../styles/main_pages/catalog/layout.css";
 import "../../styles/detail/layout.css";
 
-const STEP = 18; // у макеті 18 рядків «Popular tracks», далі «Show More»
+const STEP = 18; // in the design 18 rows of «Popular tracks», then «Show More»
 
-// Сторінка треку (Figma: «Song when the click»)
+// Track page (Figma: «Song when the click»)
 const TrackPage: React.FC = () => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -34,7 +34,7 @@ const TrackPage: React.FC = () => {
 
     const track = useMemo(() => all.find((t) => String(t.id) === id) || null, [all, id]);
 
-    // «You Might Like»: той самий жанр, потім той самий автор
+    // «You Might Like»: same genre, then same author
     const similar = useMemo(() => {
         if (!track) return [];
         const genre = (track.genre || "").toLowerCase();
@@ -47,7 +47,7 @@ const TrackPage: React.FC = () => {
             .slice(0, 15);
     }, [all, track]);
 
-    // «Popular tracks»: усі треки за кількістю прослуховувань
+    // «Popular tracks»: all tracks by play count
     const popular = useMemo(
         () => [...all].sort((a, b) => (b.playCount || 0) - (a.playCount || 0)),
         [all]
@@ -55,8 +55,8 @@ const TrackPage: React.FC = () => {
 
     const { playing, listen } = useListen(popular, null, track);
 
-    if (loading) return <main className="catalog_page"><div className="catalog_state">Завантаження…</div></main>;
-    if (!track) return <main className="catalog_page"><div className="catalog_state">Трек не знайдено</div></main>;
+    if (loading) return <main className="catalog_page"><div className="catalog_state">Loading…</div></main>;
+    if (!track) return <main className="catalog_page"><div className="catalog_state">Track not found</div></main>;
 
     return (
         <main className="catalog_page detail_page">
@@ -71,7 +71,7 @@ const TrackPage: React.FC = () => {
                 playing={playing}
                 onListen={listen}
                 onMore={copyPageLink}
-                moreTitle="Скопіювати посилання"
+                moreTitle="Copy link"
             />
 
             <DetailBanner variant="nrj" />

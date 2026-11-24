@@ -28,7 +28,7 @@ namespace soundcloud_back.Services
             _httpContextAccessor = httpContextAccessor;
         }
 
-        // допоміжний метод 
+        // helper method 
         private (int ActorId, UserRole ActorRole) GetActor()
         {
             var principal = _httpContextAccessor.HttpContext?.User
@@ -88,7 +88,7 @@ namespace soundcloud_back.Services
                     Bio = u.Bio,
                     CreatedAt = u.CreatedAt,
                     AvatarUrl = u.AvatarUrl,
-                    BannerUrl = u.BannerUrl,  // <- додати це!
+                    BannerUrl = u.BannerUrl,  // <- add this!
                     Role = u.Role,
                 })
                 .FirstOrDefaultAsync()
@@ -101,14 +101,14 @@ namespace soundcloud_back.Services
         {
             var (actorId, actorRole) = GetActor();
 
-            // дозволяємо: або сам користувач, або Admin
+            // allowed: either the user themselves, or Admin
             if (actorRole != UserRole.Admin && actorId != id)
                 throw new UnauthorizedAccessException("You cannot update another user.");
 
             var user = await _db.Users.FindAsync(id)
                 ?? throw new KeyNotFoundException($"User with id={id} not found");
 
-            // --- Оновлення Email ---
+            // --- Update Email ---
             if (!string.IsNullOrWhiteSpace(dto.Email))
             {
                 var emailTrim = dto.Email.Trim();
@@ -122,19 +122,19 @@ namespace soundcloud_back.Services
                         .AnyAsync(u => u.Id != id && u.Email.ToLower() == emailNorm);
 
                     if (emailTaken)
-                        throw new InvalidOperationException("Користувач з таким email вже існує");
+                        throw new InvalidOperationException("A user with this email already exists");
 
-                    user.Email = emailTrim; // зберігаємо нормалізовано (без зайвих пробілів)
+                    user.Email = emailTrim; // store normalized (without extra spaces)
                 }
             }
 
-            // --- Оновлення Username ---
+            // --- Update Username ---
             if (!string.IsNullOrWhiteSpace(dto.Username))
             {
-                // зберігаємо всі пробіли як є
+                // keep all spaces as is
                 var usernameInput = dto.Username;
 
-                // нормалізація тільки для перевірки унікальності: нижній регістр
+                // normalization only for the uniqueness check: lowercase
                 var usernameNorm = usernameInput.ToLower();
                 var currentNameNorm = (user.Username ?? string.Empty).ToLower();
 
@@ -145,37 +145,37 @@ namespace soundcloud_back.Services
                         .AnyAsync(u => (u.Username ?? string.Empty).ToLower() == usernameNorm && u.Id != id);
 
                     if (nameTaken)
-                        throw new InvalidOperationException("Користувач з таким ім'ям вже існує");
+                        throw new InvalidOperationException("A user with this name already exists");
 
-                    user.Username = usernameInput; // зберігаємо всі пробіли і символи
+                    user.Username = usernameInput; // keep all spaces and characters
                 }
             }
 
-            // --- Оновлення Bio ---
+            // --- Update Bio ---
             if (dto.Bio != null)
             {
                 user.Bio = dto.Bio;
             }
 
-            // --- Тут можна додати логіку для Avatar (завантаження файлу) ---
+            // --- Avatar logic can be added here (file upload) ---
             if (dto.Avatar != null)
             {
-                // Папка для аватарок
+                // Avatars folder
                 var uploadsFolder = Path.Combine("wwwroot", "uploads", "avatars");
                 if (!Directory.Exists(uploadsFolder))
                     Directory.CreateDirectory(uploadsFolder);
 
-                // Генеруємо унікальне ім'я файлу
+                // Generate a unique file name
                 var fileName = $"{Guid.NewGuid()}{Path.GetExtension(dto.Avatar.FileName)}";
                 var filePath = Path.Combine(uploadsFolder, fileName);
 
-                // Зберігаємо файл
+                // Save the file
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await dto.Avatar.CopyToAsync(stream);
                 }
 
-                // Зберігаємо шлях у базі
+                // Save the path in the DB
                 user.AvatarUrl = $"/uploads/avatars/{fileName}";
 
                 await _db.SaveChangesAsync();
@@ -233,7 +233,7 @@ namespace soundcloud_back.Services
             var user = await _db.Users.FindAsync(id)
                 ?? throw new KeyNotFoundException($"User with id={id} not found");
 
-            // Перевіряємо залежності, щоб не впасти на FK-обмеженнях
+            // Check dependencies so we don't fail on FK constraints
             var hasAlbums = await _db.Albums.AnyAsync(a => a.OwnerId == id);
             var hasPlaylists = await _db.Playlists.AnyAsync(p => p.OwnerId == id);
             var hasTracks = await _db.AlbumTracks
@@ -245,8 +245,8 @@ namespace soundcloud_back.Services
                     "Cannot hard delete user: there are related albums/playlists/tracks. " +
                     "Transfer or delete related entities first.");
 
-            _db.Users.Remove(user); // - фізичне видалення
-            //user.IsBlocked = true; // - лише бллокування
+            _db.Users.Remove(user); // - physical deletion
+            //user.IsBlocked = true; // - only blocking
             await _db.SaveChangesAsync();
         }   
         public async Task BlockAsync(int id)
@@ -268,7 +268,7 @@ namespace soundcloud_back.Services
             var user = await _db.Users.FindAsync(userId)
                 ?? throw new KeyNotFoundException($"User with id={userId} not found");
 
-            //  перевірити, чи роль  змінилася:
+            //  check whether the role changed:
             if (user.Role == newRole)
                 throw new InvalidOperationException($"User already has role {newRole}");
 
@@ -290,7 +290,7 @@ namespace soundcloud_back.Services
         }
         public async Task<IEnumerable<AuthorStatsDto>> GetTopUsersAsync(int take)
         {
-            // Автори з найбільшою сумою прослуховувань своїх треків
+            // Authors with the highest total plays of their tracks
             var topUsers = await _db.Tracks
                     .Where(t => !t.IsHidden)
                     .GroupBy(t => t.AuthorId)
@@ -315,10 +315,10 @@ namespace soundcloud_back.Services
             if (p == null) throw new ArgumentNullException(nameof(p));
             //var email = p.Email.Trim().ToLowerInvariant();
             var email = (p.Email ?? "").Trim().ToLower();
-            var subject = p.Subject ?? "";          // Google "sub" — стабільний ідентифікатор
+            var subject = p.Subject ?? "";          // Google "sub" — stable identifier
             var picture = p.Picture;
 
-            // шукаємо по GoogleSubject 
+            // search by GoogleSubject 
             var u = await _db.Users.FirstOrDefaultAsync(x => x.GoogleSubject == subject);
             if (u != null)
             {
@@ -330,7 +330,7 @@ namespace soundcloud_back.Services
                     dirty = true;
                 }
 
-                // FIX для "старих" записів: якщо локального пароля нема — вважаємо google-only
+                // FIX for "old" records: if there is no local password, treat it as google-only
                 if (u.IsLocalPasswordSet == false && u.AuthProvider != AuthProvider.Google)
                 {
                     u.AuthProvider = AuthProvider.Google;
@@ -350,15 +350,15 @@ namespace soundcloud_back.Services
             if (user != null)
             {
                 if (user.IsBlocked) throw new UnauthorizedAccessException("User is blocked");
-                // Лінкуємо Google до існуючого акаунта
+                // Link Google to an existing account
                 if (string.IsNullOrEmpty(user.GoogleSubject))
                 {
                     user.GoogleSubject = p.Subject;
                     if (!string.IsNullOrEmpty(picture) && user.AvatarUrl != picture) 
                         user.AvatarUrl = picture;            
 
-                    // FIX для "старих" записів, створених з Google, але без правильних міток:
-                    // якщо локального пароля нема (IsLocalPasswordSet == false), = google-only
+                    // FIX for "old" records created via Google but without the correct flags:
+                    // if there is no local password (IsLocalPasswordSet == false), = google-only
                     if (user.IsLocalPasswordSet == false)
                     {
                         user.AuthProvider = AuthProvider.Google;
@@ -371,16 +371,16 @@ namespace soundcloud_back.Services
                 return user;
             }
 
-            //// наша модель вимагає PasswordHash/Salt - зробимо рандомний пароль і захешуємо так само, як у AuthService
+            //// our model requires PasswordHash/Salt: generate a random password and hash it the same way as in AuthService
             //CreatePasswordHash(Guid.NewGuid().ToString("N"), out var hash, out var salt);
 
             user = new UserEntity
             {
                 Username = await MakeUniqueUsernameAsync(email.Split('@')[0]),
                 Email = email,
-                AuthProvider = AuthProvider.Google, //  ключове
-                GoogleSubject = subject,          //  ключове
-                IsLocalPasswordSet = false,         //  ключове
+                AuthProvider = AuthProvider.Google, //  key
+                GoogleSubject = subject,          //  key
+                IsLocalPasswordSet = false,         //  key
                 //PasswordHash = hash,
                 //PasswordSalt = salt,
                 PasswordHash = Array.Empty<byte>(),
@@ -404,7 +404,7 @@ namespace soundcloud_back.Services
             return candidate;
         }
 
-        // аналогічно  AuthService.CreatePasswordHash
+        // same as  AuthService.CreatePasswordHash
         private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using var hmac = new HMACSHA512();

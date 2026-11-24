@@ -11,7 +11,7 @@ export const userService = {
             username: data.username,
             email: data.email,
             avatar: data.avatarUrl || "",
-            banner: data.bannerUrl || "", // <- важливо
+            banner: data.bannerUrl || "", // <- important
             createdAt: data.createdAt,
             role: data.role,
             bio: data.bio || "",

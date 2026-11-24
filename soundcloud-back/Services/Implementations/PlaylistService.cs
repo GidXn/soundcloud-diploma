@@ -92,7 +92,7 @@ namespace soundcloud_back.Services.Implementations
                 OwnerId = actorId,
                 CoverUrl = coverUrl,
                 Owner = await _db.Users.FindAsync(actorId)
-                    ?? throw new KeyNotFoundException($"User {actorId} не знайдено")
+                    ?? throw new KeyNotFoundException($"User {actorId} not found")
             };
 
             _db.Playlists.Add(entity);
@@ -110,7 +110,7 @@ namespace soundcloud_back.Services.Implementations
         {
             var (actorId, actorRole) = GetActor();
             var p = await _db.Playlists.FindAsync(id)
-                ?? throw new KeyNotFoundException($"Playlist {id} не знайдено");
+                ?? throw new KeyNotFoundException($"Playlist {id} not found");
 
             if (actorRole != UserRole.Admin && p.OwnerId != actorId)
                 throw new UnauthorizedAccessException("You are not owner of this playlist");
@@ -139,7 +139,7 @@ namespace soundcloud_back.Services.Implementations
         {
             var (actorId, actorRole) = GetActor();
             var p = await _db.Playlists.FindAsync(id)
-                ?? throw new KeyNotFoundException($"Playlist {id} не знайдено");
+                ?? throw new KeyNotFoundException($"Playlist {id} not found");
 
             if (actorRole != UserRole.Admin && p.OwnerId != actorId)
                 throw new UnauthorizedAccessException("You are not owner of this playlist");
@@ -153,7 +153,7 @@ namespace soundcloud_back.Services.Implementations
         {
             var (actorId, actorRole) = GetActor();
             var p = await _db.Playlists.FindAsync(playlistId)
-                ?? throw new KeyNotFoundException($"Playlist {playlistId} не знайдено");
+                ?? throw new KeyNotFoundException($"Playlist {playlistId} not found");
 
             if (actorRole != UserRole.Admin && p.OwnerId != actorId)
                 throw new UnauthorizedAccessException("You are not owner of this playlist");
@@ -179,13 +179,13 @@ namespace soundcloud_back.Services.Implementations
             var playlist = await _db.Playlists
                 .Include(p => p.Tracks)
                 .FirstOrDefaultAsync(p => p.Id == playlistId)
-                ?? throw new KeyNotFoundException($"Playlist {playlistId} не знайдено");
+                ?? throw new KeyNotFoundException($"Playlist {playlistId} not found");
 
             if (actorRole != UserRole.Admin && playlist.OwnerId != actorId)
-                throw new UnauthorizedAccessException("Ви не є власником цього плейліста");
+                throw new UnauthorizedAccessException("You are not the owner of this playlist");
 
             var track = await _db.Tracks.FindAsync(trackId)
-                ?? throw new KeyNotFoundException($"Track {trackId} не знайдено");
+                ?? throw new KeyNotFoundException($"Track {trackId} not found");
 
             if (!playlist.Tracks.Any(t => t.Id == trackId))
             {
@@ -200,13 +200,13 @@ namespace soundcloud_back.Services.Implementations
             var playlist = await _db.Playlists
                 .Include(p => p.Tracks)
                 .FirstOrDefaultAsync(p => p.Id == playlistId)
-                ?? throw new KeyNotFoundException($"Playlist {playlistId} не знайдено");
+                ?? throw new KeyNotFoundException($"Playlist {playlistId} not found");
 
             if (actorRole != UserRole.Admin && playlist.OwnerId != actorId)
-                throw new UnauthorizedAccessException("Ви не є власником цього плейліста");
+                throw new UnauthorizedAccessException("You are not the owner of this playlist");
 
             var track = playlist.Tracks.FirstOrDefault(t => t.Id == trackId)
-                ?? throw new KeyNotFoundException($"Track {trackId} не знайдено у плейлісті");
+                ?? throw new KeyNotFoundException($"Track {trackId} not found in the playlist");
 
             playlist.Tracks.Remove(track);
             await _db.SaveChangesAsync();

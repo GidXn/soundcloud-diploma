@@ -9,7 +9,7 @@ namespace soundcloud_back.Validators.Track
         {
             RuleFor(x => x.Title)
                 .NotEmpty().MaximumLength(200)
-                .WithMessage("Title має бути валідним");
+                .WithMessage("Title must be valid");
 
 
         }

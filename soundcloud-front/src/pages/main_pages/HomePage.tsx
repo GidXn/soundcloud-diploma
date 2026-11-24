@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
 
     const navigate = useNavigate();
 
-    const [, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({}); // треки альбому тепер на сторінці /album/:id
+    const [, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({}); // album tracks are now on the page /album/:id
 
     useEffect(() => {
         albumService.getAllAlbums()
@@ -60,16 +60,16 @@ const HomePage: React.FC = () => {
     }, [albums]);
 
     const getTrackImageUrl = (track?: ITrack | null) => {
-        if (!track || !track.imageUrl) return "/default-cover.png"; // запасна картинка
+        if (!track || !track.imageUrl) return "/default-cover.png"; // fallback image
         return `http://localhost:5122${track.imageUrl}`;
     };
     const getAlbumImageUrl = (album?: IAlbum | null) => {
-        if (!album || !album.coverUrl) return "/default-cover.png"; // запасна картинка
+        if (!album || !album.coverUrl) return "/default-cover.png"; // fallback image
         return `http://localhost:5122/${album.coverUrl}`;
     };
 
 
-    //для лайків
+    //for likes
     // const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
     // useEffect(() => {
     //     trackService.getAll()
@@ -84,17 +84,17 @@ const HomePage: React.FC = () => {
     // const toggleLike = async (track: ITrack) => {
     //     try {
     //         if (likedTracksIds.includes(track.id)) {
-    //             // анлайк
+    //             // unlike
     //             await trackService.unlike(track.id);
     //             setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-    //             track.isLikedByCurrentUser = false; // оновлюємо локально
+    //             track.isLikedByCurrentUser = false; // update locally
     //             addtoHistory(track);
     //             trackService.getAll()
     //         } else {
-    //             // лайк
+    //             // like
     //             await trackService.like(track.id);
     //             setLikedTracksIds(prev => [...prev, track.id]);
-    //             track.isLikedByCurrentUser = true; // оновлюємо локально
+    //             track.isLikedByCurrentUser = true; // update locally
     //             addtoHistory(track);
     //             trackService.getAll()
     //         }
@@ -220,7 +220,7 @@ const HomePage: React.FC = () => {
                         <div className="artistImageContainer">
                         <img className="artistImage" src="public\artists\Skryabin.jpg" />
                         </div>
-                        <div className="artistName">Скрябін</div>
+                        <div className="artistName">Skryabin</div>
                     </div>
                     <div className="artistCard">
                         <div className="artistImageContainer">

@@ -12,39 +12,39 @@ public class ValidationFilter : IAsyncActionFilter
 {
     public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        // агрегуємо всі помилки по всіх аргументах і не використовуємо рефлексію
-        //Дістаємо ServiceProvider один раз (не в кожній ітерації)
+        // aggregate all errors across all arguments and don't use reflection
+        //Get the ServiceProvider once (not on every iteration)
         var sp = context.HttpContext.RequestServices;
-        // збираємо помилки по всіх аргументах екшену, Ключ — назва властивості моделі, значення — список повідомлень
+        // collect errors across all action arguments. Key: model property name, value: list of messages
         var aggregatedErrors = new Dictionary<string, List<string>>();
                 
-        foreach (var argument in context.ActionArguments.Values) // Обходимо всі аргументи екшена
+        foreach (var argument in context.ActionArguments.Values) // Iterate over all action arguments
         {
-            if (argument == null) continue;// Пропускаємо null-аргументи
+            if (argument == null) continue;// Skip null arguments
 
-            var validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType()); // Як і було: шукаємо IValidator<T> для фактичного типу аргументу
-            var validatorObj = sp.GetService(validatorType);// Отримуємо валідатор з DI — але НЕ будемо викликати його через рефлексію.Замість цього безпечно приведемо до IValidator і використаємо ValidationContext<object>.
+            var validatorType = typeof(IValidator<>).MakeGenericType(argument.GetType()); // As before: look for IValidator<T> for the actual argument type
+            var validatorObj = sp.GetService(validatorType);// Get the validator from DI, but do NOT call it via reflection. Instead, safely cast to IValidator and use ValidationContext<object>.
             //if (validatorObj is null) continue;
             ////var validator = context.HttpContext.RequestServices.GetService(validatorType);
 
             //var validator = (IValidator)validatorObj; //
 
-            //// гарантовано працює на будь-якій версії FluentValidation
+            //// guaranteed to work on any version FluentValidation
             //ValidationResult result = await validator.ValidateAsync(new ValidationContext<object>(argument));
 
             if (validatorObj is not null)
             {
-                var validator = (IValidator)validatorObj; // Безпечний шлях (працює на будь-якій версії FluentValidation)
+                var validator = (IValidator)validatorObj; // Safe path (works on any version FluentValidation)
 
-                // гарантовано працює на будь-якій версії FluentValidation
+                // guaranteed to work on any version FluentValidation
                 ValidationResult result = await validator.ValidateAsync(new ValidationContext<object>(argument));
 
-                // Якщо є помилки — складаємо їх у загальний словник
+                // If there are errors, add them to the shared dictionary
                 if (!result.IsValid)
                 {
                     foreach (var failure in result.Errors)
                     {
-                        // Ключ — PropertyName, значення — список повідомлень для цієї властивості
+                        // Key: PropertyName, value: list of messages for this property
                         if (!aggregatedErrors.TryGetValue(failure.PropertyName, out var list))
                         {
                             list = new List<string>();
@@ -94,14 +94,14 @@ public class ValidationFilter : IAsyncActionFilter
             }
         }
 
-        // Раніше: повертали 400 одразу після першої невалідної моделі.
-        // Тепер: перевірили ВСІ аргументи і, якщо є помилки — віддаємо 400 з усім переліком.
+        // Before: returned 400 right after the first invalid model.
+        // Now: we checked ALL arguments and, if there are errors, return 400 with the full list.
         if (aggregatedErrors.Count > 0)
         {
-            //  Формуємо той самий формат, що й був : string -> string[]
+            //  Build the same format as before : string -> string[]
             var errorDict = aggregatedErrors.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray());
 
-            // Повертаємо 400 у вигляді такого ж об’єкта (фронт = те саме)
+            // Return 400 as the same object (frontend = the same)
             context.Result = new BadRequestObjectResult(new
             {
                 //type = "https://tools.ietf.org/html/rfc9110#section-15.5.1",
@@ -112,10 +112,10 @@ public class ValidationFilter : IAsyncActionFilter
                 //traceId = context.HttpContext.TraceIdentifier
             });
 
-            return; // зупиняємо конвеєр
+            return; // stop the pipeline
         }
 
-        await next(); // Якщо помилок немає — пускаємо далі
+        await next(); // If there are no errors, continue
     }
 }
 
