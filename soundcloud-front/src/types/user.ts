@@ -10,7 +10,7 @@ export interface IUser {
     role?:string;
     bio?:string;
     totalPlays:number;
-    isLocalPasswordSet: boolean;//new
+    isLocalPasswordSet?: boolean;//new
 
     isFollowing?: boolean;
 

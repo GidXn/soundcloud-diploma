@@ -41,6 +41,8 @@ builder.Services.AddScoped<ITrackService, TrackService>();
 builder.Services.AddScoped<IGenreService, GenreService>();
 builder.Services.AddScoped<IAlbumService, AlbumService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IFollowService, FollowService>();
+builder.Services.AddScoped<ISearchService, SearchService>();
 builder.Services.AddScoped<ISmtpService, SmtpService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IImageStorage, FileSystemImageStorage>();

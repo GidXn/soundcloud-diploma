@@ -1,0 +1,101 @@
+/* Розділ підтримки: DMCA, Privacy Policy, Advertising і т.д.
+   Розміри зняті з макету Figma (секція Support, кадр 1920px, контент 1532px). */
+
+.support_page {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    width: 100%;
+    max-width: calc(1532px + 176px + 64px);
+    padding: 160px 64px 40px 176px;
+    font-family: "Space Grotesk", "Roboto", system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #FFFFFF;
+}
+
+.support_page *,
+.support_page *::before,
+.support_page *::after {
+    box-sizing: border-box;
+}
+
+.support_title {
+    margin: 0 0 8px;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 30px;
+    color: #FFFFFF;
+}
+
+.support_heading,
+.support_text {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #FFFFFF;
+}
+
+/* Картка з іконкою лапок */
+.support_card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 64px;
+    padding: 22px 32px 22px 0;
+    background: rgba(18, 12, 26, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+}
+
+.support_card_highlight {
+    background: #210133;
+    border-color: transparent;
+}
+
+.support_quote_icon {
+    flex: 0 0 40px;
+    width: 40px;
+    height: 32px;
+    margin: 0 64px 0 54px;
+    color: #FFFFFF;
+}
+
+.support_card_body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 0;
+}
+
+.support_line {
+    margin: 0;
+    white-space: pre-line;
+}
+
+.support_line_indent {
+    padding-left: 16px;
+}
+
+.support_link {
+    color: #B9A3E3;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.support_link:hover {
+    color: #FFFFFF;
+}
+
+.support_link_plain {
+    color: inherit;
+    text-decoration: none;
+}
+
+.support_link_plain:hover {
+    text-decoration: underline;
+}

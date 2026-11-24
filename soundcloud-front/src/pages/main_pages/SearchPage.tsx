@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import api from "../../utilities/axiosInstance";
 import {SearchResponse} from "../../types/search_types.ts";
 
 const SearchPage: React.FC = () => {
-    const [q, setQ] = useState("");
+    const [searchParams] = useSearchParams();
+    const [q, setQ] = useState(searchParams.get("q") ?? "");
+
+    useEffect(() => {
+        setQ(searchParams.get("q") ?? "");
+    }, [searchParams]);
     const [results, setResults] = useState<SearchResponse | null>(null);
     const [loading, setLoading] = useState(false);
     const controllerRef = useRef<AbortController | null>(null);

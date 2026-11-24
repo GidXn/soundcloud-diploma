@@ -146,10 +146,8 @@ namespace soundcloud_back.Controllers
         public async Task<IActionResult> GetPlaylistsByUser(int userId)
         {
             var lists = await _playlistService.GetAllByUserIdAsync(userId);
-            if (lists == null || !lists.Any())
-                return NotFound("У цього користувача немає плейлистів");
-
-            return Ok(lists);
+            // Порожній список — це не помилка (інакше чужий профіль без плейлистів показував alert)
+            return Ok(lists ?? Enumerable.Empty<soundcloud_back.Models.Playlist.PlaylistDto>());
         }
 
 

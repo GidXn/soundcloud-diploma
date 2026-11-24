@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { IAlbum } from "../../types/album";
 import { ITrack } from "../../types/track";
 import { albumService } from "../../services/albumAPI.ts";
@@ -9,7 +10,8 @@ const AlbumsCollectionPage: React.FC = () => {
     const [albums, setAlbums] = useState<IAlbum[]>([]);
     const [albumTracks, setAlbumTracks] = useState<{ [albumId: number]: ITrack[] }>({});
 
-    const playAlbum = usePlayerStore(state => state.playAlbum);
+
+    const navigate = useNavigate();
     const playTrack = usePlayerStore(state => state.playTrack);
 
     useEffect(() => {
@@ -69,11 +71,11 @@ const AlbumsCollectionPage: React.FC = () => {
                             {index !== 0 &&
                                 <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M0.5 0.5H1526.5" stroke="#64707C" stroke-linecap="round"/>
+                                    <path d="M0.5 0.5H1526.5" stroke="#64707C" strokeLinecap="round"/>
                                 </svg>
                             }
 
-                            <div className="albumItemRow" onClick={() => playAlbum(album, albumTracks[album.id] || [])}>
+                            <div className="albumItemRow" onClick={() => navigate(`/album/${album.id}`)}>
                                 <div className="albumImageWrapper">
                                     <img className="albumCover" src={getAlbumImageUrl(album)} alt={album.title} />
                                     <div className="albumHeader">

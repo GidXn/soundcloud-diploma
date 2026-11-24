@@ -17,7 +17,6 @@ import React, {useEffect} from "react";
 import {setUser} from "./store/slices/userSlice.ts";
 import {normalizeUser} from "./utilities/normalizeUser.ts";
 import SetPassword from "./pages/login_signup/SetPassword";
-import { Navigate } from "react-router-dom";
 
 //імпорти для адмінки
 
@@ -39,9 +38,18 @@ import ArtistsPage from "./pages/main_pages/ArtistsPage";
 import ChartsPage from "./pages/main_pages/ChartsPage";
 import Top100Page from "./pages/main_pages/Top100Page";
 import RadioPage from "./pages/main_pages/RadioPage";
+import TrackPage from "./pages/detail/TrackPage";
+import { AlbumPage, ChartPage } from "./pages/detail/AlbumPage";
+import ArtistPage from "./pages/detail/ArtistPage";
+import GenrePage from "./pages/detail/GenrePage";
+import FavoritePage from "./pages/main_pages/FavoritePage";
+import FollowListPage from "./pages/main_pages/FollowListPage";
+import TopYearPage from "./pages/main_pages/TopYearPage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
+import SupportPage from "./pages/support/SupportPage.tsx";
+import SubscriptionPage from "./pages/subscription/SubscriptionPage.tsx";
 
 
 export default function App() {
@@ -89,23 +97,35 @@ export default function App() {
                     </ProtectedRoute>
                 }>
                     <Route path="/home" element={<HomePage />} />
+                    <Route path="/support/:slug" element={<SupportPage />} />
                     <Route path="/music" element={<MusicPage />} />
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
 
                     <Route path="/profile" element={<ProfilePage />} />
-                    {/* <Route path="/library" element={<LibraryPage />} />
-                    <Route path="/genres" element={<GenresPage />} /> */}
-                    {/* <Route path="/feed" element={<FeedPage />} /> */}
-                    {/* <Route path="/artists" element={<ArtistsPage />} />
+                    <Route path="/library" element={<LibraryPage />} />
+                    <Route path="/feed" element={<FeedPage />} />
+                    <Route path="/search-page" element={<SearchPage/>}/>
+                    <Route path="/play-album/:id" element={<PlayAlbumPage />} />
+                    <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
+                    <Route path="/user/:id" element={<UserProfilePage />} />
+                    <Route path="/user/:id/following" element={<FollowListPage mode="following" />} />
+                    <Route path="/user/:id/followers" element={<FollowListPage mode="followers" />} />
+                    <Route path="/following" element={<FollowListPage mode="following" />} />
+                    <Route path="/followers" element={<FollowListPage mode="followers" />} />
+                    <Route path="/favorite" element={<FavoritePage />} />
+                    <Route path="/top/:year" element={<TopYearPage />} />
+                    <Route path="/set-password" element={<SetPassword />} />
+                    <Route path="/genres" element={<GenresPage />} />
+                    <Route path="/artists" element={<ArtistsPage />} />
+                    <Route path="/subscribe" element={<SubscriptionPage />} />
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
-                    <Route path="/radio" element={<RadioPage />} /> */}
-
-                    {/* <Route path="/play-album/:id" element={<PlayAlbumPage />} />
-                    <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
-                    <Route path="/user/:id" element={<UserProfilePage />} /> */}
-                    {/* <Route path="/search-page" element={<SearchPage/>}/> */}
-                    {/* <Route path="/set-password" element={<SetPassword />} /> */}
+                    <Route path="/radio" element={<RadioPage />} />
+                    <Route path="/track/:id" element={<TrackPage />} />
+                    <Route path="/album/:id" element={<AlbumPage />} />
+                    <Route path="/chart/:id" element={<ChartPage />} />
+                    <Route path="/artist/:name" element={<ArtistPage />} />
+                    <Route path="/genre/:name" element={<GenrePage />} />
                 </Route>
 
                 {/*  Адмінка (ОКРЕМО, без Layout, Protected to Role 2) */}
@@ -117,7 +137,7 @@ export default function App() {
                     <Route path="users" element={<UsersPage />} />
                     <Route path="tracks" element={<TracksPage />} />
                     <Route path="albums" element={<AlbumsPage />} />
-                    {/* <Route path="categories" element={<CategoriesPage />} /> */}
+                    <Route path="categories" element={<CategoriesPage />} />
                     <Route path="playlists" element={<PlaylistsPage />} />
                     <Route path="admin" element={<AdminPage />} />
                 </Route>

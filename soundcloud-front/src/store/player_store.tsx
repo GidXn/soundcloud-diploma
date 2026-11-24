@@ -23,8 +23,8 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
 
     setCurrentTrack: (track: ITrack | null, autoplay = false) => {
         set({ track, isPlaying: false });
-        if (autoplay && get().audioRef.current && track) {
-            const audio = get().audioRef.current;
+        const audio = get().audioRef.current;
+        if (autoplay && audio && track) {
             audio.src = `http://localhost:5122${track.url}`;
             audio.play().catch(console.error);
         }

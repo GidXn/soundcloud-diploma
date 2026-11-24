@@ -1,4 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useTrackLikes } from "../../components/catalog/useTrackLikes";
+import { useNavigate } from "react-router-dom";
 import { ITrack } from "../../types/track";
 import { trackService } from "../../services/trackApi.ts";
 import { usePlayerStore } from "../../store/player_store.tsx";
@@ -6,8 +8,13 @@ import "../../styles/main_pages/music_page/layout.css"
 
 const MusicPage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
+    const { liked, toggleLike } = useTrackLikes(tracks);
+    // перемішуємо один раз на завантаження, а не на кожен ререндер (інакше список стрибає під час відтворення)
+    const shuffled = useMemo(() => [...tracks].sort(() => Math.random() - 0.5).slice(0, 30), [tracks]);
 
     const playTrack = usePlayerStore(state => state.playTrack);
+
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -77,19 +84,19 @@ const MusicPage: React.FC = () => {
                 </div>
                 <div className="musicList">
 
-                    {[...tracks].sort(() => Math.random() - 0.5).slice(0, 30).map((track, index) => (
-                    <>
+                    {shuffled.map((track, index) => (
+                    <React.Fragment key={track.id}>
                         {index !== 0 &&
                     <svg className={"divider"} width="1527" height="1" viewBox="0 0 1527 1" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.5 0.5H1526.5" stroke="#64707C" stroke-linecap="round"/>
+                        <path d="M0.5 0.5H1526.5" stroke="#64707C" strokeLinecap="round"/>
                     </svg>}
 
                     <div className="trackItem" onClick={() => playTrack(track, tracks)}>
                         <div className="trackImageWrapper">
                             <img className="trackCover" src={getTrackImageUrl(track)} alt={""}/>
                             <div className="trackHeader">
-                                <div className="trackName">{track.title}</div>
+                                <div className="trackName" onClick={(e) => { e.stopPropagation(); navigate(`/track/${track.id}`); }}>{track.title}</div>
                             </div>
                         </div>
                         <div className="trackMeta">
@@ -100,17 +107,18 @@ const MusicPage: React.FC = () => {
                                 </div> */}
                             </div>
                             <div className="trackActions">
-                                <svg className="likeIcon" width="22" height="20" viewBox="0 0 22 20" fill="none"
+                                <svg className="likeIcon" width="22" height="20" viewBox="0 0 22 20" fill={liked.has(track.id) ? "#9E7FCF" : "none"}
+                                    role="button" aria-label="Like" style={{cursor: "pointer"}} onClick={(e) => toggleLike(e, track)}
                                     xmlns="http://www.w3.org/2000/svg">
                                     <path
                                         d="M6.5 1C3.4625 1 1 3.4625 1 6.5C1 12 7.5 17 11 18.163C14.5 17 21 12 21 6.5C21 3.4625 18.5375 1 15.5 1C13.64 1 11.995 1.9235 11 3.337C10.4928 2.61469 9.81897 2.0252 9.03568 1.61841C8.25238 1.21162 7.38263 0.999502 6.5 1Z"
-                                        stroke="#9E7FCF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        stroke="#9E7FCF" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
 
                                 <div className="trackDuration">{formatTimeSpan(track.duration)}</div>
                             </div>
                         </div>
-                    </div></>))}
+                    </div></React.Fragment>))}
                 </div>
             </div>
         </main>

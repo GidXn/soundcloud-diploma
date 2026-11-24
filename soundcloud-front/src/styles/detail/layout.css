@@ -1,0 +1,531 @@
+/* Сторінки, що відкриваються по кліку: трек, альбом, виконавець, жанр, чарт.
+   Значення зняті з кадрів Figma «Click to» (кадр 1920px, контент 1528px від x=251).
+   Контейнер — .catalog_page з PR сторінок каталогу (ті самі відступи від сайдбару й хедера). */
+
+.detail_page {
+    --detail-muted: #C3C4C5;
+    --detail-line: #64707C;
+    --detail-accent: #9E7FCF;
+    --detail-gradient: linear-gradient(90deg, #6D28D9 0%, #1D4ED8 100%);
+    --detail-glass: rgba(255, 255, 255, 0.24);
+    display: flex;
+    flex-direction: column;
+    gap: 64px;
+}
+
+.detail_page h1,
+.detail_page h2 {
+    margin: 0;
+}
+
+/* ---------- Hero ---------- */
+.detail_hero {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    /* hero 422px + 113px до банера (у макеті між hero та банером 113, далі 64) */
+    margin-bottom: 49px;
+}
+
+.detail_back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, #FFFFFF 0%, #999999 100%) !important;
+    opacity: 0.9;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.detail_back:hover { opacity: 1; transform: translateX(-2px); }
+
+.detail_hero_row {
+    display: flex;
+    align-items: center;
+    gap: 64px;
+}
+
+.detail_cover {
+    flex-shrink: 0;
+    width: 350px;
+    height: 350px;
+    object-fit: cover;
+    background: rgba(255, 255, 255, 0.06);
+}
+.detail_cover.round { border-radius: 24px; }
+
+.detail_info {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    min-width: 231px;
+    max-width: 700px;
+}
+
+.detail_heading {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail_title_block {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail_label,
+.detail_subtitle,
+.detail_meta_label.muted {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--detail-muted);
+}
+
+.detail_title {
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 46px;
+    color: #FFF;
+    word-break: break-word;
+}
+
+.detail_subtitle button:hover,
+.detail_meta button:hover { text-decoration: underline; }
+
+.detail_actions {
+    display: flex;
+    gap: 16px;
+}
+
+.detail_listen,
+.detail_more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border-radius: 10px;
+    background: var(--detail-gradient) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    transition: filter 0.15s ease;
+}
+.detail_listen:hover,
+.detail_more:hover { filter: brightness(1.15); }
+.detail_listen:disabled { opacity: 0.5; cursor: default; filter: none; }
+
+.detail_listen {
+    width: 160px;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+.detail_more { width: 50px; }
+
+.detail_meta {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.detail_meta_label {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.detail_meta_line {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    white-space: nowrap;
+}
+.detail_meta_line > span:last-child:not(:first-child) { color: var(--detail-muted); }
+.detail_dot { flex-shrink: 0; }
+
+/* ---------- Banners (NRJ FM / XIT FM), 1528x170, r23 ---------- */
+.detail_banner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 170px;
+    padding: 0 119px;
+    border-radius: 23px;
+    overflow: hidden;
+}
+
+.detail_banner_nrj { background: linear-gradient(90deg, #510000 0%, #000000 100%); }
+.detail_banner_xit { background: linear-gradient(90deg, #B873D8 0%, #5874AC 100%); padding: 0 103px; }
+
+.detail_banner_text {
+    display: flex;
+    flex-direction: column;
+}
+.detail_banner_xit .detail_banner_text { gap: 8px; }
+
+.detail_banner_title {
+    font-size: 48px;
+    font-weight: 700;
+    line-height: 61px;
+}
+
+.detail_banner_subtitle {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 26px;
+}
+.detail_banner_xit .detail_banner_subtitle {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 41px;
+}
+
+.detail_banner_slogan {
+    margin-left: auto;
+    margin-right: 62px;
+    font-size: 40px;
+    font-weight: 700;
+    font-style: italic;
+    letter-spacing: -0.5px;
+}
+
+.detail_banner_logo {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.detail_banner_nrj .detail_banner_logo { width: 162px; }
+.detail_banner_nrj .catalog_nrj_logo { font-size: 72px; }
+
+/* XIT: лого 137px у концентричних колах 410px (#D9D9D9 / 33%) */
+.detail_banner_xit .detail_banner_logo {
+    margin-left: auto;
+    width: 410px;
+    height: 170px;
+    margin-right: -21px; /* коло стоїть за 82px від правого краю банера */
+}
+.detail_banner_xit .detail_banner_logo::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 410px;
+    height: 410px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(217, 217, 217, 0.33) 0 115px, transparent 115.5px),
+        radial-gradient(circle, rgba(217, 217, 217, 0.33) 0 142px, transparent 142.5px),
+        radial-gradient(circle, rgba(217, 217, 217, 0.33) 0 179px, transparent 179.5px),
+        radial-gradient(circle, rgba(217, 217, 217, 0.33) 0 205px, transparent 205.5px);
+}
+.detail_banner_xit .catalog_xit_logo { width: 137px; height: 137px; }
+
+/* ---------- Sections ---------- */
+.detail_section {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.detail_section_head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 46px;
+}
+
+.detail_section_title {
+    font-size: 36px;
+    font-weight: 400;
+    line-height: 46px;
+    color: #FFF;
+}
+
+.detail_see_all {
+    height: 58px;
+    padding: 16px !important;
+    border-radius: 10px;
+    background: var(--detail-gradient) !important;
+    font-size: 20px;
+    line-height: 26px;
+    transition: filter 0.15s ease;
+}
+.detail_see_all:hover { filter: brightness(1.15); }
+
+.detail_empty {
+    padding: 8px 0;
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Track list: рядок 82px, обкладинка 50 r9, колонки як у макеті ---------- */
+.detail_tracks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.detail_track {
+    display: flex;
+    align-items: center;
+    gap: 19px;
+    height: 82px;
+    cursor: pointer;
+}
+
+.detail_track_cover {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 9px;
+    object-fit: cover;
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.detail_track_body {
+    flex: 1;
+    min-width: 0;
+    display: grid;
+    /* 1446 = 799 (назва) + 253 (автор) + 285 (жанр) + 109 (лайк + час) */
+    grid-template-columns: minmax(0, 1fr) 253px 285px 109px;
+    align-items: center;
+    height: 100%;
+    padding-right: 13px;
+    border-bottom: 1px solid var(--detail-line);
+}
+
+.detail_track:hover .detail_track_body { border-bottom-color: var(--detail-accent); }
+.detail_track.active .detail_track_title { color: var(--detail-accent); }
+
+.detail_track_title,
+.detail_track_author,
+.detail_track_genre {
+    justify-self: start;
+    max-width: calc(100% - 16px);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: left;
+}
+
+.detail_track_title {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+}
+
+.detail_track_author,
+.detail_track_genre,
+.detail_track_duration {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+}
+
+.detail_track_title:hover,
+.detail_track_author:hover,
+.detail_track_genre:hover { text-decoration: underline; }
+
+.detail_track_end {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.detail_track_like {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+}
+
+.detail_track_duration { text-align: right; }
+
+/* «Show More»: скляна кнопка 262x50 по центру */
+.detail_show_more {
+    align-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: 262px;
+    height: 50px;
+    margin-top: 32px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.35) 0%, rgba(153, 153, 153, 0.35) 100%) !important;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+}
+.detail_show_more:hover { background: rgba(255, 255, 255, 0.3) !important; }
+.detail_show_more_dot {
+    width: 25px;
+    height: 26px;
+    border-radius: 50%;
+    background: #FFF;
+}
+
+.detail_page .catalog_pagination { margin-top: 32px; }
+
+/* ---------- Carousels ---------- */
+.detail_carousel { gap: 23px; }
+.detail_carousel_cards,
+.detail_carousel_artists { gap: 32px; }
+
+.detail_carousel_frame { position: relative; }
+
+.detail_carousel_track {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+.detail_carousel_track::-webkit-scrollbar { display: none; }
+
+.detail_carousel_cards-lg .detail_carousel_track { gap: 44.5px; }
+.detail_carousel_cards .detail_carousel_track { gap: 30px; }
+.detail_carousel_artists .detail_carousel_track { gap: 28px; }
+
+.detail_carousel_arrow {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background: var(--detail-glass) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    transition: background 0.15s ease;
+}
+.detail_carousel_arrow:hover { background: rgba(255, 255, 255, 0.45) !important; }
+.detail_carousel_arrow.left { left: -27px; }
+.detail_carousel_arrow.right { right: -27px; }
+/* стрілки по центру обкладинки */
+.detail_carousel_cards-lg .detail_carousel_arrow { top: 116px; }
+.detail_carousel_cards .detail_carousel_arrow { top: 86px; }
+.detail_carousel_artists .detail_carousel_arrow { top: 85px; }
+
+/* смуга прогресу: 6px #201026, активна частина #7C3A7F */
+.detail_progress {
+    position: relative;
+    height: 6px;
+    background: #201026;
+}
+.detail_progress span {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: #7C3A7F;
+    transition: left 0.2s ease, width 0.2s ease;
+}
+
+/* Картка треку/альбому */
+.detail_card {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 231px;
+    text-align: left;
+}
+.detail_carousel_cards-lg .detail_card { width: 270px; }
+
+.detail_card_cover {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.06);
+}
+.detail_card_cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.2s ease;
+}
+.detail_card:hover .detail_card_cover img { transform: scale(1.04); }
+
+.detail_card_text {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+}
+
+.detail_card_title {
+    max-width: 231px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+.detail_card .detail_meta_line > span:last-child:not(:first-child) { color: #FFF; }
+.detail_card .detail_meta_line { overflow: hidden; }
+
+/* Картка артиста: коло 231 */
+.detail_artist {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 231px;
+}
+
+.detail_artist_photo {
+    width: 231px;
+    height: 231px;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #FFF;
+    transition: transform 0.2s ease;
+}
+.detail_artist:hover .detail_artist_photo { transform: scale(1.03); }
+
+.detail_artist_name {
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Жанр: заголовок 36 + банер */
+.detail_genre_head {
+    display: flex;
+    flex-direction: column;
+    gap: 33px;
+}
+
+/* .catalog_page button скидає font (і line-height) — повертаємо розміри з макету */
+.detail_page .detail_track_title { font-size: 16px; font-weight: 700; line-height: 20px; }
+.detail_page .detail_track_author,
+.detail_page .detail_track_genre { font-size: 14px; font-weight: 500; line-height: 18px; }
+.detail_page .detail_listen,
+.detail_page .detail_see_all { font-size: 20px; font-weight: 400; line-height: 26px; }
+.detail_page .detail_show_more { font-size: 14px; font-weight: 500; line-height: 18px; }
+.detail_page .detail_card,
+.detail_page .detail_artist { font-weight: 400; }
+
+/* лінія прогресу в макеті має нульову висоту в потоці (6px stroke) */
+.detail_progress { margin-bottom: -6px; }

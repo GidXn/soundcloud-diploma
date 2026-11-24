@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 import "../../styles/General.css";
 
@@ -17,19 +18,19 @@ const Footer: React.FC = () => {
 
                 <div className="allure-footer-links-row">
                     <div className="allure-footer-column">
-                        <a href="#">User agreement</a>
-                        <a href="#">Legal information</a>
+                        <Link to="/support/user-agreement">User agreement</Link>
+                        <Link to="/support/rights-holders">Legal information</Link>
                     </div>
                     <div className="allure-footer-column">
-                        <a href="#">To the performers</a>
-                        <a href="#">DMCA</a>
+                        <Link to="/support/performers">To the performers</Link>
+                        <Link to="/support/dmca">DMCA</Link>
                     </div>
                     <div className="allure-footer-column">
-                        <a href="#">Privacy Policy</a>
-                        <a href="#">PRO Subscription</a>
+                        <Link to="/support/privacy-policy">Privacy Policy</Link>
+                        <Link to="/support/pro-subscription">PRO Subscription</Link>
                     </div>
                     <div className="allure-footer-column">
-                        <a href="#">Advertising</a>
+                        <Link to="/support/advertising">Advertising</Link>
                     </div>
                 </div>
             </div>

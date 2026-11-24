@@ -29,10 +29,7 @@ namespace soundcloud_back.Controllers
         public async Task<IActionResult> GetByUserId(int userId)
         {
             var albums = await _albumService.GetAllByUserAsync(userId);
-
-            if (!albums.Any())
-                return NotFound($"No albums found for user with id {userId}");
-
+            // Порожній список — не помилка
             return Ok(albums);
         }
 

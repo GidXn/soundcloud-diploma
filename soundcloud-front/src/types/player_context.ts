@@ -9,7 +9,7 @@ export interface PlayerContextType {
     playlist: ITrack[];
     currentIndex: number;
     currentAlbumId: number | null; // завжди присутнє, може бути null
-    audioRef: RefObject<HTMLAudioElement>;
+    audioRef: RefObject<HTMLAudioElement | null>;
     volume: number; // нове поле
 
     playTrack: (track: ITrack, playlist?: ITrack[], albumId?: number | null) => void;

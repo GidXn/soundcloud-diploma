@@ -25,6 +25,7 @@ const PlayPlaylistPage: React.FC = () => {
     const pauseTrack = usePlayerStore(state => state.pauseTrack);
     const {nextTrack, previousTrack} = usePlayerStore();
     const [tracks, setTracks] = useState<ITrack[]>([]);
+    const [notFound, setNotFound] = useState(false);
 
     useEffect(() => {
         if (!id) return;
@@ -40,12 +41,14 @@ const PlayPlaylistPage: React.FC = () => {
 
             } catch (err) {
                 console.error("Error fetching playlist or tracks:", err);
+                setNotFound(true);
             }
         };
 
         fetchPlaylistAndTracks();
     }, [id]);
 
+    if (notFound && !playlist) return <p className="text-white text-center pt-[200px]">Playlist not found</p>;
     if (!playlist) return <p>Loading...</p>;
 
     return (

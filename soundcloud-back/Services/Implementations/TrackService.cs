@@ -95,6 +95,7 @@ namespace soundcloud_back.Services.Implementations
                 ImageUrl = t.ImageUrl,
                 IsHidden = t.IsHidden,
                 PlayCount = t.PlayCount,
+                CreatedAt = t.CreatedAt,
                 GenreId = t.GenreId ?? 0,
                 Genre = t.Genre != null ? t.Genre.Name : null,
                 Albums = t.AlbumTracks.Select(at => new AlbumDto
@@ -134,6 +135,7 @@ namespace soundcloud_back.Services.Implementations
                     ImageUrl = t.ImageUrl,
                     IsHidden = t.IsHidden,
                     PlayCount = t.PlayCount,
+                    CreatedAt = t.CreatedAt,
                     GenreId = t.GenreId.HasValue ? (int)t.GenreId.Value : 0,
                     Genre = t.Genre != null ? t.Genre.Name : null,
                     Albums = t.AlbumTracks
@@ -181,6 +183,7 @@ namespace soundcloud_back.Services.Implementations
                     ImageUrl = t.ImageUrl,
                     IsHidden = t.IsHidden,
                     PlayCount = t.PlayCount,
+                    CreatedAt = t.CreatedAt,
                     GenreId = t.GenreId.HasValue ? (int)t.GenreId.Value : 0,
                     Genre = t.Genre != null ? t.Genre.Name : null,
 
@@ -215,6 +218,7 @@ namespace soundcloud_back.Services.Implementations
                 .Include(t => t.Genre)
                 .Include(t => t.AlbumTracks)
                     .ThenInclude(at => at.Album)
+                        .ThenInclude(a => a.Owner) // без цього OwnerName падав з NullReference (500 на like/unlike)
                 .Include(t => t.TrackLikes)
                 .FirstOrDefaultAsync(t => t.Id == id);
 
@@ -232,6 +236,7 @@ namespace soundcloud_back.Services.Implementations
                 ImageUrl = track.ImageUrl,
                 IsHidden = track.IsHidden,
                 PlayCount = track.PlayCount,
+                CreatedAt = track.CreatedAt,
                 GenreId = track.GenreId ?? 0,
                 Genre = track.Genre?.Name,
                 Albums = track.AlbumTracks.Select(at => new AlbumDto
@@ -688,6 +693,7 @@ namespace soundcloud_back.Services.Implementations
                     Url = track.Url,
                     ImageUrl = track.ImageUrl,
                     PlayCount = track.PlayCount,
+                    CreatedAt = track.CreatedAt,
                     LikesCount = track.TrackLikes.Count,
                     IsLikedByCurrentUser = true // бо це лайкнуті треки поточного користувача
                 })

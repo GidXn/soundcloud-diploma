@@ -1652,7 +1652,7 @@
     display: flex;
     flex-direction: column; /* вертикально один під одним */
     gap: 24px;              /* відстань між блоками */
-    width: 374px;
+    width: 332px;           /* ширина панелі «profile PEOPLE» з макету */
 
     /* Важливо: прибрати всі top/left у внутрішніх блоках */
 }
