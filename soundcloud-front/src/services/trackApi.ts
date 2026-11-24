@@ -99,6 +99,11 @@ export const trackService = {
             throw error;
         }
     },
+    // Liked tracks of any user (LIKES block in another user's profile)
+    async getLikedByUser(userId: number): Promise<ITrack[]> {
+        const res = await api.get<ITrack[]>(`/Track/liked/${userId}`);
+        return res.data;
+    },
     async getLikedTracks(): Promise<ITrack[]> {
         try {
             const res = await api.get("/Track/liked"); // exactly as in Swagger

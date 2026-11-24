@@ -12,7 +12,7 @@ import "../../styles/main_pages/people/layout.css";
 
 interface Props {
     userId: number;
-    /** Own profile: show LIKES (the backend returns likes only for the current user) */
+    /** Own profile: links go to /followers and /following, likes refresh on «favorites-changed» */
     isOwn: boolean;
     tracksCount: number;
     /** External change of the follower count (Follow button in another user's profile header) */
@@ -63,12 +63,14 @@ const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, follo
     useEffect(() => { loadPeople(); }, [loadPeople, followersVersion]);
 
     useEffect(() => {
-        if (!isOwn) return;
-        const load = () => trackService.getLikedTracks().then(setLikes).catch(() => setLikes([]));
+        const load = () => (isOwn ? trackService.getLikedTracks() : trackService.getLikedByUser(userId))
+            .then(setLikes)
+            .catch(() => setLikes([]));
         load();
+        if (!isOwn) return;
         window.addEventListener("favorites-changed", load);
         return () => window.removeEventListener("favorites-changed", load);
-    }, [isOwn]);
+    }, [isOwn, userId]);
 
     const toggleFollow = async (u: IUserFollow) => {
         const isFollowing = followed[u.id];
@@ -104,30 +106,28 @@ const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, follo
             </div>
 
             <div className="people_panel_sections">
-                {isOwn && (
-                    <section className="people_section">
-                        <div className="people_section_head">
-                            <span>{likes.length} LIKES</span>
-                            <button className="people_view_all" onClick={() => navigate("/favorite")}>View all</button>
-                        </div>
-                        <div className="people_likes">
-                            {likes.length === 0 && <span className="people_empty">You don’t have likes yet</span>}
-                            {likes.slice(0, LIKES_PREVIEW).map((t) => (
-                                <div key={t.id} className="people_like">
-                                    <img className="people_like_cover" src={trackImageUrl(t)} alt="" />
-                                    <div className="people_like_info">
-                                        <span className="people_like_text">{t.author}</span>
-                                        <span className="people_like_text">{t.author} - {t.title}</span>
-                                        <div className="people_like_meta">
-                                            <span><PlayTriangle />{formatCount(t.playCount)}</span>
-                                            <span><HeartIcon size={13} color="#D9D9D9" filled />{formatCount((t as ITrack & { likesCount?: number }).likesCount)}</span>
-                                        </div>
+                <section className="people_section">
+                    <div className="people_section_head">
+                        <span>{likes.length} LIKES</span>
+                        {isOwn && <button className="people_view_all" onClick={() => navigate("/favorite")}>View all</button>}
+                    </div>
+                    <div className="people_likes">
+                        {likes.length === 0 && <span className="people_empty">{isOwn ? "You don’t have likes yet" : "No likes yet"}</span>}
+                        {likes.slice(0, LIKES_PREVIEW).map((t) => (
+                            <div key={t.id} className="people_like">
+                                <img className="people_like_cover" src={trackImageUrl(t)} alt="" />
+                                <div className="people_like_info">
+                                    <span className="people_like_text">{t.author}</span>
+                                    <span className="people_like_text">{t.author} - {t.title}</span>
+                                    <div className="people_like_meta">
+                                        <span><PlayTriangle />{formatCount(t.playCount)}</span>
+                                        <span><HeartIcon size={13} color="#D9D9D9" filled />{formatCount((t as ITrack & { likesCount?: number }).likesCount)}</span>
                                     </div>
                                 </div>
-                            ))}
-                        </div>
-                    </section>
-                )}
+                            </div>
+                        ))}
+                    </div>
+                </section>
 
                 <section className="people_section">
                     <div className="people_section_head">

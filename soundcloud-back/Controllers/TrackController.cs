@@ -169,6 +169,15 @@ namespace soundcloud_back.Controllers
         }
 
         // Get the liked tracks of the authorized user
+        // Liked tracks of any user: the «LIKES» block of another user's profile (Figma «profile PEOPLE»)
+        [HttpGet("liked/{userId:int}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetLikedTracksOfUser(int userId)
+        {
+            List<TrackDto> tracks = await _trackService.GetLikedByUserAsync(userId);
+            return Ok(tracks);
+        }
+
         [HttpGet("liked")]
         [Authorize]
         public async Task<IActionResult> GetLikedTracks()
