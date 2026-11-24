@@ -9,7 +9,8 @@ import Signup from "./pages/login_signup/Signup";
 // import LibraryPage from "./pages/main_pages/LibraryPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
 // import PlayAlbumPage from "./pages/play_album/PlayAlbumPage.tsx";
-import PlayPlaylistPage from "./pages/play_playlist/PlayPlaylistPage.tsx";
+// The old playlist screen (not in Figma) is kept in pages/play_playlist/PlayPlaylistPageLegacy.tsx
+import PlaylistPage from "./pages/detail/PlaylistPage.tsx";
 import './index.css';
 // import FeedPage from "./pages/main_pages/FeedPage.tsx";
 import MusicPage from "./pages/main_pages/MusicPage.tsx";
@@ -109,7 +110,7 @@ export default function App() {
                     <Route path="/search-page" element={<SearchPage/>}/>
                     {/* opened only from Library; albums open on /album/:id from the design. Commented out, not removed.
                     <Route path="/play-album/:id" element={<PlayAlbumPage />} /> */}
-                    <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
+                    <Route path="/play-playlist/:id" element={<PlaylistPage />} />
                     <Route path="/user/:id" element={<UserProfilePage />} />
                     <Route path="/user/:id/following" element={<FollowListPage mode="following" />} />
                     <Route path="/user/:id/followers" element={<FollowListPage mode="followers" />} />
