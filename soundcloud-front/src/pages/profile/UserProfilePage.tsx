@@ -327,7 +327,7 @@ const UserProfilePage: React.FC = () => {
 
                 {activeTab === "All" && (
                     <>
-                        {playlists.length ? (
+                        {(playlists.length || albums.length) ? (
                             <ul className="text-white baloo2">
                                 {playlists.map((p) => (
                                     <li
@@ -546,7 +546,7 @@ const UserProfilePage: React.FC = () => {
                             </ul>
 
                         ) : (
-                            <p className="text-gray-400 py-4">You don't have any playlists or albums</p>
+                            <p className="text-gray-400 py-4">No playlists or albums yet</p>
                         )}
 
                     </>
