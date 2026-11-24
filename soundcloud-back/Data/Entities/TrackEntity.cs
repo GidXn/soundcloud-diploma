@@ -13,43 +13,43 @@ namespace soundcloud_back.Data.Entities
         [MaxLength(200)]
         public string Title { get; set; }
 
-        // Автор як UserEntity (обов’язковий)
+        // Author as UserEntity (required)
         [Required]
         public int AuthorId { get; set; }
         public UserEntity Author { get; set; }
 
-        // Тривалість треку
+        // Track duration
         [Required]
         public TimeSpan Duration { get; set; }
 
-        // URL або шлях до файлу
+        // URL or file path
         [Required]
         public string Url { get; set; }
         public int PlayCount { get; set; } = 0;
 
 
-        // Лічильник прослуховувань
+        // Play counter
         public ICollection<TrackListenEntity>? UserPlays { get; set; }
 
-        // Для модерації: якщо прихований — не показуємо
+        // For moderation: if hidden, don't show it
         public bool IsHidden { get; set; } = false;
 
-        // Зв’язок «один трек — багато альбомів» (many-to-many)
+        // Relation «one track — many albums» (many-to-many)
         public ICollection<AlbumTrackEntity> AlbumTracks { get; set; } = new List<AlbumTrackEntity>();
 
-        // Зв’язок «один трек — багато плейлистів»
+        // Relation «one track — many playlists»
         public ICollection<PlaylistEntity> Playlists { get; set; }
 
         public string? ImageUrl { get; set; }
 
-        // нові
+        // new
         public int? GenreId { get; set; }   
         public GenreEntity? Genre { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; set; }
         public int? UpdatedById { get; set; }
 
-        // Зв'язок «один трек — багато лайків»
+        // Relation «one track — many likes»
         public ICollection<TrackLikeEntity> TrackLikes { get; set; } = new List<TrackLikeEntity>();
 
     }

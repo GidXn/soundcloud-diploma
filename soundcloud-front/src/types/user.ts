@@ -4,7 +4,7 @@ export interface IUser {
     email: string;
     avatar?:string;
     banner?:string;
-    createdAt?: string; // Date на фронті зручно передавати як ISO string
+    createdAt?: string; // Date is convenient to pass to the frontend as ISO string
     isBlocked?: boolean;
     password?:string;
     role?:string;

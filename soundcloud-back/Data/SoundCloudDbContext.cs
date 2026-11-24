@@ -22,9 +22,9 @@ public class SoundCloudDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder); // виклик базової конфігурації (залишаємо)
+        base.OnModelCreating(modelBuilder); // base configuration call (keep it)
 
-        // Зберігаємо enum Role як РЯДОК у БД (щоб у колонці бачити 'User'/'Moderator'/'Admin')
+        // Store the Role enum as a STRING in the DB (so the column shows 'User'/'Moderator'/'Admin')
         modelBuilder.Entity<UserEntity>()
         .Property(u => u.Role)
         .HasConversion<string>()
@@ -36,7 +36,7 @@ public class SoundCloudDbContext : DbContext
                 "\"Role\" IN ('User','Moderator','Admin')"
             ));
 
-        // Унікальні індекси
+        // Unique indexes
         modelBuilder.Entity<UserEntity>()
             .HasIndex(u => u.Email)
             .IsUnique();
@@ -61,9 +61,9 @@ public class SoundCloudDbContext : DbContext
 
         // Track → User (Author)
         modelBuilder.Entity<TrackEntity>()
-            .HasOne(t => t.Author)          // нова властивість навігації у TrackEntity
-            .WithMany(u => u.Tracks)            // у UserEntity: ICollection<TrackEntity> Tracks
-            .HasForeignKey(t => t.AuthorId)     // обов'язковий
+            .HasOne(t => t.Author)          // new navigation property in TrackEntity
+            .WithMany(u => u.Tracks)            // in UserEntity: ICollection<TrackEntity> Tracks
+            .HasForeignKey(t => t.AuthorId)     // is required
             .OnDelete(DeleteBehavior.Restrict);
 
       
@@ -78,7 +78,7 @@ public class SoundCloudDbContext : DbContext
             .WithMany(t => t.UserPlays)
             .HasForeignKey(p => p.TrackId);
 
-        // TrackLike: унікальність лайка від користувача
+        // TrackLike: uniqueness of a user's like
         modelBuilder.Entity<TrackLikeEntity>()
             .HasIndex(x => new { x.TrackId, x.UserId })
             .IsUnique();
@@ -94,12 +94,12 @@ public class SoundCloudDbContext : DbContext
             .HasForeignKey(l => l.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        // зберігаємо enum як string + check-constraint
+        // store the enum as string + check-constraint
         modelBuilder.Entity<UserEntity>()
             .Property(x => x.AuthProvider)
             .HasConversion<string>();
 
-        // унікальний індекс на GoogleSubject (NULL дозволений, але якщо не NULL — має бути унікальним)
+        // unique index on GoogleSubject (NULL allowed, but if not NULL it must be unique)
         modelBuilder.Entity<UserEntity>()
             .HasIndex(u => u.GoogleSubject)
             .IsUnique()
@@ -123,7 +123,7 @@ public class SoundCloudDbContext : DbContext
             .WithMany(t => t.AlbumTracks)
             .HasForeignKey(at => at.TrackId);
 
-        // Follow: унікальність пари (FollowerId, FollowingId)
+        // Follow: uniqueness of the pair (FollowerId, FollowingId)
         modelBuilder.Entity<FollowEntity>()
             .HasIndex(f => new { f.FollowerId, f.FollowingId })
             .IsUnique();

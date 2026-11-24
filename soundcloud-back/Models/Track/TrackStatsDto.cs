@@ -5,14 +5,14 @@
         public int TrackId { get; set; }
         public string Title { get; set; }
 
-        // Лічильник прослуховувань треку
+        // Track play counter
         public int PlayCount { get; set; }
 
-        // Лайки треку
+        // Track likes
         public int LikeCount { get; set; }
         public string AuthorAvatarUrl { get; set; }
 
-        // Опційно: AuthorId та AuthorName, якщо потрібні для статистики
+        // Optional: AuthorId and AuthorName, if needed for statistics
         public int AuthorId { get; set; }
         public string AuthorName { get; set; }
     }

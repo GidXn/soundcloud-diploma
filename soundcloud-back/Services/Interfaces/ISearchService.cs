@@ -3,19 +3,19 @@
 public interface ISearchService
 {
     /// <summary>
-    /// Виконує пошук по треках, альбомах, плейлистах та користувачах.
+    /// Searches tracks, albums, playlists and users.
     /// </summary>
-    /// <param name="q">Пошуковий запит</param>
-    /// <param name="trackPage">Сторінка треків</param>
-    /// <param name="trackPageSize">Кількість треків на сторінку</param>
-    /// <param name="albumPage">Сторінка альбомів</param>
-    /// <param name="albumPageSize">Кількість альбомів на сторінку</param>
-    /// <param name="playlistPage">Сторінка плейлистів</param>
-    /// <param name="playlistPageSize">Кількість плейлистів на сторінку</param>
-    /// <param name="userPage">Сторінка користувачів</param>
-    /// <param name="userPageSize">Кількість користувачів на сторінку</param>
-    /// <param name="types">Які типи об’єктів шукати: tracks, albums, playlists, users</param>
-    /// <returns>Результат пошуку</returns>
+    /// <param name="q">Search query</param>
+    /// <param name="trackPage">Tracks page</param>
+    /// <param name="trackPageSize">Tracks per page</param>
+    /// <param name="albumPage">Albums page</param>
+    /// <param name="albumPageSize">Albums per page</param>
+    /// <param name="playlistPage">Playlists page</param>
+    /// <param name="playlistPageSize">Playlists per page</param>
+    /// <param name="userPage">Users page</param>
+    /// <param name="userPageSize">Users per page</param>
+    /// <param name="types">Which object types to search: tracks, albums, playlists, users</param>
+    /// <returns>Search result</returns>
     Task<SearchResponseDto> SearchAsync(
         string q,
         int trackPage = 1,

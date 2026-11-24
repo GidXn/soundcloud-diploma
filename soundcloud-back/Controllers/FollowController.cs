@@ -20,7 +20,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Підписатися на користувача
+        /// Follow a user
         /// </summary>
         [HttpPost("{id}/follow")]
         [Authorize]
@@ -32,7 +32,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Відписатися від користувача
+        /// Unfollow a user
         /// </summary>
         [HttpDelete("{id}/unfollow")]
         [Authorize]
@@ -44,7 +44,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Отримати список підписників (followers) для конкретного користувача
+        /// Get the list of followers for a specific user
         /// </summary>
         [HttpGet("{id}/followers")]
         public async Task<IActionResult> GetFollowers(int id)
@@ -54,7 +54,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Отримати список користувачів, на яких підписаний конкретний користувач (following)
+        /// Get the list of users a specific user follows (following)
         /// </summary>
         [HttpGet("{id}/following")]
         public async Task<IActionResult> GetFollowing(int id)
@@ -64,7 +64,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Отримати кількість підписників користувача
+        /// Get the user's follower count
         /// </summary>
         [HttpGet("{id}/followers/count")]
         public async Task<IActionResult> GetFollowersCount(int id)
@@ -74,7 +74,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Отримати кількість підписок користувача
+        /// Get the user's following count
         /// </summary>
         [HttpGet("{id}/following/count")]
         public async Task<IActionResult> GetFollowingCount(int id)
@@ -98,7 +98,7 @@ namespace soundcloud_back.Controllers
 
 
 
-        // Віддаємо лише публічні поля користувача (раніше йшла вся сутність з email і хешем пароля)
+        // Return only the user's public fields (previously the whole entity was returned, with email and password hash)
         private async Task<List<FollowUserDto>> ToDtoAsync(List<soundcloud_back.Data.Entities.UserEntity> users)
         {
             var result = new List<FollowUserDto>(users.Count);

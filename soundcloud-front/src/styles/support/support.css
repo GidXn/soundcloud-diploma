@@ -1,5 +1,5 @@
-/* Розділ підтримки: DMCA, Privacy Policy, Advertising і т.д.
-   Розміри зняті з макету Figma (секція Support, кадр 1920px, контент 1532px). */
+/* Support section: DMCA, Privacy Policy, Advertising, etc.
+   Sizes taken from the Figma design (Support section, 1920px frame, content 1532px). */
 
 .support_page {
     box-sizing: border-box;
@@ -39,7 +39,7 @@
     color: #FFFFFF;
 }
 
-/* Картка з іконкою лапок */
+/* Card with a quote icon */
 .support_card {
     position: relative;
     display: flex;

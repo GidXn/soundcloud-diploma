@@ -42,15 +42,15 @@ namespace soundcloud_back.Services
             var emailNorm = dto.Email.Trim().ToLower();
             var usernameNorm = dto.Username.Trim();
 
-            ///// Перевірка, чи користувач з таким email вже існує, більш точна перевірка
+            ///// Check whether a user with this email already exists, more precise check
 
             ////if (await _db.Users.AnyAsync(u => u.Email == dto.Email.ToLower()))
             ////{
-            ////    throw new InvalidOperationException("Користувач з таким email вже існує.");
+            ////    throw new InvalidOperationException("A user with this email already exists.");
             ////}
             //if (await _db.Users.AnyAsync(u => u.Email.ToLower() == emailNorm))
-            //    throw new InvalidOperationException("Користувач з таким email вже існує.");
-            // 1) спершу шукаємо, чи існує користувач з таким email
+            //    throw new InvalidOperationException("A user with this email already exists.");
+            // 1) first check whether a user with this email
             
             var existing = await _db.Users
                 .AsNoTracking()
@@ -58,20 +58,20 @@ namespace soundcloud_back.Services
 
             if (existing != null)
             {
-                // якщо це Google-акаунт без локального пароля — підказка
+                // if this is a Google account without a local password, give a hint
                 if (existing.AuthProvider == AuthProvider.Google && existing.IsLocalPasswordSet == false)
                     throw new InvalidOperationException(
-                        "Цей email вже прив’язано до Google-акаунта. Увійдіть через Google і у профілі встановіть локальний пароль.");
+                        "This email is already linked to a Google account. Sign in with Google and set a local password in your profile.");
 
-                // інакше — стандартне повідомлення
-                throw new InvalidOperationException("Користувач з таким email вже існує.");
+                // otherwise, the standard message
+                throw new InvalidOperationException("A user with this email already exists.");
             }
 
-            // 2) перевірка username як і було
+            // 2) username check as before
             if (await _db.Users.AnyAsync(u => u.Username.ToLower() == usernameNorm.ToLower()))
-                throw new InvalidOperationException("Користувач з таким ім'ям вже існує.");
+                throw new InvalidOperationException("A user with this name already exists.");
 
-            // Хешування пароля
+            // Password hashing
             CreatePasswordHash(dto.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             var user = new UserEntity
@@ -92,7 +92,7 @@ namespace soundcloud_back.Services
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
 
-            // Генерація JWT-токена
+            // JWT token generation
             var token = GenerateJwtToken(user);
 
             return new AuthResponseDto
@@ -111,30 +111,30 @@ namespace soundcloud_back.Services
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Email.ToLower() == emailNorm);
             //if (user == null || !VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
             //{
-            //    throw new UnauthorizedAccessException("Неправильний email або пароль.");
+            //    throw new UnauthorizedAccessException("Invalid email or password.");
             //}
 
             //if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
-            //    throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+            //    throw new UnauthorizedAccessException("The account was created via Google. Sign in with Google or set a local password first.");
 
             if (user == null)
-                throw new UnauthorizedAccessException("Неправильний email або пароль.");
+                throw new UnauthorizedAccessException("Invalid email or password.");
 
             if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
-                throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+                throw new UnauthorizedAccessException("The account was created via Google. Sign in with Google or set a local password first.");
 
-            // Додатковий захист від “старих”/неконсистентних даних (порожній хеш/сіль)
+            // Extra protection against “old”/inconsistent data (empty hash/salt)
             if (user.PasswordHash == null || user.PasswordSalt == null ||
                 user.PasswordHash.Length == 0 || user.PasswordSalt.Length == 0)
-                throw new UnauthorizedAccessException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+                throw new UnauthorizedAccessException("The account was created via Google. Sign in with Google or set a local password first.");
 
-            // Перевірка пароля
+            // Password check
             if (!VerifyPasswordHash(dto.Password, user.PasswordHash, user.PasswordSalt))
-                throw new UnauthorizedAccessException("Неправильний email або пароль.");
+                throw new UnauthorizedAccessException("Invalid email or password.");
 
             if (user.IsBlocked)
             {
-                throw new UnauthorizedAccessException("Користувач заблокований.");
+                throw new UnauthorizedAccessException("User is blocked.");
             }
 
             var token = GenerateJwtToken(user);
@@ -210,10 +210,10 @@ namespace soundcloud_back.Services
                 .FirstOrDefaultAsync(); 
 
             if (user == null)
-                throw new KeyNotFoundException("Користувач не знайдений.");
+                throw new KeyNotFoundException("User not found.");
 
             if (user.IsBlocked)
-                throw new UnauthorizedAccessException("Користувач заблокований.");
+                throw new UnauthorizedAccessException("User is blocked.");
 
             return new UserProfileDto
             {
@@ -235,12 +235,12 @@ namespace soundcloud_back.Services
         public async Task SetLocalPasswordAsync(int userId, string newPassword)
         {
             var user = await _db.Users.FindAsync(userId)
-                ?? throw new KeyNotFoundException("Користувача не знайдено.");
+                ?? throw new KeyNotFoundException("User not found.");
 
             CreatePasswordHash(newPassword, out byte[] passwordHash, out byte[] passwordSalt);
             user.PasswordHash = passwordHash;
             user.PasswordSalt = passwordSalt;
-            user.IsLocalPasswordSet = true;// тепер локальний логін дозволено / критично
+            user.IsLocalPasswordSet = true;// local login is now allowed / critical
             user.UpdatedAt = DateTime.UtcNow;
             await _db.SaveChangesAsync();
         }
@@ -274,19 +274,19 @@ namespace soundcloud_back.Services
         public async Task<string> GeneratePasswordResetTokenAsync(string email)
         {
             if (string.IsNullOrWhiteSpace(email))
-                throw new ArgumentException("Email обов'язковий.", nameof(email));
+                throw new ArgumentException("Email is required.", nameof(email));
 
             var emailNorm = email.Trim().ToLower();
 
             var user = await _db.Users
                 .FirstOrDefaultAsync(u => u.Email.ToLower() == emailNorm)
-                ?? throw new InvalidOperationException("Користувача з таким email не знайдено.");
+                ?? throw new InvalidOperationException("No user with this email was found.");
 
             if (user.AuthProvider == AuthProvider.Google && user.IsLocalPasswordSet == false)
-                throw new InvalidOperationException("Акаунт створено через Google. Увійдіть через Google або спершу встановіть локальний пароль.");
+                throw new InvalidOperationException("The account was created via Google. Sign in with Google or set a local password first.");
 
             if (user.IsBlocked)
-                throw new InvalidOperationException("Користувач заблокований.");
+                throw new InvalidOperationException("User is blocked.");
 
             var token = GeneratePasswordResetToken(user);
 
@@ -295,11 +295,11 @@ namespace soundcloud_back.Services
                 ? token
                 : $"{frontendBaseUrl.TrimEnd('/')}/reset-password?token={Uri.EscapeDataString(token)}";
 
-            var subject = "Скидання паролю";
-            var body = $@"<p>Ви запросили скидання паролю.</p>
-<p>Для встановлення нового паролю перейдіть за посиланням:</p>
-<p><a href=""{resetLink}"">Скинути пароль</a></p>
-<p>Якщо ви не робили цей запит, просто проігноруйте цей лист.</p>";
+            var subject = "Password reset";
+            var body = $@"<p>You requested a password reset.</p>
+<p>To set a new password, follow the link:</p>
+<p><a href=""{resetLink}"">Reset password</a></p>
+<p>If you didn't make this request, just ignore this email.</p>";
 
             //await _emailSender.SendEmailAsync(user.Email, subject, body);
             await _smtpService.SendEmailAsync(new EmailMessage
@@ -315,7 +315,7 @@ namespace soundcloud_back.Services
         public async Task ResetPasswordAsync(string token, string newPassword)
         {
             if (string.IsNullOrWhiteSpace(token))
-                throw new ArgumentException("Token обов'язковий.", nameof(token));
+                throw new ArgumentException("Token is required.", nameof(token));
 
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -340,18 +340,18 @@ namespace soundcloud_back.Services
                 if (validatedToken is not JwtSecurityToken jwt ||
                     !jwt.Claims.Any(c => c.Type == "token_type" && c.Value == "password_reset"))
                 {
-                    throw new SecurityTokenException("Невалідний тип токена.");
+                    throw new SecurityTokenException("Invalid token type.");
                 }
 
                 var userIdStr = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 if (!int.TryParse(userIdStr, out var userId))
-                    throw new SecurityTokenException("Невалідний токен.");
+                    throw new SecurityTokenException("Invalid token.");
 
                 var user = await _db.Users.FindAsync(userId)
-                    ?? throw new KeyNotFoundException("Користувача не знайдено.");
+                    ?? throw new KeyNotFoundException("User not found.");
 
                 if (user.IsBlocked)
-                    throw new UnauthorizedAccessException("Користувач заблокований.");
+                    throw new UnauthorizedAccessException("User is blocked.");
 
                 CreatePasswordHash(newPassword, out var passwordHash, out var passwordSalt);
                 user.PasswordHash = passwordHash;
@@ -363,7 +363,7 @@ namespace soundcloud_back.Services
             }
             catch (SecurityTokenException)
             {
-                throw new UnauthorizedAccessException("Токен для скидання паролю недійсний або прострочений.");
+                throw new UnauthorizedAccessException("The password reset token is invalid or expired.");
             }
         }
     }

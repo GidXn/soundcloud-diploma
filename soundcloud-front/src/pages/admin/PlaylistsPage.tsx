@@ -15,7 +15,7 @@ const PlaylistsPage = () => {
             const res = await adminApi.getPlaylists();
             setPlaylists(res.data);
         } catch {
-            message.error("Не вдалося завантажити плейлісти");
+            message.error("Failed to load playlists");
         }
         setLoading(false);
     };
@@ -36,18 +36,18 @@ const PlaylistsPage = () => {
 
             await adminApi.createPlaylist(formData);
 
-            message.success("Плейліст створено");
+            message.success("Playlist created");
             setIsModalVisible(false);
             form.resetFields();
             loadPlaylists();
         } catch (err) {
-            message.error("Помилка при створенні плейліста");
+            message.error("Failed to create playlist");
         }
     };
 
     const handleDelete = async (id: number) => {
         await adminApi.deletePlaylist(id);
-        message.success("Плейліст видалено");
+        message.success("Playlist deleted");
         loadPlaylists();
     };
 
@@ -55,23 +55,23 @@ const PlaylistsPage = () => {
     const handleUploadCover = async (id: number, file: File) => {
         try {
             await adminApi.uploadPlaylistCover(id, file);
-            message.success("Обкладинка оновлена");
+            message.success("Cover updated");
             loadPlaylists();
         } catch {
-            message.error("Помилка при завантаженні обкладинки");
+            message.error("Failed to upload cover");
         }
     };
 
     const columns = [
         { title: "ID", dataIndex: "id" },
-        { title: "Назва", dataIndex: "name" },
-        { title: "Опис", dataIndex: "description" },
-        { title: "Власник", dataIndex: ["owner", "username"] },
+        { title: "Title", dataIndex: "name" },
+        { title: "Description", dataIndex: "description" },
+        { title: "Owner", dataIndex: ["owner", "username"] },
         {
-            title: "Дії",
+            title: "Actions",
             render: (_: any, record: any) => (
                 <Space>
-                    <Button danger onClick={() => handleDelete(record.id)}>Видалити</Button>
+                    <Button danger onClick={() => handleDelete(record.id)}>Delete</Button>
                     <Button
                         onClick={() => {
                             const fileInput = document.createElement("input");
@@ -83,7 +83,7 @@ const PlaylistsPage = () => {
                             fileInput.click();
                         }}
                     >
-                        Завантажити обкладинку
+                        Upload cover
                     </Button>
                 </Space>
             ),
@@ -93,22 +93,22 @@ const PlaylistsPage = () => {
     return (
         <>
             <Button type="primary" style={{ marginBottom: 16 }} onClick={() => setIsModalVisible(true)}>
-                Створити плейліст
+                Create playlist
             </Button>
 
             <Table rowKey="id" columns={columns} dataSource={playlists} loading={loading} />
 
             <Modal
-                title="Створити плейліст"
+                title="Create playlist"
                 visible={isModalVisible}
                 onOk={handleCreate}
                 onCancel={() => setIsModalVisible(false)}
             >
                 <Form form={form} layout="vertical">
-                    <Form.Item name="name" label="Назва" rules={[{ required: true }]}>
+                    <Form.Item name="name" label="Title" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="description" label="Опис">
+                    <Form.Item name="description" label="Description">
                         <Input.TextArea />
                     </Form.Item>
                 </Form>

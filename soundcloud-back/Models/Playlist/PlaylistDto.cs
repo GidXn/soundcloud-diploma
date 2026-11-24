@@ -7,16 +7,16 @@ namespace soundcloud_back.Models.Playlist
         public int Id { get; set; }
         public string Name { get; set; }
 
-        // Нове поле: ID користувача-власника
+        // New field: owner user ID
         public int OwnerId { get; set; }
 
-        // Опційно: ім'я користувача-власника для зручності фронтенду
+        // Optional: owner username for frontend convenience
         public string OwnerName { get; set; }
 
-        // ✅ Додаємо треки
+        // ✅ Add tracks
         public List<TrackDto> Tracks { get; set; } = new();
 
-        // ✅ Додаємо обкладинку плейліста
+        // ✅ Add the playlist cover
         public string? CoverUrl { get; set; }
     }
 }

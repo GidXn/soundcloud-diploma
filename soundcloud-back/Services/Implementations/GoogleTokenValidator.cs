@@ -21,14 +21,14 @@ public class GoogleTokenValidator : IGoogleTokenValidator
         };
         try
         {
-            // Якщо токен невалідний/не для цього ClientId — має кинути виняток
+            // If the token is invalid/not for this ClientId, it must throw an exception
             var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
 
-            // Додаткові  перевірки
+            // Additional checks
             if (payload == null || string.IsNullOrWhiteSpace(payload.Email) || payload.EmailVerified != true)
                 throw new SecurityException("Google token invalid or email not verified.");
 
-            // ...... додатково можна: if (payload.Hd != "your-domain.com") throw ...
+            // ...... optionally also: if (payload.Hd != "your-domain.com") throw ...
 
             return payload;
         }

@@ -6,7 +6,7 @@ import { DetailBanner, TrackTable } from "../../components/detail/DetailParts";
 import "../../styles/main_pages/catalog/layout.css";
 import "../../styles/detail/layout.css";
 
-/* Сторінка жанру (Figma: «Genre when you click»): назва жанру, банер XIT FM, список треків. */
+/* Genre page (Figma: «Genre when you click»): genre name, XIT FM banner, track list. */
 const GenrePage: React.FC = () => {
     const { name = "" } = useParams<{ name: string }>();
     const [all, setAll] = useState<ITrack[]>([]);
@@ -28,7 +28,7 @@ const GenrePage: React.FC = () => {
         [all, name]
     );
 
-    // Назва як у даних (регістр), інакше як у посиланні
+    // Name as in the data (case), otherwise as in the link
     const title = tracks[0]?.genre || name;
 
     return (
@@ -38,8 +38,8 @@ const GenrePage: React.FC = () => {
                 <DetailBanner variant="xit" />
             </div>
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
-            {!loading && tracks.length === 0 && <div className="detail_empty">У цьому жанрі поки немає треків</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && tracks.length === 0 && <div className="detail_empty">No tracks in this genre yet</div>}
             {tracks.length > 0 && <TrackTable tracks={tracks} />}
         </main>
     );

@@ -12,9 +12,9 @@ namespace soundcloud_back.Services.Interfaces
         Task<int> GetFollowersCountAsync(int userId);
         Task<int> GetFollowingCountAsync(int userId);
 
-        // нове
+        // new
         Task<bool> IsFollowingAsync(int followerId, int followingId);
-        // Новий метод для контролера
+        // New method for the controller
         Task<UserFollowDto?> GetUserFollowStatusAsync(int currentUserId, int targetUserId);
     }
 }

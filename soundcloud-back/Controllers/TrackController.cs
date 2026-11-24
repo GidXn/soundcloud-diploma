@@ -21,17 +21,17 @@ namespace soundcloud_back.Controllers
             _trackService = trackService;
         }
 
-        // ===== Публічні треки =====
+        // ===== Public tracks =====
         [AllowAnonymous]
         [HttpGet("all")]
-        [SwaggerOperation(OperationId = "GetAllTracksForAll", Summary = "Отримати всі видимі треки")]
+        [SwaggerOperation(OperationId = "GetAllTracksForAll", Summary = "Get all visible tracks")]
         public async Task<IActionResult> GetAllTracks()
         {
             var tracks = await _trackService.GetAllTracksAsync();
             return Ok(tracks);
         }
 
-        // ===== Треки поточного користувача =====
+        // ===== Current user's tracks =====
         [Authorize]
         [HttpGet("my")]
         public async Task<IActionResult> GetMyTracks()
@@ -48,7 +48,7 @@ namespace soundcloud_back.Controllers
             return Ok(tracks);
         }
 
-        // ===== Треки конкретного користувача =====
+        // ===== Tracks of a specific user =====
 
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserTracks(int userId)
@@ -62,9 +62,9 @@ namespace soundcloud_back.Controllers
         }
 
 
-        // ===== Треки поточного користувача like=====
+        // ===== Current user's tracks like=====
         [HttpGet]
-        [SwaggerOperation(OperationId = "GetTracks", Summary = "Отримати всі треки поточного користувача")]
+        [SwaggerOperation(OperationId = "GetTracks", Summary = "Get all tracks of the current user")]
         public async Task<IActionResult> GetAll()
         {
             var tracks = await _trackService.GetAllAsync();
@@ -72,7 +72,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [SwaggerOperation(OperationId = "GetTrackById", Summary = "Отримати трек за ID")]
+        [SwaggerOperation(OperationId = "GetTrackById", Summary = "Get a track by ID")]
         public async Task<IActionResult> GetById(int id)
         {
             var track = await _trackService.GetByIdAsync(id);
@@ -80,9 +80,9 @@ namespace soundcloud_back.Controllers
             return Ok(track);
         }
 
-        // ===== Створення треку =====
+        // ===== Creating a track =====
         [HttpPost]
-        [SwaggerOperation(OperationId = "CreateTrack", Summary = "Створити новий трек")]
+        [SwaggerOperation(OperationId = "CreateTrack", Summary = "Create a new track")]
         public async Task<IActionResult> Create([FromBody] CreateTrackDto dto)
         {
             var created = await _trackService.CreateAsync(dto);
@@ -90,35 +90,35 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpPost("create-file")]
-        [SwaggerOperation(OperationId = "CreateTrackFromFile", Summary = "Створити трек по локальному файлу")]
+        [SwaggerOperation(OperationId = "CreateTrackFromFile", Summary = "Create a track from a local file")]
         public async Task<IActionResult> CreateTrackFile([FromForm] CreateTrackDto dto)
         {
             var track = await _trackService.CreateAsyncFile(dto);
             return Ok(track);
         }
 
-        // ===== Оновлення треку =====
+        // ===== Updating a track =====
         [HttpPut("{id:int}")]
-        [SwaggerOperation(OperationId = "UpdateTrack", Summary = "Оновити трек за ID")]
+        [SwaggerOperation(OperationId = "UpdateTrack", Summary = "Update a track by ID")]
         public async Task<IActionResult> Update(int id, [FromForm] UpdateTrackDto dto)
         {
             await _trackService.UpdateAsyncFile(id, dto);
             return NoContent();
         }
 
-        // ===== Видалення треку =====
+        // ===== Deleting a track =====
         [HttpDelete("{id:int}")]
-        [SwaggerOperation(OperationId = "DeleteTrack", Summary = "Видалити трек за ID")]
+        [SwaggerOperation(OperationId = "DeleteTrack", Summary = "Delete a track by ID")]
         public async Task<IActionResult> Delete(int id)
         {
             await _trackService.DeleteAsync(id);
             return NoContent();
         }
 
-        // ===== Приховування/відновлення треку =====
+        // ===== Hiding/restoring a track =====
         [Authorize(Roles = "Moderator,Admin")]
         [HttpPatch("{id:int}/hide")]
-        [SwaggerOperation(OperationId = "HideTrack", Summary = "Приховати трек [Moderator, Admin]")]
+        [SwaggerOperation(OperationId = "HideTrack", Summary = "Hide a track [Moderator, Admin]")]
         public async Task<IActionResult> Hide(int id)
         {
             await _trackService.HideAsync(id);
@@ -127,17 +127,17 @@ namespace soundcloud_back.Controllers
 
         [Authorize(Roles = "Moderator,Admin")]
         [HttpPatch("{id:int}/unhide")]
-        [SwaggerOperation(OperationId = "UnhideTrack", Summary = "Відновити видимість треку [Moderator, Admin]")]
+        [SwaggerOperation(OperationId = "UnhideTrack", Summary = "Restore track visibility [Moderator, Admin]")]
         public async Task<IActionResult> Unhide(int id)
         {
             await _trackService.UnhideAsync(id);
             return NoContent();
         }
 
-        // ===== Завантаження обкладинки =====
+        // ===== Cover upload =====
         [HttpPost("{id:int}/image")]
         [Consumes("multipart/form-data")]
-        [SwaggerOperation(Summary = "Завантажити обкладинку треку")]
+        [SwaggerOperation(Summary = "Upload a track cover")]
         public async Task<IActionResult> UploadImage(int id, IFormFile file, [FromServices] IImageStorage storage)
         {
             if (file == null || file.Length == 0) return BadRequest("No file");
@@ -155,20 +155,20 @@ namespace soundcloud_back.Controllers
         [HttpPost("{id:int}/like")]
         public async Task<IActionResult> Like(int id)
         {
-            await _trackService.LikeAsync(id); // додаємо лайк
-            var track = await _trackService.GetByIdAsync(id); // отримуємо актуальний трек
+            await _trackService.LikeAsync(id); // add a like
+            var track = await _trackService.GetByIdAsync(id); // get the current track
             return Ok(track);
         }
 
         [HttpDelete("{id:int}/like")]
         public async Task<IActionResult> Unlike(int id)
         {
-            await _trackService.UnlikeAsync(id); // видаляємо лайк
-            var track = await _trackService.GetByIdAsync(id); // отримуємо актуальний трек
+            await _trackService.UnlikeAsync(id); // remove the like
+            var track = await _trackService.GetByIdAsync(id); // get the current track
             return Ok(track);
         }
 
-        // Отримати улюблені треки авторизованого користувача
+        // Get the liked tracks of the authorized user
         [HttpGet("liked")]
         [Authorize]
         public async Task<IActionResult> GetLikedTracks()
@@ -187,14 +187,14 @@ namespace soundcloud_back.Controllers
         [HttpPost("{trackId}/play")]
         public async Task<IActionResult> PlayTrack(int trackId)
         {
-            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value); // витягуєш з JWT
+            var userId = int.Parse(User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier).Value); // extracted from JWT
             await _trackService.AddPlayAsync(trackId);
             return Ok();
         }
 
-        // ===== Статистика =====
+        // ===== Statistics =====
         [HttpGet("{id:int}/stats")]
-        [SwaggerOperation(OperationId = "GetTrackStats", Summary = "Отримати статистику по треку")]
+        [SwaggerOperation(OperationId = "GetTrackStats", Summary = "Get track statistics")]
         public async Task<IActionResult> GetTrackStats(int id)
         {
             var stats = await _trackService.GetTrackStatsAsync(id);
@@ -202,7 +202,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpGet("author/{authorId:int}/stats")]
-        [SwaggerOperation(OperationId = "GetAuthorStats", Summary = "Отримати статистику по автору")]
+        [SwaggerOperation(OperationId = "GetAuthorStats", Summary = "Get author statistics")]
         public async Task<IActionResult> GetAuthorStats(int authorId)
         {
             var stats = await _trackService.GetAuthorStatsAsync(authorId);

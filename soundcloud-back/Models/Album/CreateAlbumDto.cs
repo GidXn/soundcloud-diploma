@@ -11,13 +11,13 @@ namespace soundcloud_back.Models.Album
 
         public string Description { get; set; }
 
-        // Обов'язковий власник альбому
+        // Required album owner
         [Required]
         public int OwnerId { get; set; }
 
         public IFormFile? CoverUrl { get; set; }
 
-        // Нове поле: публічність альбому
-        public bool IsPublic { get; set; } = true; // за замовчуванням публічний
+        // New field: album visibility
+        public bool IsPublic { get; set; } = true; // public by default
     }
 }

@@ -6,14 +6,14 @@ import "../../styles/main_pages/catalog/layout.css";
 interface Station {
     id: string;
     name: string;
-    bg: string;     // фон логотипа
-    color: string;  // колір тексту
-    streamUrl?: string; // посилання на потік; поки не задано
+    bg: string;     // logo background
+    color: string;  // text color
+    streamUrl?: string; // stream link; not set yet
 }
 
-const PAGE_SIZE = 36; // 4 ряди по 9, як у макеті
+const PAGE_SIZE = 36; // 4 rows of 9, as in the design
 
-// Станції з макету. Логотипи — текстові заглушки, поки немає файлів логотипів.
+// Stations from the design. Logos are text placeholders until there are logo files.
 const STATIONS: Station[] = [
     { id: "tuneme", name: "FM Tuneмо", bg: "#FFF", color: "#111" },
     { id: "xit", name: "XIT FM", bg: "#E1251B", color: "#FFF" },

@@ -1,11 +1,11 @@
-/* Сторінка підписки PRO. Розміри з макету Figma, кадр "subscribe" (1920px).
-   Контент: x = 251px від краю кадру, ширина 1535px. */
+/* PRO subscription page. Sizes from the Figma design, frame "subscribe" (1920px).
+   Content: x = 251px from the frame edge, width 1535px. */
 
 .subscribe_page {
     box-sizing: border-box;
     width: 100%;
     max-width: calc(1535px + 139px + 64px);
-    /* Хедер займає в потоці 44px; заголовок у макеті на y = 188px */
+    /* The header takes 44px in the flow; the heading in the design is at y = 188px */
     padding: 144px 64px 64px 139px;
     font-family: "Space Grotesk", "Roboto", system-ui, sans-serif;
     font-weight: 400;
@@ -38,7 +38,7 @@
 }
 
 .subscribe_promo_input {
-    order: 0; /* глобальні стилі ставлять input order: 1 */
+    order: 0; /* global styles set input order: 1 */
     width: 452px;
     height: 51px;
     padding: 11px 12px;
@@ -83,7 +83,7 @@
     line-height: 26px;
     color: #FFF;
     background: rgba(194, 56, 235, 0.3);
-    border: 1px solid rgba(255, 255, 255, 0.12); /* ефект Glass у макеті */
+    border: 1px solid rgba(255, 255, 255, 0.12); /* Glass effect in the design */
     border-radius: 10px;
     cursor: pointer;
     backdrop-filter: blur(10px);
@@ -118,7 +118,7 @@
     display: flex;
     gap: 30px;
     width: 1535px;
-    padding: 0 7.5px; /* у макеті ряд 1535px, картки 5 × 280 + 4 × 30 по центру */
+    padding: 0 7.5px; /* in the design the row is 1535px, cards 5 × 280 + 4 × 30 centered */
 }
 
 .subscribe_card {

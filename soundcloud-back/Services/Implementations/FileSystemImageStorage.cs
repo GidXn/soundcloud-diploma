@@ -19,7 +19,7 @@ namespace soundcloud_back.Services.Implementations
             using (var fs = new FileStream(full, FileMode.Create))
                 await file.CopyToAsync(fs);
 
-            // URL для клієнта
+            // URL for the client
             return $"/uploads/{subfolder}/{name}";
         }
     }

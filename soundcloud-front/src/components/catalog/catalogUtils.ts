@@ -22,7 +22,7 @@ export const formatDuration = (ts?: string): string => {
     return `${minutes}:${s.split(".")[0].padStart(2, "0")}`;
 };
 
-// Групує треки за ключем, зберігаючи порядок першої появи
+// Groups tracks by key, keeping the order of first appearance
 export const groupTracks = (tracks: ITrack[], key: (t: ITrack) => string): Map<string, ITrack[]> => {
     const map = new Map<string, ITrack[]>();
     for (const t of tracks) {
@@ -35,7 +35,7 @@ export const groupTracks = (tracks: ITrack[], key: (t: ITrack) => string): Map<s
     return map;
 };
 
-// Локальні фото артистів з /public/artists (ключ — ім'я без пробілів, у нижньому регістрі)
+// Local artist photos from /public/artists (key is the name without spaces, lowercase)
 export const LOCAL_ARTIST_PHOTOS: Record<string, string> = {
     drevo: "/artists/Drevo.png",
     klavdiapetrivna: "/artists/KlavdiaPetrivna.png",
@@ -53,7 +53,7 @@ export interface CatalogArtist {
     plays: number;
 }
 
-// Артисти = унікальні автори треків, від найпопулярніших
+// Artists = unique track authors, most popular first
 export const buildArtists = (tracks: ITrack[]): CatalogArtist[] => {
     const list: CatalogArtist[] = [];
     groupTracks(tracks, (t) => t.author).forEach((items, name) => {

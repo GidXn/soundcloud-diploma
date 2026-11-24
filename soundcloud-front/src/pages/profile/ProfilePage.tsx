@@ -105,15 +105,15 @@ const ProfilePage: React.FC = () => {
 
     const handleSaveChanges = async (trackId: number, formData: FormData) => {
         try {
-            // Виклик методу з id треку
+            // Call the method with the track id
             const updatedTrack = await trackService.updateTrack(trackId, formData);
 
-            // Оновлюємо локальний стан треків
+            // Update the local track state
             setTracks((prev) =>
                 prev.map((t) => (t.id === updatedTrack.id ? updatedTrack : t))
             );
 
-            // Оновлюємо вибраний трек для модалки
+            // Update the selected track for the modal
             setSelectedTrack(updatedTrack);
 
             alert("Track updated successfully!");
@@ -129,9 +129,9 @@ const ProfilePage: React.FC = () => {
             const foundGenre = genres.find(g => g.name === selectedTrack.genre);
 
             if (foundGenre) {
-                setGenreId(foundGenre.id); // тут явно передаємо number
+                setGenreId(foundGenre.id); // explicitly pass a number
             } else {
-                setGenreId(0); // якщо не знайшли
+                setGenreId(0); // if not found
             }
         }
     }, [selectedTrack, genres]);
@@ -139,7 +139,7 @@ const ProfilePage: React.FC = () => {
     useEffect(() => {
         if (selectedTrack) {
             setTitle(selectedTrack.title);
-            setCoverUrl(selectedTrack.imageUrl??null); // скидаємо, щоб показувався існуючий imageUrl
+            setCoverUrl(selectedTrack.imageUrl??null); // reset so the existing one is shown imageUrl
             setFileUrl(selectedTrack.url);
         }
 
@@ -162,14 +162,14 @@ const ProfilePage: React.FC = () => {
 
     useEffect(() => {
         if (bannerModalOpen||isUserEditOpen||isModalOpen||playlistModalOpen||albumModalOpen) {
-            // Забороняємо скрол
+            // Disable scrolling
             document.body.style.overflow = "hidden";
         } else {
-            // Повертаємо як було
+            // Restore as it was
             document.body.style.overflow = "";
         }
 
-        // Cleanup на всяк випадок
+        // Cleanup just in case
         return () => {
             document.body.style.overflow = "";
         };
@@ -215,10 +215,10 @@ const ProfilePage: React.FC = () => {
                 avatar: updateData.avatar ?? undefined,
             });
 
-            // Оновлюємо локальний стан користувача
+            // Update the local user state
             setUser(updatedUser);
 
-            // Якщо потрібно, можна скинути файли
+            // If needed, the files can be reset
             // updateData.avatarFile = undefined;
             // updateData.bannerFile = undefined;
 
@@ -241,7 +241,7 @@ const ProfilePage: React.FC = () => {
         setUploading(true);
         try {
             const data = await uploadUserBanner.updateBanner(user.id, bannerFile);
-            // Оновлюємо локальний стейт юзера
+            // Update the local user state
             setUser({ ...user, banner: data.bannerUrl });
             setBannerModalOpen(false);
             setBannerFile(null);
@@ -287,7 +287,7 @@ const ProfilePage: React.FC = () => {
             const newTrack = await trackService.createTrack(title, albumId, file, cover, genreId);
             setTracks([...tracks, newTrack]);
 
-            // Очистка полів і закриття модалки
+            // Clear the fields and close the modal
             setTitle("");
             setAlbumId(0);
             setGenreId(0);
@@ -314,11 +314,11 @@ const ProfilePage: React.FC = () => {
 //                 formData.append("cover", playlistCoverFile);
 //             }
 // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// // @ts-expect-error тимчасово: сервіс приймає FormData у рантаймі
-//             const newPlaylist = await playlistService.create(formData); // метод сервісу приймає FormData
+// // @ts-expect-error temporary: the service accepts FormData at runtime
+//             const newPlaylist = await playlistService.create(formData); // the service method accepts FormData
 //             setPlaylists([...playlists, newPlaylist]);
 //
-//             // Очистка полів і закриття модалки
+//             // Clear the fields and close the modal
 //             setPlaylistName("");
 //             setPlaylistCoverFile(undefined);
 //             setPlaylistModalOpen(false);
@@ -334,7 +334,7 @@ const ProfilePage: React.FC = () => {
     //         return;
     //     }
     //     setSelectedTrackToAdd(trackId);
-    //     setSelectedPlaylistId(playlists[0].id); // вибір по-замовчуванню — перший плейлист
+    //     setSelectedPlaylistId(playlists[0].id); // default selection: the first playlist
     //     setAddToPlaylistModalOpen(true);
     // };
 
@@ -367,7 +367,7 @@ const ProfilePage: React.FC = () => {
                     const userPlaylists = await playlistService.getAll();
                     setPlaylists(userPlaylists);
 
-                    // Одразу підтягуємо треки для всіх плейлістів
+                    // Load tracks for all playlists right away
                     const tracksByPlaylist: { [playlistId: number]: ITrack[] } = {};
                     for (const p of userPlaylists) {
                         tracksByPlaylist[p.id] = await playlistService.getTracks(p.id);
@@ -377,7 +377,7 @@ const ProfilePage: React.FC = () => {
                     const userAlbums = await albumService.getMyAlbums();
                     setAlbums(userAlbums);
 
-                    // Одразу підтягуємо треки для всіх альбомів
+                    // Load tracks for all albums right away
                     const tracksByAlbum: { [albumId: number]: ITrack[] } = {};
                     for (const a of userAlbums) {
                         tracksByAlbum[a.id] = await albumService.getTracks(a.id);
@@ -414,7 +414,7 @@ const ProfilePage: React.FC = () => {
                 setPlaylistTracks(tracksByPlaylist);
             } catch (err) {
                 console.error("Failed to load all tracks", err);
-                alert("Не вдалося завантажити треки для плейлістів");
+                alert("Failed to load playlist tracks");
             }
         };
 
@@ -424,7 +424,7 @@ const ProfilePage: React.FC = () => {
     }, [playlists]);
 
 
-    //Для альбомів
+    //For albums
     useEffect(() => {
         const loadAllAlbumTracks = async () => {
             try {
@@ -467,7 +467,7 @@ const ProfilePage: React.FC = () => {
     //         return;
     //     }
     //     setSelectedTrackToAddToAlbum(trackId);
-    //     setSelectedAlbumId(albums[0].id); // вибір першого альбому по-замовчуванню
+    //     setSelectedAlbumId(albums[0].id); // select the first album by default
     //     setAddToAlbumModalOpen(true);
     // };
 
@@ -484,7 +484,7 @@ const ProfilePage: React.FC = () => {
             setAddToAlbumModalOpen(false);
             setSelectedTrackToAddToAlbum(null);
             setSelectedAlbumId(null);
-            handleViewAlbumTracks(selectedAlbumId); // оновлюємо треки альбому
+            handleViewAlbumTracks(selectedAlbumId); // update the album tracks
         } catch (err) {
             console.error(err);
             alert("Failed to add track to play_album.");
@@ -512,7 +512,7 @@ const ProfilePage: React.FC = () => {
             const currentUser = await getCurrentUser();
 
             if (!currentUser || !currentUser.id) {
-                alert("Не вдалося визначити користувача. Будь ласка, увійдіть в систему.");
+                alert("Could not identify the user. Please log in.");
                 return;
             }
 
@@ -544,8 +544,8 @@ const ProfilePage: React.FC = () => {
         }
     };
 
-    //для follow
-    // Кількість підписників і підписок
+    //for follow
+    // Follower and following counts
     const [, setFollowersCount] = useState<number>(0);
     const [, setFollowingCount] = useState<number>(0);
 
@@ -565,7 +565,7 @@ const ProfilePage: React.FC = () => {
 
                 console.log("Followers:", followers, "Following:", following);
             } catch (error) {
-                console.error("Помилка при отриманні кількості підписок:", error);
+                console.error("Failed to get following counts:", error);
             }
         };
 
@@ -590,15 +590,15 @@ const ProfilePage: React.FC = () => {
                     }))
                 );
             } catch (error) {
-                console.error("Помилка при отриманні списку Following:", error);
+                console.error("Failed to get the list Following:", error);
             }
         };
 
         fetchFollowingUsers();
     }, [user]);
 
-    //лайки
-    // окремо зберігаємо саме лайкнуті треки
+    //likes
+    // store the liked tracks separately
     const [, setLikedTracks] = useState<ITrack[]>([]);
 
     useEffect(() => {
@@ -617,7 +617,7 @@ const ProfilePage: React.FC = () => {
     const handleRemoveTrack = async (playlistId: number, trackId: number) => {
         try {
             await playlistService.removeTrack(playlistId, trackId);
-            // Можна оновити локальний стан плейліста після видалення
+            // The local playlist state can be updated after deletion
             setPlaylistTracks(prev => ({
                 ...prev,
                 [playlistId]: prev[playlistId]?.filter(t => t.id !== trackId) || []
@@ -760,13 +760,13 @@ const ProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного плейлиста */}
+                                        {/* Tracks of a specific playlist */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     playlistTracks[p.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === p.id &&  // використовуємо currentAlbumId для плейліста
+                                                    currentAlbumId === p.id &&  // use currentAlbumId for the playlist
                                                     isPlaying ? (
                                                         <img
                                                             src="src/images/player/pause_icon.png"
@@ -820,7 +820,7 @@ const ProfilePage: React.FC = () => {
                                                     <img
                                                         src="/src/images/player/repeat_icon.png"
                                                         alt="repeatIcon"
-                                                        id="hover_cursor_player"// 🔹 увімкнути
+                                                        id="hover_cursor_player"// 🔹 enable
                                                     />
                                                 </div>
                                                 <div className="track_more_controls_style">
@@ -851,13 +851,13 @@ const ProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного альбому */}
+                                        {/* Tracks of a specific album */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     albumTracks[a.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === a.id &&  // <-- додано
+                                                    currentAlbumId === a.id &&  // <-- added
                                                     isPlaying ? (
                                                         <img
                                                             src="src/images/player/pause_icon.png"
@@ -1017,13 +1017,13 @@ const ProfilePage: React.FC = () => {
 
                                         </div>
 
-                                        {/* Треки конкретного плейлиста */}
+                                        {/* Tracks of a specific playlist */}
                                         <ul className="profile_page_track_information_container">
                                             <div className="profile_page_track_play_button_container">
                                                 <div className="profile_page_play_button_background">
                                                     {currentTrack &&
                                                     playlistTracks[p.id]?.some(t => t.id === currentTrack.id) &&
-                                                    currentAlbumId === p.id &&  // використовуємо currentAlbumId для плейліста
+                                                    currentAlbumId === p.id &&  // use currentAlbumId for the playlist
                                                     isPlaying ? (
                                                         <img
                                                             src="src/images/player/pause_icon.png"
@@ -1082,7 +1082,7 @@ const ProfilePage: React.FC = () => {
                                                     <img
                                                         src="/src/images/player/repeat_icon.png"
                                                         alt="repeatIcon"
-                                                        id="hover_cursor_player"// 🔹 увімкнути
+                                                        id="hover_cursor_player"// 🔹 enable
                                                     />
                                                 </div>
                                                 <div className="track_more_controls_style">
@@ -1235,7 +1235,7 @@ const ProfilePage: React.FC = () => {
                                     <select
                                         value={albumId ?? ""}
                                         onChange={(e) => {
-                                            setAlbumId(Number(e.target.value)); // якщо пусто → null
+                                            setAlbumId(Number(e.target.value)); // if empty → null
                                         }}
                                         className="input_upload_track_container"
                                     >
@@ -1458,9 +1458,9 @@ const ProfilePage: React.FC = () => {
                                     if (!window.confirm("Are you sure you want to delete this track?")) return;
 
                                     try {
-                                        await trackService.deleteTrack(selectedTrack.id); // виклик на бек
-                                        setTracks(prev => prev.filter(t => t.id !== selectedTrack.id)); // прибираємо з локального стейту
-                                        setIsEditModalOpen(false); // закриваємо модалку
+                                        await trackService.deleteTrack(selectedTrack.id); // backend call
+                                        setTracks(prev => prev.filter(t => t.id !== selectedTrack.id)); // remove from local state
+                                        setIsEditModalOpen(false); // close the modal
                                         alert("Track deleted successfully!");
                                     } catch (error) {
                                         console.error("Failed to delete track", error);
@@ -1761,7 +1761,7 @@ const ProfilePage: React.FC = () => {
                                 Cancel
                             </button>
                             <button
-                                onClick={handleConfirmAddToAlbum} // <-- тут викликаємо функцію
+                                onClick={handleConfirmAddToAlbum} // <-- call the function here
                                 className="px-4 py-2 bg-indigo-600 rounded"
                             >
                                 Add
@@ -1770,7 +1770,7 @@ const ProfilePage: React.FC = () => {
                     </div>
                 </div>
             )}
-            {/* Модалка для створення альбому */}
+            {/* Modal for creating an album */}
             {albumModalOpen && (
 
                 <div className="profile_page_modal_container baloo2">

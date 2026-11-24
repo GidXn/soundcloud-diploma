@@ -8,18 +8,18 @@ namespace soundcloud_back.Data.Entities
         [Key]
         public int Id { get; set; }
 
-        // Зв’язок з альбомом
+        // Relation to the album
         [Required]
         public int AlbumId { get; set; }
         public AlbumEntity Album { get; set; }
 
-        // Зв’язок з треком
+        // Relation to the track
         [Required]
         public int TrackId { get; set; }
         public TrackEntity Track { get; set; }
 
-        // Додаткові поля (опційно)
-        public int Order { get; set; } // позиція треку в альбомі
+        // Extra fields (optional)
+        public int Order { get; set; } // track position in the album
         public DateTime AddedAt { get; set; } = DateTime.UtcNow;
     }
 }

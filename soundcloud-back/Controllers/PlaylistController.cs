@@ -24,7 +24,7 @@ namespace soundcloud_back.Controllers
         [HttpGet]
         [SwaggerOperation(
             OperationId = "GetPlaylists",
-            Summary = "Отримати всі плейлисти поточного користувача")]
+            Summary = "Get all playlists of the current user")]
         public async Task<IActionResult> GetAll()
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -35,7 +35,7 @@ namespace soundcloud_back.Controllers
         [HttpGet("{id:int}")]
         [SwaggerOperation(
             OperationId = "GetPlaylistById",
-            Summary = "Отримати плейлист за ID")]
+            Summary = "Get a playlist by ID")]
         public async Task<IActionResult> GetById(int id)
         {
             var playlist = await _playlistService.GetByIdAsync(id);
@@ -50,7 +50,7 @@ namespace soundcloud_back.Controllers
         [HttpPost("{id:int}/tracks/{trackId:int}")]
         [SwaggerOperation(
         OperationId = "AddTrackToPlaylist",
-        Summary = "Додати трек у плейліст")]
+        Summary = "Add a track to a playlist")]
         public async Task<IActionResult> AddTrack(int id, int trackId)
         {
             await _playlistService.AddTrackAsync(id, trackId);
@@ -60,7 +60,7 @@ namespace soundcloud_back.Controllers
         [HttpDelete("{id:int}/tracks/{trackId:int}")]
         [SwaggerOperation(
             OperationId = "RemoveTrackFromPlaylist",
-            Summary = "Видалити трек з плейліста")]
+            Summary = "Remove a track from a playlist")]
         public async Task<IActionResult> RemoveTrack(int id, int trackId)
         {
             await _playlistService.RemoveTrackAsync(id, trackId);
@@ -73,7 +73,7 @@ namespace soundcloud_back.Controllers
         [HttpPost]
         [SwaggerOperation(
         OperationId = "CreatePlaylist",
-        Summary = "Створити новий плейлист")]
+        Summary = "Create a new playlist")]
         public async Task<IActionResult> Create([FromForm] CreatePlaylistDto dto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
@@ -84,7 +84,7 @@ namespace soundcloud_back.Controllers
         [HttpPut("{id:int}")]
         [SwaggerOperation(
             OperationId = "UpdatePlaylist",
-            Summary = "Оновити плейлист за ID")]
+            Summary = "Update a playlist by ID")]
         public async Task<IActionResult> Update(int id, [FromForm] CreatePlaylistDto dto)
         {
             await _playlistService.UpdateAsync(id, dto);
@@ -94,7 +94,7 @@ namespace soundcloud_back.Controllers
         [HttpDelete("{id:int}")]
         [SwaggerOperation(
             OperationId = "DeletePlaylist",
-            Summary = "Видалити плейлист за ID")]
+            Summary = "Delete a playlist by ID")]
         public async Task<IActionResult> Delete(int id)
         {
             await _playlistService.DeleteAsync(id);
@@ -106,19 +106,19 @@ namespace soundcloud_back.Controllers
         [Consumes("multipart/form-data")]
         [SwaggerOperation(
         OperationId = "UploadPlaylistCover",
-        Summary = "Завантажити/оновити обкладинку плейлиста (власник або Admin)")]
+        Summary = "Upload/update a playlist cover (owner or Admin)")]
         public async Task<IActionResult> UploadCover(
         int id,
         IFormFile file,
         [FromServices] IImageStorage storage)
         {
             if (file is null || file.Length == 0)
-                return BadRequest("Файл не надано.");
+                return BadRequest("No file provided.");
 
-            // Збережемо файл і отримаємо абсолютний або відносний URL
-            var url = await storage.SaveAsync(file, "playlists"); // збережеться у /wwwroot/uploads/playlists/...
+            // Save the file and get an absolute or relative URL
+            var url = await storage.SaveAsync(file, "playlists"); // will be saved to /wwwroot/uploads/playlists/...
 
-            // Оновити в БД обкладинку цього плейлиста (перевірка власника всередині сервісу)
+            // Update this playlist's cover in the DB (owner check is inside the service)
             await _playlistService.SetCoverAsync(id, file );
 
             return Ok(new { coverUrl = url });
@@ -127,7 +127,7 @@ namespace soundcloud_back.Controllers
         [HttpGet("{playlistId:int}/tracks")]
         [SwaggerOperation(
         OperationId = "GetTracksByPlaylist",
-        Summary = "Отримати всі треки певного плейлиста")]
+        Summary = "Get all tracks of a playlist")]
         public async Task<IActionResult> GetTracksByPlaylist(int playlistId)
         {
             var tracks = await _playlistService.GetTracksByPlaylistAsync(playlistId);
@@ -142,11 +142,11 @@ namespace soundcloud_back.Controllers
         [HttpGet("user/{userId:int}")]
         [SwaggerOperation(
         OperationId = "GetPlaylistsByUser",
-        Summary = "Отримати всі плейлисти користувача по його ID")]
+        Summary = "Get all playlists of a user by their ID")]
         public async Task<IActionResult> GetPlaylistsByUser(int userId)
         {
             var lists = await _playlistService.GetAllByUserIdAsync(userId);
-            // Порожній список — це не помилка (інакше чужий профіль без плейлистів показував alert)
+            // An empty list is not an error (otherwise another user's profile without playlists showed alert)
             return Ok(lists ?? Enumerable.Empty<soundcloud_back.Models.Playlist.PlaylistDto>());
         }
 

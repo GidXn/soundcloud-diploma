@@ -9,7 +9,7 @@ import "../../styles/main_pages/music_page/layout.css"
 const MusicPage: React.FC = () => {
     const [tracks, setTracks] = useState<ITrack[]>([]);
     const { liked, toggleLike } = useTrackLikes(tracks);
-    // перемішуємо один раз на завантаження, а не на кожен ререндер (інакше список стрибає під час відтворення)
+    // shuffle once per load, not on every re-render (otherwise the list jumps during playback)
     const shuffled = useMemo(() => [...tracks].sort(() => Math.random() - 0.5).slice(0, 30), [tracks]);
 
     const playTrack = usePlayerStore(state => state.playTrack);
@@ -24,14 +24,14 @@ const MusicPage: React.FC = () => {
 
     }, []);
     const getTrackImageUrl = (track?: ITrack | null) => {
-        if (!track || !track.imageUrl) return "/default-cover.png"; // запасна картинка
+        if (!track || !track.imageUrl) return "/default-cover.png"; // fallback image
         return `http://localhost:5122${track.imageUrl}`;
     };
 
 
 
 
-    //для лайків
+    //for likes
     // const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
     // useEffect(() => {
     //     trackService.getAll()
@@ -46,17 +46,17 @@ const MusicPage: React.FC = () => {
     // const toggleLike = async (track: ITrack) => {
     //     try {
     //         if (likedTracksIds.includes(track.id)) {
-    //             // анлайк
+    //             // unlike
     //             await trackService.unlike(track.id);
     //             setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-    //             track.isLikedByCurrentUser = false; // оновлюємо локально
+    //             track.isLikedByCurrentUser = false; // update locally
     //             addtoHistory(track);
     //             trackService.getAll()
     //         } else {
-    //             // лайк
+    //             // like
     //             await trackService.like(track.id);
     //             setLikedTracksIds(prev => [...prev, track.id]);
-    //             track.isLikedByCurrentUser = true; // оновлюємо локально
+    //             track.isLikedByCurrentUser = true; // update locally
     //             addtoHistory(track);
     //             trackService.getAll()
     //         }

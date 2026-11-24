@@ -33,7 +33,7 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
                 handleSelectTrack(track);
             }
         } else {
-            // якщо модалка закрилась — чистимо вибір
+            // if the modal closed, clear the selection
             setCurrentAddedTrack(null);
         }
     }, [isOpen]);
@@ -47,7 +47,7 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
     };
 
 
-// Після завантаження плейлістів підвантажуємо треки
+// After loading playlists, load the tracks
     useEffect(() => {
         if (!isOpen) return;
         playlistService.getAll().then(async (data) => {
@@ -102,17 +102,17 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
                 formData.append("coverUrl", currentTrack.imageUrl);
             }
 
-            // Створюємо плейліст
+            // Create the playlist
             const newPlaylist = await playlistService.create(formData);
 
-            // Додаємо поточний трек у новостворений плейліст
+            // Add the current track to the newly created playlist
             await playlistService.addTrack(newPlaylist.id, currentTrack.id);
 
-            // Оновлюємо локальні стани
+            // Update local state
             setPlaylists((prev: any) => [...prev, newPlaylist]);
             setTrackCounts(prev => ({...prev, [newPlaylist.id]: 1}));
 
-            // Очищуємо input-и та закриваємо форму
+            // Clear the inputs and close the form
             setPlaylistName("");
             setPlaylistCoverFile(undefined);
             onClose();
@@ -140,7 +140,7 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
             await playlistService.addTrack(playlistId, track.id);
             alert(`Track added to playlist!`);
 
-            // Оновлюємо кількість треків локально
+            // Update the track count locally
             setTrackCounts(prev => ({
                 ...prev,
                 [playlistId]: (prev[playlistId] || 0) + 1
@@ -166,14 +166,14 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
 
     const [, setTrackCounts] = useState<{ [id: number]: number }>({});
 
-// Після завантаження плейлістів
+// After loading playlists
     useEffect(() => {
         if (!isOpen) return;
 
         playlistService.getAll().then(async (data) => {
             setPlaylists(data);
 
-            // Підвантажуємо кількість треків для кожного плейліста
+            // Load the track count for each playlist
             const counts: { [id: number]: number } = {};
             await Promise.all(data.map(async (pl) => {
                 counts[pl.id] = await fetchTrackCount(pl.id);
@@ -233,7 +233,7 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
                             {filteredPlaylists.length ? (
                                 filteredPlaylists.map((pl) => {
                                     const track = getCurrentTrack();
-                                    const tracksInPlaylist = playlistTracksMap[pl.id] ?? []; // реально підвантажені треки
+                                    const tracksInPlaylist = playlistTracksMap[pl.id] ?? []; // tracks actually loaded
                                     const isInPlaylist = track && tracksInPlaylist.some(t => t.id === track.id);
 
                                     return (

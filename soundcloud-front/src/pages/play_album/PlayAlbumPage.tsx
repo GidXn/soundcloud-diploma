@@ -70,10 +70,10 @@ const AlbumPage: React.FC = () => {
                             className="play_icon_container"
                             onClick={() => {
                                 if (!currentTrack && tracks.length > 0) {
-                                    // 🔹 Якщо трек ще не вибрано, запускаємо перший
+                                    // 🔹 If no track is selected yet, start the first one
                                     playTrack(tracks[0], tracks, album.id);
                                 } else {
-                                    // 🔹 Якщо вже є трек, просто пауза/продовження
+                                    // 🔹 If a track is already selected, just pause/resume
                                     togglePlay();
                                 }
                             }}
@@ -117,8 +117,8 @@ const AlbumPage: React.FC = () => {
                                         className={`track_item ${isCurrent ? "current_track" : ""}`}
                                         style={{
                                             display: "flex",               // 🔹 flex row
-                                            alignItems: "center",          // вирівнювання по центру
-                                            justifyContent: "space-between", // кнопка праворуч
+                                            alignItems: "center",          // center alignment
+                                            justifyContent: "space-between", // button on the right
                                             cursor: "pointer",
                                             background: isCurrent ? "linear-gradient(90deg, rgba(16, 16, 16, 0) 40%, #5241B3 100%)" : "transparent",
                                             gap: "16px",

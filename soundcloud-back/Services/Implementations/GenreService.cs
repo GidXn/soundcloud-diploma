@@ -17,7 +17,7 @@ namespace soundcloud_back.Services.Implementations
             _db = db;
         }
 
-        // Отримати всі жанри
+        // Get all genres
         public async Task<IEnumerable<GenreDto>> GetAllAsync()
         {
             return await _db.Genres
@@ -30,7 +30,7 @@ namespace soundcloud_back.Services.Implementations
                 .ToListAsync();
         }
 
-        // Отримати жанр за ID
+        // Get a genre by ID
         public async Task<GenreDto?> GetByIdAsync(int id)
         {
             var genre = await _db.Genres.FindAsync(id);
@@ -44,7 +44,7 @@ namespace soundcloud_back.Services.Implementations
             };
         }
 
-        // Створити новий жанр
+        // Create a new genre
         public async Task<GenreDto> CreateAsync(GenreCreateDto dto)
         {
             var entity = new GenreEntity
@@ -63,7 +63,7 @@ namespace soundcloud_back.Services.Implementations
             };
         }
 
-        // Оновити жанр
+        // Update a genre
         public async Task UpdateAsync(int id, GenreUpdateDto dto)
         {
             var genre = await _db.Genres.FindAsync(id)

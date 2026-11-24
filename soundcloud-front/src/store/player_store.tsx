@@ -12,8 +12,8 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
     currentIndex: -1,
     currentAlbumId: null,
     history: [],
-    audioRef: createRef<HTMLAudioElement>(), // 🔹 додаємо глобальний ref
-    volume: 1, // дефолтна гучність
+    audioRef: createRef<HTMLAudioElement>(), // 🔹 add a global ref
+    volume: 1, // default volume
 
     setVolume: (volume: number) => {
         set({ volume });
@@ -47,14 +47,14 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
 
         get().addToHistory(track);
 
-        // 🔹 Автовідтворення через глобальний audioRef
+        // 🔹 Autoplay via the global audioRef
         const audio = get().audioRef.current;
         if (audio) {
             audio.src = `http://localhost:5122${track.url}`;
             audio.play().catch(console.error);
         }
 
-        // Можна тут додати POST на /play, якщо треба
+        // A POST to /play can be added here if needed
         api.post(`http://localhost:5122/api/Track/${track.id}/play`).catch(console.error);
     },
 

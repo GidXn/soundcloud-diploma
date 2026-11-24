@@ -7,7 +7,7 @@ interface RadioBannerProps {
     variant?: "xit" | "nrj";
 }
 
-// Банер радіостанції з макету (XIT FM на Radio/Top 100, NRJ FM на Artists)
+// Radio station banner from the design (XIT FM on Radio/Top 100, NRJ FM on Artists)
 const RadioBanner: React.FC<RadioBannerProps> = ({ title, subtitle, logo, variant = "xit" }) => (
     <div className={`catalog_banner catalog_banner_${variant}`}>
         <div className="catalog_banner_text">

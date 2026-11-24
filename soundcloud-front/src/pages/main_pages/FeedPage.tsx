@@ -33,7 +33,7 @@ const FeedPage: React.FC = ()=> {
     const currentTracks = tracks.slice(indexOfFirstTrack, indexOfLastTrack);
 
     const totalPages = Math.ceil(tracks.length / tracksPerPage);
-    //для лайків
+    //for likes
     const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
     useEffect(() => {
         trackService.getAll()
@@ -54,7 +54,7 @@ const FeedPage: React.FC = ()=> {
             .catch((err) => console.error(err));
     }, []);
     const getUserAvatarUrl = (user: IUser) => {
-        if (!user.avatar) return "/default-cover.png"; // запасна картинка
+        if (!user.avatar) return "/default-cover.png"; // fallback image
         return `http://localhost:5122${user.avatar}`;
     };
     const [users, setUsers] = useState<IUser[]>([]);
@@ -76,14 +76,14 @@ const FeedPage: React.FC = ()=> {
                 setUsers(usersWithStatus);
             } catch (error) {
                 console.error("Error fetching users:", error);
-                setUsers([]); // безпечний fallback
+                setUsers([]); // safe fallback
             }
         };
         fetchUsers();
     }, []);
 
     const getTrackImageUrl = (track: ITrack) => {
-        if (!track.imageUrl) return "/default-cover.png"; // запасна картинка
+        if (!track.imageUrl) return "/default-cover.png"; // fallback image
         return `http://localhost:5122${track.imageUrl}`;
     };
 
@@ -91,15 +91,15 @@ const FeedPage: React.FC = ()=> {
     const toggleLike = async (track: ITrack) => {
         try {
             if (likedTracksIds.includes(track.id)) {
-                // анлайк
+                // unlike
                 await trackService.unlike(track.id);
                 setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-                track.isLikedByCurrentUser = false; // оновлюємо локально
+                track.isLikedByCurrentUser = false; // update locally
             } else {
-                // лайк
+                // like
                 await trackService.like(track.id);
                 setLikedTracksIds(prev => [...prev, track.id]);
-                track.isLikedByCurrentUser = true; // оновлюємо локально
+                track.isLikedByCurrentUser = true; // update locally
             }
         } catch (err) {
             console.error("Error liking track:", err);
@@ -107,7 +107,7 @@ const FeedPage: React.FC = ()=> {
     };
 
 
-    //для follow
+    //for follow
    
 
     const toggleFollow = async (userId: number) => {
@@ -131,7 +131,7 @@ const FeedPage: React.FC = ()=> {
         }
     };
 
-    // метод для переходу на профіль
+    // method to go to the profile
     const navigate = useNavigate();
 
     const goToUserProfile = (userId: number) => {
@@ -197,14 +197,14 @@ const FeedPage: React.FC = ()=> {
                                                         src="/src/images/player/repeat_icon.png"
                                                         alt="repeatIcon"
                                                         id="hover_cursor_player"
-                                                        onClick={() => setLoop(true)}   // 🔹 увімкнути
+                                                        onClick={() => setLoop(true)}   // 🔹 enable
                                                     />
                                                 ) : (
                                                     <img
                                                         src="/src/images/player/repeat_cyan.png"
                                                         alt="repeatIcon"
                                                         id="hover_cursor_player"
-                                                        onClick={() => setLoop(false)}  // 🔹 вимкнути
+                                                        onClick={() => setLoop(false)}  // 🔹 disable
                                                     />
                                                 )}
                                             </div>

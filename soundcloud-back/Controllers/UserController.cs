@@ -32,7 +32,7 @@ namespace soundcloud_back.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                // Email/ім'я вже зайняті — 409 з повідомленням (фронт показує його користувачу)
+                // Email/name is already taken: 409 with a message (the frontend shows it to the user)
                 return Conflict(new { message = ex.Message });
             }
         }
@@ -47,7 +47,7 @@ namespace soundcloud_back.Controllers
             }
             catch (UnauthorizedAccessException ex)
             {
-                // Невірний email/пароль — 401 замість 500 (фронт показує зрозуміле повідомлення)
+                // Invalid email/password: 401 instead of 500 (the frontend shows a readable message)
                 return Unauthorized(new { message = ex.Message });
             }
         }
@@ -66,7 +66,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpPut("{id}/banner")]
-        [SwaggerOperation(Summary = "Оновити свій банер")]
+        [SwaggerOperation(Summary = "Update own banner")]
         public async Task<IActionResult> UpdateBanner(int id, [FromForm] UpdateUserBannerDto dto)
         {
             var bannerUrl = await _userService.UpdateBannerAsync(id, dto.Banner);
@@ -77,10 +77,10 @@ namespace soundcloud_back.Controllers
         [HttpPut("profile")]
         [SwaggerOperation(
     OperationId = "UpdateOwnProfile",
-    Summary = "Оновити власний профіль [Authorize]")]
+    Summary = "Update own profile [Authorize]")]
         public async Task<IActionResult> UpdateOwnProfile([FromForm] UpdateUserRequestDto dto)
         {
-            // Дістаємо userId з токена
+            // Get userId from the token
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userIdClaim == null)
                 return Unauthorized();
@@ -91,7 +91,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Топ авторів за сумою прослуховувань їхніх треків (для Feed → Top creators).
+        /// Top authors by the total plays of their tracks (for Feed → Top creators).
         /// </summary>
         [HttpGet("top")]
         public async Task<IActionResult> GetTop([FromQuery] int take = 4)
@@ -101,7 +101,7 @@ namespace soundcloud_back.Controllers
         }
 
         /// <summary>
-        /// Публічний профіль користувача (без email та службових полів).
+        /// Public user profile (without email and internal fields).
         /// </summary>
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetPublicProfile(int id)

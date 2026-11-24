@@ -16,7 +16,7 @@ export const followService = {
     },
 
     async follow(id: number) {
-        const token = localStorage.getItem("token"); // або зі стану Redux
+        const token = localStorage.getItem("token"); // or from the state in Redux
         if (!token) throw new Error("User is not authenticated");
 
         const res = await axios.post(`${API_URL}/${id}/follow`, {}, {

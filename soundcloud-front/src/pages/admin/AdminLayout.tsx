@@ -6,7 +6,7 @@ const { Sider, Content } = Layout;
 
 const AdminLayout = () => {
     const location = useLocation();
-    const selectedKey = location.pathname.split("/")[2]; // виділяє активну вкладку
+    const selectedKey = location.pathname.split("/")[2]; // highlights the active tab
 
     return (
         <Layout style={{ minHeight: "100vh" }}>

@@ -1,6 +1,6 @@
-/* Сторінки, що відкриваються по кліку: трек, альбом, виконавець, жанр, чарт.
-   Значення зняті з кадрів Figma «Click to» (кадр 1920px, контент 1528px від x=251).
-   Контейнер — .catalog_page з PR сторінок каталогу (ті самі відступи від сайдбару й хедера). */
+/* Pages opened on click: track, album, artist, genre, chart.
+   Values taken from the Figma «Click to» frames (1920px frame, content 1528px from x=251).
+   Container: .catalog_page from the catalog pages PR (same offsets from the sidebar and header). */
 
 .detail_page {
     --detail-muted: #C3C4C5;
@@ -23,7 +23,7 @@
     display: flex;
     flex-direction: column;
     gap: 32px;
-    /* hero 422px + 113px до банера (у макеті між hero та банером 113, далі 64) */
+    /* hero 422px + 113px to the banner (in the design 113 between hero and banner, then 64) */
     margin-bottom: 49px;
 }
 
@@ -205,12 +205,12 @@
 .detail_banner_nrj .detail_banner_logo { width: 162px; }
 .detail_banner_nrj .catalog_nrj_logo { font-size: 72px; }
 
-/* XIT: лого 137px у концентричних колах 410px (#D9D9D9 / 33%) */
+/* XIT: 137px logo in concentric circles 410px (#D9D9D9 / 33%) */
 .detail_banner_xit .detail_banner_logo {
     margin-left: auto;
     width: 410px;
     height: 170px;
-    margin-right: -21px; /* коло стоїть за 82px від правого краю банера */
+    margin-right: -21px; /* the circle sits 82px from the right edge of the banner */
 }
 .detail_banner_xit .detail_banner_logo::before {
     content: "";
@@ -267,7 +267,7 @@
     color: rgba(255, 255, 255, 0.7);
 }
 
-/* ---------- Track list: рядок 82px, обкладинка 50 r9, колонки як у макеті ---------- */
+/* ---------- Track list: 82px row, 50 r9 cover, columns as in the design ---------- */
 .detail_tracks {
     list-style: none;
     margin: 0;
@@ -295,7 +295,7 @@
     flex: 1;
     min-width: 0;
     display: grid;
-    /* 1446 = 799 (назва) + 253 (автор) + 285 (жанр) + 109 (лайк + час) */
+    /* 1446 = 799 (title) + 253 (author) + 285 (genre) + 109 (like + time) */
     grid-template-columns: minmax(0, 1fr) 253px 285px 109px;
     align-items: center;
     height: 100%;
@@ -351,7 +351,7 @@
 
 .detail_track_duration { text-align: right; }
 
-/* «Show More»: скляна кнопка 262x50 по центру */
+/* «Show More»: 262x50 glass button centered */
 .detail_show_more {
     align-self: center;
     display: flex;
@@ -415,12 +415,12 @@
 .detail_carousel_arrow:hover { background: rgba(255, 255, 255, 0.45) !important; }
 .detail_carousel_arrow.left { left: -27px; }
 .detail_carousel_arrow.right { right: -27px; }
-/* стрілки по центру обкладинки */
+/* arrows centered on the cover */
 .detail_carousel_cards-lg .detail_carousel_arrow { top: 116px; }
 .detail_carousel_cards .detail_carousel_arrow { top: 86px; }
 .detail_carousel_artists .detail_carousel_arrow { top: 85px; }
 
-/* смуга прогресу: 6px #201026, активна частина #7C3A7F */
+/* progress bar: 6px #201026, active part #7C3A7F */
 .detail_progress {
     position: relative;
     height: 6px;
@@ -434,7 +434,7 @@
     transition: left 0.2s ease, width 0.2s ease;
 }
 
-/* Картка треку/альбому */
+/* Track/album card */
 .detail_card {
     flex-shrink: 0;
     display: flex;
@@ -481,7 +481,7 @@
 .detail_card .detail_meta_line > span:last-child:not(:first-child) { color: #FFF; }
 .detail_card .detail_meta_line { overflow: hidden; }
 
-/* Картка артиста: коло 231 */
+/* Artist card: circle 231 */
 .detail_artist {
     flex-shrink: 0;
     display: flex;
@@ -510,14 +510,14 @@
     white-space: nowrap;
 }
 
-/* Жанр: заголовок 36 + банер */
+/* Genre: 36 heading + banner */
 .detail_genre_head {
     display: flex;
     flex-direction: column;
     gap: 33px;
 }
 
-/* .catalog_page button скидає font (і line-height) — повертаємо розміри з макету */
+/* .catalog_page button resets font (and line-height), so restore the sizes from the design */
 .detail_page .detail_track_title { font-size: 16px; font-weight: 700; line-height: 20px; }
 .detail_page .detail_track_author,
 .detail_page .detail_track_genre { font-size: 14px; font-weight: 500; line-height: 18px; }
@@ -527,5 +527,5 @@
 .detail_page .detail_card,
 .detail_page .detail_artist { font-weight: 400; }
 
-/* лінія прогресу в макеті має нульову висоту в потоці (6px stroke) */
+/* the progress line in the design has zero height in the flow (6px stroke) */
 .detail_progress { margin-bottom: -6px; }

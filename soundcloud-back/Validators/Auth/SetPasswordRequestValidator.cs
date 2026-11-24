@@ -8,24 +8,24 @@ namespace soundcloud_back.Validators.Auth
     {
         public SetPasswordRequestValidator()
         {
-            // ВАРІАНТ A: та саму політика як  у реєстрації (мінімум  6)
+            // VARIANT A: the same policy as in registration (minimum  6)
             RuleFor(x => x.NewPassword)
-                .NotEmpty().WithMessage("Password обов'язковий")
-                .MinimumLength(6).WithMessage("Password має містити хоча б 6 символів");
+                .NotEmpty().WithMessage("Password is required")
+                .MinimumLength(6).WithMessage("Password must contain at least 6 characters");
 
-            // ВАРІАНТ B (рекомендований): посилена політика (8+, великі/малі/цифра.....)
+            // VARIANT B (recommended): stronger policy (8+, upper/lower case/digit.....)
             /*
             RuleFor(x => x.NewPassword)
-                .NotEmpty().WithMessage("Password обов'язковий")
-                .MinimumLength(8).WithMessage("Мінімальна довжина 8 символів")
-                .Matches("[A-Z]").WithMessage("Має містити велику літеру")
-                .Matches("[a-z]").WithMessage("Має містити малу літеру")
-                .Matches("[0-9]").WithMessage("Має містити цифру");
+                .NotEmpty().WithMessage("Password is required")
+                .MinimumLength(8).WithMessage("Minimum length is 8 characters")
+                .Matches("[A-Z]").WithMessage("Must contain an uppercase letter")
+                .Matches("[a-z]").WithMessage("Must contain a lowercase letter")
+                .Matches("[0-9]").WithMessage("Must contain a digit");
             */
 
             RuleFor(x => x.ConfirmPassword)
-                .NotEmpty().WithMessage("ConfirmPassword обов'язковий")
-                .Equal(x => x.NewPassword).WithMessage("ConfirmPassword має збігатися з Password");
+                .NotEmpty().WithMessage("ConfirmPassword is required")
+                .Equal(x => x.NewPassword).WithMessage("ConfirmPassword must match Password");
         }
     }
 }

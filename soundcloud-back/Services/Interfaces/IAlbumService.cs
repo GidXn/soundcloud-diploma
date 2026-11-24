@@ -7,33 +7,33 @@ namespace soundcloud_back.Services.Interfaces
 {
     public interface IAlbumService
     {
-        // ===== CRUD для альбомів =====
+        // ===== CRUD for albums =====
 
-        // Отримати всі публічні альбоми та альбоми поточного користувача
+        // Get all public albums and albums of the current user
         Task<IEnumerable<AlbumDto>> GetAllByUserAsync(int userId);
 
         Task<IEnumerable<AlbumDto>> GetAllPublicAlbumsAsync();
 
 
-        // Отримати альбом за ID
+        // Get an album by ID
         Task<AlbumDto?> GetByIdAsync(int albumId);
 
-        // Створити новий альбом
+        // Create a new album
         Task<AlbumDto> CreateAsync(CreateAlbumDto dto);
 
-        // Оновити альбом
+        // Update an album
         Task UpdateAsync(int albumId, CreateAlbumDto dto);
 
-        // Видалити альбом
+        // Delete an album
         Task DeleteAsync(int albumId);
 
-        // Завантажити обкладинку альбому
+        // Upload an album cover
         Task SetCoverAsync(int albumId, string url);
 
-        // ===== Для адміна =====
+        // ===== For the admin =====
         Task<IEnumerable<AlbumDto>> GetAllAlbumsForAdminAsync();
 
-        // ===== Методи для треків у альбомі =====
+        // ===== Methods for album tracks =====
         Task<IEnumerable<TrackDto>> GetTracksByAlbumAsync(int albumId);
 
         Task AddTrackToAlbumAsync(int albumId, int trackId);

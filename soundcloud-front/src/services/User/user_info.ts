@@ -19,8 +19,8 @@ export const getCurrentUser = async (): Promise<IUser> => {
         id: data.id,
         username: data.username,
         email: data.email,
-        avatar: data.avatarUrl, // мапимо AvatarUrl → avatar
-        banner: data.bannerUrl, // мапимо AvatarUrl → avatar
+        avatar: data.avatarUrl, // map AvatarUrl → avatar
+        banner: data.bannerUrl, // map AvatarUrl → avatar
         createdAt: data.createdAt,
         role: data.role,
         bio: data.bio,
@@ -43,7 +43,7 @@ export const getTopUsers = async (take: number): Promise<IUser[]> => {
             totalPlays: data.totalPlays,
         }));
 
-        return users; // ✅ тепер функція реально щось повертає
+        return users; // ✅ now the function actually returns something
     } catch (e) {
         console.error("Failed to fetch top users", e);
         return [];
@@ -64,7 +64,7 @@ export const uploadUserBanner = {
             throw new Error("Failed to update banner");
         }
 
-        return await response.json(); // повертає { bannerUrl: "..."}
+        return await response.json(); // returns { bannerUrl: "..."}
     },
 };
 
@@ -77,7 +77,7 @@ export const updateUserProfile = async (
         avatar?: File;
     }
 ): Promise<IUser> => {
-    void userId; //new заглушка
+    void userId; //new placeholder
     const formData = new FormData();
 
     if (data.username) formData.append("Username", data.username);

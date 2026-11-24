@@ -11,14 +11,14 @@ namespace soundcloud_back.Models.Track
         public string? Title { get; set; }
 
 
-        // Файл треку можна оновити, опційно
+        // The track file can be updated, optional
         public IFormFile? File { get; set; }
 
-        // Обкладинка можна оновити, опційно
+        // The cover can be updated, optional
         public IFormFile? Cover { get; set; }
         public int? GenreId { get; set; }
 
-        // Нове поле: список альбомів, до яких належить трек
+        // New field: list of albums the track belongs to
         public List<int>? AlbumIds { get; set; }
     }
 }

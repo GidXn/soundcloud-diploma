@@ -49,7 +49,7 @@ const SearchPage: React.FC = () => {
 
 
     // const openAlbum = async (albumId: number) => {
-    //     // можна навігувати на сторінку альбому і/або підвантажити його треки та setPlaylist
+    //     // we can navigate to the album page and/or load its tracks and setPlaylist
     //     // const res = await api.get(`/api/albums/${albumId}/tracks`);
     //     // setPlaylist(res.data);
     //     // playTrack(res.data[0], res.data);

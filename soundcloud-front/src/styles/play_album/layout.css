@@ -18,11 +18,11 @@
     background: linear-gradient(0deg, rgba(52, 66, 137, 0.32), rgba(52, 66, 137, 0.32)), linear-gradient(180deg, #EB0C0B 0%, #EEEDEE 100%);
 
 
-    background-size: 400% 400%; /* збільшений розмір для плавної анімації */
+    background-size: 400% 400%; /* enlarged size for a smooth animation */
     animation: gradientShiftVertical 30s ease infinite;
 }
 
-/* Анімація вертикального переливу */
+/* Vertical shimmer animation */
 @keyframes gradientShiftVertical {
     0% { background-position: 50% 0%; }
     50% { background-position: 50% 100%; }
@@ -155,7 +155,7 @@
     transition: transform 0.2s ease, background 0.2s ease;
 }
 .play_album_track_player_container .previous_icon_style:hover{
-        transform: scale(1.05); /* легке збільшення при наведенні */
+        transform: scale(1.05); /* slight zoom on hover */
 }
 .play_album_track_player_container .play_icon_container{
     /* ic:round-skip-previous */
@@ -170,8 +170,8 @@
     left: 692px;
     top: 240px;
 
-    display: flex;           /* flex для центрування іконки */
-    justify-content: center; /* горизонтальне центрування */
+    display: flex;           /* flex to center the icon */
+    justify-content: center; /* horizontal centering */
     align-items: center;
 
     border: 2px solid #FFFFFF;
@@ -181,13 +181,13 @@
     transition: transform 0.2s ease, background 0.2s ease;
 }
 .play_album_track_player_container .play_icon_container:hover {
-    transform: scale(1.05); /* легке збільшення при наведенні */
+    transform: scale(1.05); /* slight zoom on hover */
     background: rgba(255, 255, 255, 0.15);
 }
 .play_icon_container .play_icon_style{
     /* Vector */
     position: absolute;
-    width: 75px;              /* підлаштовуємо розмір піктограми під контейнер */
+    width: 75px;              /* fit the icon size to the container */
     height:75px;
     display: flex;
     left: 18px;
@@ -195,7 +195,7 @@
 .play_icon_container .pause_icon_style{
     /* Vector */
     position: absolute;
-    width: 50px;              /* підлаштовуємо розмір піктограми під контейнер */
+    width: 50px;              /* fit the icon size to the container */
     height:50px;
     display: flex;
     left: 26px;
@@ -212,7 +212,7 @@
     transition: transform 0.2s ease, background 0.2s ease;
 }
 .play_album_track_player_container .next_icon_style:hover{
-    transform: scale(1.05); /* легке збільшення при наведенні */
+    transform: scale(1.05); /* slight zoom on hover */
 }
 
 .play_album_track_list_container{

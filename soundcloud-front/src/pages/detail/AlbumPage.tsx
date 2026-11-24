@@ -17,8 +17,8 @@ interface CollectionPageProps {
     kind: "album" | "chart";
 }
 
-/* Сторінка альбому (Figma: «Album when you click») і чарту (Figma: «Charts when click»).
-   Чарт на бекенді — це публічний альбом (так само, як на сторінці Charts), тому дані спільні. */
+/* Album page (Figma: «Album when you click») and chart page (Figma: «Charts when click»).
+   A chart on the backend is a public album (same as on the Charts page), so the data is shared. */
 const CollectionPage: React.FC<CollectionPageProps> = ({ kind }) => {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -30,7 +30,7 @@ const CollectionPage: React.FC<CollectionPageProps> = ({ kind }) => {
     const [page, setPage] = useState(1);
 
     const isChart = kind === "chart";
-    const PAGE_SIZE = isChart ? 28 : 18; // як у макеті
+    const PAGE_SIZE = isChart ? 28 : 18; // as in the design
 
     useEffect(() => {
         if (!id) return;
@@ -59,8 +59,8 @@ const CollectionPage: React.FC<CollectionPageProps> = ({ kind }) => {
 
     const { playing, listen, disabled } = useListen(tracks, album?.id ?? null);
 
-    if (loading) return <main className="catalog_page"><div className="catalog_state">Завантаження…</div></main>;
-    if (!album) return <main className="catalog_page"><div className="catalog_state">{isChart ? "Чарт не знайдено" : "Альбом не знайдено"}</div></main>;
+    if (loading) return <main className="catalog_page"><div className="catalog_state">Loading…</div></main>;
+    if (!album) return <main className="catalog_page"><div className="catalog_state">{isChart ? "Chart not found" : "Album not found"}</div></main>;
 
     const totalPages = Math.max(1, Math.ceil(tracks.length / PAGE_SIZE));
     const visible = tracks.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -81,7 +81,7 @@ const CollectionPage: React.FC<CollectionPageProps> = ({ kind }) => {
                 disabled={disabled}
                 onListen={listen}
                 onMore={copyPageLink}
-                moreTitle="Скопіювати посилання"
+                moreTitle="Copy link"
             />
 
             <DetailBanner variant="nrj" />
@@ -90,7 +90,7 @@ const CollectionPage: React.FC<CollectionPageProps> = ({ kind }) => {
                 <h2 className="detail_section_title">{isChart ? "Tracks in the playlist" : "Tracks in the album"}</h2>
                 <div>
                     {tracks.length === 0
-                        ? <div className="detail_empty">Треків поки немає</div>
+                        ? <div className="detail_empty">No tracks yet</div>
                         : <TrackTable tracks={visible} playlist={tracks} albumId={album.id} />}
                     <Pagination page={page} totalPages={totalPages} onChange={setPage} />
                 </div>

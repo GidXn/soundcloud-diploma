@@ -14,6 +14,6 @@ namespace soundcloud_back.Data.Entities
         public int PlayCount { get; set; } = 0;
 
 
-        public string? ImageUrl { get; set; }   // шлях до картинки 
+        public string? ImageUrl { get; set; }   // image path 
     }
 }

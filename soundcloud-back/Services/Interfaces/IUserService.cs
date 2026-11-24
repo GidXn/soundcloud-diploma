@@ -10,27 +10,27 @@ namespace soundcloud_back.Services.Interfaces
 {
     public interface IUserService
     {
-        // Отримати всіх користувачів (може включати колекції треків, альбомів, плейлистів)
+        // Get all users (may include track, album, playlist collections)
         Task<IEnumerable<UserProfileDto>> GetAllAsync();
 
-        // Отримати користувача за ID
+        // Get a user by ID
         Task<UserProfileDto> GetByIdAsync(int id);
 
-        // Оновити дані користувача (ім'я, email, аватар)
+        // Update user data (name, email, avatar)
         Task<UserProfileDto> UpdateAsync(int id, UpdateUserRequestDto dto);
 
-        //Оновити банер користувача
+        //Update the user banner
         Task<string?> UpdateBannerAsync(int userId, IFormFile? bannerFile);
 
 
-        // Видалити користувача
+        // Delete a user
         Task DeleteAsync(int id);
 
-        // Блокування/розблокування користувача
+        // Block/unblock a user
         Task BlockAsync(int id);
         Task UnblockAsync(int id);
 
-        // Зміна ролі користувача
+        // Change the user role
         Task ChangeRoleAsync(int userId, UserRole newRole);
 
         Task SetAvatarAsync(int userId, string url);

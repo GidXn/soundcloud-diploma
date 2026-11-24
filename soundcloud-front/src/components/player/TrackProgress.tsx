@@ -10,7 +10,7 @@ export const TrackProgress: React.FC<TrackProgressProps> = ({ audioRef, track })
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
 
-    // обчислення прогресу
+    // progress calculation
     const progressPercent = duration ? (currentTime / duration) * 100 : 0;
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export const TrackProgress: React.FC<TrackProgressProps> = ({ audioRef, track })
         audio.addEventListener("timeupdate", updateTime);
         audio.addEventListener("loadedmetadata", setAudioDuration);
 
-        // Якщо трек вже завантажений, одразу встановлюємо duration
+        // If the track is already loaded, set it right away duration
         if (audio.readyState >= 1) setAudioDuration();
 
         return () => {

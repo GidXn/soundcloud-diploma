@@ -18,7 +18,7 @@ import {setUser} from "./store/slices/userSlice.ts";
 import {normalizeUser} from "./utilities/normalizeUser.ts";
 import SetPassword from "./pages/login_signup/SetPassword";
 
-//імпорти для адмінки
+//admin imports
 
 import AdminLayout from "./pages/admin/AdminLayout";
 import UsersPage from "./pages/admin/UsersPage";
@@ -70,7 +70,7 @@ export default function App() {
     const initHistory = usePlayerStore((state) => state.initHistory);
 
     useEffect(() => {
-        initHistory(); // ✅ підтягнемо історію з localStorage
+        initHistory(); // ✅ load history from localStorage
     }, [initHistory]);
 
     if (isInitializing) {
@@ -82,7 +82,7 @@ export default function App() {
             <Routes>
                 <Route path="/" element={<StartedPage />} />
 
-                {/* Сторінка логіну */}
+                {/* Login page */}
                 <Route element={<Layout_login_page/>}>
                     <Route path="/login" element={<Login/>} />
                     <Route path="/signup" element={<Signup/>} />
@@ -90,7 +90,7 @@ export default function App() {
                     <Route path="/reset-password" element={<ResetPasswordPage/>}/>
                 </Route>
 
-                {/* Головний Layout_LS (Protected) */}
+                {/* Main Layout_LS (Protected) */}
                 <Route element={
                     <ProtectedRoute>
                         <Layout />
@@ -128,7 +128,7 @@ export default function App() {
                     <Route path="/genre/:name" element={<GenrePage />} />
                 </Route>
 
-                {/*  Адмінка (ОКРЕМО, без Layout, Protected to Role 2) */}
+                {/*  Admin panel (SEPARATE, without Layout, Protected to Role 2) */}
                 <Route path="/admin" element={
                     <ProtectedRoute requireAdmin={true}>
                         <AdminLayout />

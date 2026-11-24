@@ -71,10 +71,10 @@ const PlayPlaylistPage: React.FC = () => {
                         className="play_icon_container"
                         onClick={() => {
                             if (!currentTrack && tracks.length > 0) {
-                                // 🔹 Якщо трек ще не вибрано, запускаємо перший
+                                // 🔹 If no track is selected yet, start the first one
                                 playTrack(tracks[0], tracks, playlist.id);
                             } else {
-                                // 🔹 Якщо вже є трек, просто пауза/продовження
+                                // 🔹 If a track is already selected, just pause/resume
                                 togglePlay();
                             }
                         }}

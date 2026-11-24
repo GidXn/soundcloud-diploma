@@ -16,7 +16,7 @@ using System.Security;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-//namespace SoundCloudWebApi.Controllers  // варіант 2
+//namespace SoundCloudWebApi.Controllers  // variant 2
 //{
 //    [ApiController]
 //    [Route("auth")]
@@ -95,7 +95,7 @@ using System.Threading.Tasks;
 //}
 
 
-namespace SoundCloudWebApi.Controllers // варіант 3
+namespace SoundCloudWebApi.Controllers // variant 3
 {
     [ApiController]
     [Route("auth")]
@@ -122,14 +122,14 @@ namespace SoundCloudWebApi.Controllers // варіант 3
         //public async Task<IActionResult> GoogleLogin([FromBody] TokenRequest req)
         public async Task<IActionResult> GoogleLogin(
             [FromBody] TokenRequest req,
-            [FromServices] IOptions<GoogleAuthOptions> opts // щоб логувати очікуваний ClientId
+            [FromServices] IOptions<GoogleAuthOptions> opts // to log the expected ClientId
             )
         {
 
             if (string.IsNullOrWhiteSpace(req?.Token))
                 return BadRequest(new { error = "Token is required" });
 
-            // 0) Швидка перевірка формату ID-token (має бути JWT з 2 крапками)
+            // 0) Quick check of the ID-token format (must be a JWT with 2 dots)
             var dots = req.Token.Count(c => c == '.');
             Console.WriteLine($"[AUTH/GOOGLE] token.len={req.Token.Length}, dots={dots}, sample='{req.Token[..Math.Min(20, req.Token.Length)]}...'");
             Console.WriteLine($"[AUTH/GOOGLE] expected ClientId={opts.Value.ClientId}");
@@ -139,18 +139,18 @@ namespace SoundCloudWebApi.Controllers // варіант 3
 
             try
             {
-                // 1) Перевіряємо САМЕ Google ID token (JWT: "eyJ...": дві крапки)
+                // 1) Validate specifically the Google ID token (JWT: "eyJ...": two dots)
                 var payload = await _google.ValidateAsync(req.Token);
 
                 Console.WriteLine($"[AUTH/GOOGLE] iss={payload.Issuer}, aud={payload.Audience}, sub={payload.Subject}, email={payload.Email}, verified={payload.EmailVerified}");
 
-                // 2) Знаходимо/створюємо юзера
+                // 2) Find/create the user
                 var user = await _users.FindOrCreateFromGoogleAsync(payload);
 
-                // 3) Видаємо наш короткий JWT для доступу до API
+                // 3) Issue our short-lived JWT for access to the API
                 var jwt = _auth.IssueJwtForUser(user);
 
-                // 4) Повертаємо токен + базову інфу (зручно фронту)
+                // 4) Return the token + basic info (convenient for the frontend)
                 return Ok(new
                 {
                     token = jwt,

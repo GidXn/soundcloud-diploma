@@ -20,7 +20,7 @@ const Header: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const [isLogin, setIsLogin] = useState(false); // створюємо state
+    const [isLogin, setIsLogin] = useState(false); // create state
     useEffect(() => {
         getCurrentUser()
             .then((data) => setUser(data))
@@ -69,7 +69,7 @@ const Header: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* Права частина шапки з макету: Get Pro, тема, сповіщення, меню користувача */}
+                                {/* Right side of the header from the design: Get Pro, theme, notifications, user menu */}
                                 <div className="hdr_right">
                                     <button className="hdr_get_pro" onClick={() => navigate("/subscribe")}>
                                         <img src="/inside/tabler-crown.svg" alt="" width={24} height={24}/>

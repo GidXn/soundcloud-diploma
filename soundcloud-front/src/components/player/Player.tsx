@@ -18,7 +18,7 @@ interface PlayerProps {
 }
 export default function Player({ footerSelector }: PlayerProps) {
     const { track, isPlaying, togglePlay,nextTrack,previousTrack } = usePlayerStore();
-    const audioRef = usePlayerStore(state => state.audioRef); // глобал
+    const audioRef = usePlayerStore(state => state.audioRef); // global
     const [, setBottomOffset] = useState(0);
 
     const [modalOpen, setModalOpen] = useState(false);
@@ -27,19 +27,19 @@ export default function Player({ footerSelector }: PlayerProps) {
     const[loop, setLoop] = useState<boolean>(false);
 
     const max = 1;
-    const minBottom = 16;   // фіксована відстань від низу
+    const minBottom = 16;   // fixed distance from the bottom
     const maxBottom = 16;
 
     useEffect(() => {
         if (modalOpen) {
-            // Забороняємо скрол
+            // Disable scrolling
             document.body.style.overflow = "hidden";
         } else {
-            // Повертаємо як було
+            // Restore as it was
             document.body.style.overflow = "";
         }
 
-        // Cleanup на всяк випадок
+        // Cleanup just in case
         return () => {
             document.body.style.overflow = "";
         };
@@ -59,11 +59,11 @@ export default function Player({ footerSelector }: PlayerProps) {
 
         const observer = new IntersectionObserver(
             ([entry]) => {
-                const ratio = entry.intersectionRatio; // від 0 до 1
+                const ratio = entry.intersectionRatio; // from 0 to 1
                 const offset = minBottom + (maxBottom - minBottom) * ratio;
                 setBottomOffset(offset);
             },
-            { threshold: Array.from({ length: 101 }, (_, i) => i / 100) } // спрацьовує на кожному 1% видимості
+            { threshold: Array.from({ length: 101 }, (_, i) => i / 100) } // fires on every 1% of visibility
         );
 
         observer.observe(footer);
@@ -78,7 +78,7 @@ export default function Player({ footerSelector }: PlayerProps) {
         audioRef.current.play().catch((err) => console.log(err));
     }, [track]);
 
-    // Керування паузою/відтворенням
+    // Pause/play control
     useEffect(() => {
         if (!audioRef.current) return;
 
@@ -113,23 +113,23 @@ export default function Player({ footerSelector }: PlayerProps) {
         return `http://localhost:5122${track.imageUrl}`;
     };
 
-    if (!track) return null; // якщо трек не обрано, не рендеримо
+    if (!track) return null; // if no track is selected, render nothing
 
 
     const toggleLike = async (track: ITrack) => {
         try {
             if (likedTracksIds.includes(track.id)) {
-                // анлайк
+                // unlike
                 await trackService.unlike(track.id);
                 setLikedTracksIds(prev => prev.filter(id => id !== track.id));
-                track.isLikedByCurrentUser = false; // оновлюємо локально
+                track.isLikedByCurrentUser = false; // update locally
                 addtoHistory(track);
                 trackService.getAll()
             } else {
-                // лайк
+                // like
                 await trackService.like(track.id);
                 setLikedTracksIds(prev => [...prev, track.id]);
-                track.isLikedByCurrentUser = true; // оновлюємо локально
+                track.isLikedByCurrentUser = true; // update locally
                 addtoHistory(track);
                 trackService.getAll()
             }
@@ -142,13 +142,13 @@ export default function Player({ footerSelector }: PlayerProps) {
         <>
 
         <div className="player_player_container baloo2">
-            {/* основний рядок плеєра */}
+            {/* main player row */}
             <div className="player_main_row">
-                {/* внутрішній рядок: лівий блок, центр, гучність */}
+                {/* inner row: left block, center, volume */}
                 <div className="player_inner_row">
-                    {/* лівий блок: кнопки + інфо про трек */}
+                    {/* left block: buttons + track info */}
                     <div className="player_left_block">
-                        {/* навігація: попередній / плей / наступний */}
+                        {/* navigation: previous / play / next */}
                         <div className="player_nav_controls">
                             <div className="track_control_track_container">
                                 <img
@@ -181,7 +181,7 @@ export default function Player({ footerSelector }: PlayerProps) {
                             </div>
                         </div>
 
-                        {/* блок інформації про трек: обкладинка + назва + автор */}
+                        {/* track info block: cover + title + author */}
                         <div className="player_track_info_block">
             <div className="player_track_container">
                 <div className="player_track_image">
@@ -211,16 +211,16 @@ export default function Player({ footerSelector }: PlayerProps) {
                         </div>
                     </div>
 
-                    {/* центральний блок: прогрес + час + додаткові дії */}
+                    {/* center block: progress + time + extra actions */}
                     <div className="player_center_block">
-                        {/* прогрес треку з часом */}
+                        {/* track progress with time */}
                         <div className="player_progress_block">
                             <div className="track_time_skip_container">
                                 <TrackProgress audioRef={audioRef} track={track} />
                             </div>
                         </div>
 
-                        {/* дії: лайк, повтор, плейлист */}
+                        {/* actions: like, repeat, playlist */}
                         <div className="player_actions_block">
                 <div className="track_control_container">
                     <div className="track_control_like_container">
@@ -240,14 +240,14 @@ export default function Player({ footerSelector }: PlayerProps) {
                                 src="/src/images/player/repeat_icon.png"
                                 alt="repeatIcon"
                                 id="hover_cursor_player"
-                                            onClick={() => setLoop(true)} // 🔹 увімкнути
+                                            onClick={() => setLoop(true)} // 🔹 enable
                             />
                         ) : (
                             <img
                                 src="/src/images/player/repeat_cyan.png"
                                 alt="repeatIcon"
                                 id="hover_cursor_player"
-                                            onClick={() => setLoop(false)} // 🔹 вимкнути
+                                            onClick={() => setLoop(false)} // 🔹 disable
                             />
                         )}
                     </div>
@@ -263,7 +263,7 @@ export default function Player({ footerSelector }: PlayerProps) {
                 </div>
                 </div>
 
-                    {/* блок гучності – іконка + повзунок */}
+                    {/* volume block: icon + slider */}
                     <div className="player_volume_block">
                 <div className="track_loudness_container">
                     <div className="track_loudness_image_container">

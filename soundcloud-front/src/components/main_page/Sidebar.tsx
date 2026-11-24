@@ -3,12 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import "../../styles/main_pages/sidebar.css";
 import "../../styles/main_pages/people/layout.css";
 
-// Роки для «Топ року» в розгорнутому меню
+// Years for «Top of the year» in the full menu
 const TOP_YEARS = [2026, 2025, 2024, 2023, 2022, 2021];
 
 interface SidebarItem {
     label: string;
-    menuLabel?: string; // підпис у розгорнутому меню (макет «full menu»)
+    menuLabel?: string; // label in the full menu (design «full menu»)
     icon: string;
     path: string;
     id: string;
@@ -20,7 +20,7 @@ const Sidebar: React.FC = () => {
     const [isExpanded, setIsExpanded] = React.useState(true);
     const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-    // Esc закриває розгорнуте меню
+    // Esc closes the full menu
     React.useEffect(() => {
         if (!isMenuOpen) return;
         const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setIsMenuOpen(false); };
@@ -31,63 +31,63 @@ const Sidebar: React.FC = () => {
     const sidebarItems: SidebarItem[] = [
         {
             id: "hide",
-            label: "Сховати сайд бар",
+            label: "Hide sidebar",
             icon: "/inside/material-symbols-menu-rounded.svg",
             path: "",
         },
         {
             id: "home",
             menuLabel: "Home",
-            label: "Додому",
+            label: "Home",
             icon: "/inside/iconamoon-home-thin.svg",
             path: "/home",
         },
         {
             id: "music",
             menuLabel: "Music",
-            label: "Музика",
+            label: "Music",
             icon: "/inside/mdi-light-music.svg",
             path: "/music",
         },
         {
             id: "genres",
             menuLabel: "Genres",
-            label: "Жанри",
+            label: "Genres",
             icon: "/inside/stash-square-light.svg",
             path: "/genres",
         },
         {
             id: "albums",
             menuLabel: "Albums",
-            label: "Альбоми",
+            label: "Albums",
             icon: "/inside/ion-albums-outline.svg",
             path: "/albums",
         },
         {
             id: "artists",
             menuLabel: "Performers",
-            label: "Артисти",
+            label: "Performers",
             icon: "/inside/weui-contacts-outlined.svg",
             path: "/artists",
         },
         {
             id: "charts",
             menuLabel: "Charts",
-            label: "Чарти",
+            label: "Charts",
             icon: "/inside/f-7-menu.svg",
             path: "/charts",
         },
         {
             id: "top100",
             menuLabel: "Popular",
-            label: "Топ 100 місяця",
+            label: "Top 100 of the month",
             icon: "/inside/uit-favorite.svg",
             path: "/top-100",
         },
         {
             id: "radio",
             menuLabel: "Radio",
-            label: "Радіо",
+            label: "Radio",
             icon: "/inside/material-symbols-light-radio-outline.svg",
             path: "/radio",
         },
@@ -100,7 +100,7 @@ const Sidebar: React.FC = () => {
 
     const handleNavigation = (item: SidebarItem): void => {
         if (item.id === "hide") {
-            // Гамбургер відкриває повне меню (макет «full menu»)
+            // The hamburger opens the full menu (design «full menu»)
             setIsMenuOpen((v) => !v);
             return;
         }
@@ -116,7 +116,7 @@ const Sidebar: React.FC = () => {
                 <button
                     className="sidebar_toggle_btn"
                     onClick={() => setIsExpanded(true)}
-                    title="Показати сайд бар"
+                    title="Show sidebar"
                 >
                     <img src="/inside/material-symbols-menu-rounded.svg" alt="Menu" />
                 </button>
@@ -145,10 +145,10 @@ const Sidebar: React.FC = () => {
             )}
 
             {isMenuOpen && (
-                <div className="full_menu" role="dialog" aria-label="Меню">
+                <div className="full_menu" role="dialog" aria-label="Menu">
                     <nav className="full_menu_panel">
                         <div className="full_menu_head">
-                            <button className="full_menu_burger" onClick={() => setIsMenuOpen(false)} aria-label="Закрити меню">
+                            <button className="full_menu_burger" onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
                                 <img src="/inside/material-symbols-menu-rounded.svg" alt="" />
                             </button>
                             <span className="full_menu_logo">Allure</span>

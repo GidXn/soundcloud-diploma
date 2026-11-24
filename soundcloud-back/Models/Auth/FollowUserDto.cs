@@ -1,8 +1,8 @@
 namespace soundcloud_back.Models.Auth
 {
     /// <summary>
-    /// Публічні дані користувача для списків Followers / Following
-    /// (без email, хешу пароля тощо).
+    /// Public user data for lists Followers / Following
+    /// (without email, password hash, etc).
     /// </summary>
     public class FollowUserDto
     {

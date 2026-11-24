@@ -14,7 +14,7 @@ namespace soundcloud_back.Services.Implementations
         {
             _context = context;
         }
-        //падисатись на когось
+        //follow someone
         public async Task<bool> FollowAsync(int followerId, int followingId)
         {
             if (followerId == followingId) return false;
@@ -33,7 +33,7 @@ namespace soundcloud_back.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
-        //відписатись від когось
+        //unfollow someone
         public async Task<bool> UnfollowAsync(int followerId, int followingId)
         {
             var follow = await _context.Follows
@@ -45,7 +45,7 @@ namespace soundcloud_back.Services.Implementations
             await _context.SaveChangesAsync();
             return true;
         }
-        //отримати список своїх підписників
+        //get the list of my followers
         public async Task<List<UserEntity>> GetFollowersAsync(int userId)
         {
             return await _context.Follows
@@ -53,7 +53,7 @@ namespace soundcloud_back.Services.Implementations
                 .Select(f => f.Follower)
                 .ToListAsync();
         }
-        //отримати список на кого ми підписані
+        //get the list of users we follow
         public async Task<List<UserEntity>> GetFollowingAsync(int userId)
         {
             return await _context.Follows
@@ -61,17 +61,17 @@ namespace soundcloud_back.Services.Implementations
                 .Select(f => f.Following)
                 .ToListAsync();
         }
-        //отримати число підписників
+        //get the follower count
         public async Task<int> GetFollowersCountAsync(int userId)
         {
             return await _context.Follows.CountAsync(f => f.FollowingId == userId);
         }
-        //отримати число підписок
+        //get the following count
         public async Task<int> GetFollowingCountAsync(int userId)
         {
             return await _context.Follows.CountAsync(f => f.FollowerId == userId);
         }
-        // нове
+        // new
         public async Task<bool> IsFollowingAsync(int followerId, int followingId)
         {
             return await _context.Follows

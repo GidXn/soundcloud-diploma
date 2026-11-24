@@ -1,7 +1,7 @@
 import React from "react";
 import { API_ORIGIN } from "../catalog/catalogUtils";
 
-// Аватар користувача: повний URL, відносний шлях з бекенду або заглушка
+// User avatar: full URL, relative path from the backend, or a placeholder
 export const avatarUrl = (path?: string | null): string => {
     if (!path) return "/default-cover.png";
     if (path.startsWith("http")) return path;
@@ -19,7 +19,7 @@ export const formatCount = (n?: number): string => {
 
 type IconProps = { size?: number; color?: string };
 
-// Іконки з макету (обведення 1.5px, білі)
+// Icons from the design (1.5px stroke, white)
 export const MusicIcon: React.FC<IconProps> = ({ size = 84, color = "#DBDBDB" }) => (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden>
         <path d="M9 18V5.5l11-2.5v12.5" stroke={color} strokeWidth="0.7" strokeLinejoin="round" />

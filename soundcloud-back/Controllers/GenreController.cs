@@ -19,7 +19,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpGet]
-        [SwaggerOperation(Summary = "Отримати всі жанри")]
+        [SwaggerOperation(Summary = "Get all genres")]
         public async Task<IActionResult> GetAll()
         {
             var genres = await _genreService.GetAllAsync();
@@ -27,7 +27,7 @@ namespace soundcloud_back.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [SwaggerOperation(Summary = "Отримати жанр за ID")]
+        [SwaggerOperation(Summary = "Get a genre by ID")]
         public async Task<IActionResult> GetById(int id)
         {
             var genre = await _genreService.GetByIdAsync(id);
@@ -37,7 +37,7 @@ namespace soundcloud_back.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        [SwaggerOperation(Summary = "Створити новий жанр")]
+        [SwaggerOperation(Summary = "Create a new genre")]
         public async Task<IActionResult> Create([FromBody] GenreCreateDto dto)
         {
             var genre = await _genreService.CreateAsync(dto);
@@ -46,7 +46,7 @@ namespace soundcloud_back.Controllers
 
         [HttpPut("{id:int}")]
         [Authorize(Roles = "Admin")]
-        [SwaggerOperation(Summary = "Оновити жанр за ID")]
+        [SwaggerOperation(Summary = "Update a genre by ID")]
         public async Task<IActionResult> Update(int id, [FromBody] GenreUpdateDto dto)
         {
             await _genreService.UpdateAsync(id, dto);
@@ -55,7 +55,7 @@ namespace soundcloud_back.Controllers
 
         [HttpDelete("{id:int}")]
         [Authorize(Roles = "Admin")]
-        [SwaggerOperation(Summary = "Видалити жанр за ID")]
+        [SwaggerOperation(Summary = "Delete a genre by ID")]
         public async Task<IActionResult> Delete(int id)
         {
             await _genreService.DeleteAsync(id);

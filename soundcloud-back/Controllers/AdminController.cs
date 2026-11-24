@@ -24,7 +24,7 @@ namespace soundcloud_back.Controllers
         [HttpGet("users")]
         [SwaggerOperation(
             OperationId = "Admin_GetAllUsers",
-            Summary = "Отримати всіх користувачів (Admin)")]
+            Summary = "Get all users (Admin)")]
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllAsync();
@@ -34,7 +34,7 @@ namespace soundcloud_back.Controllers
         [HttpGet("users/{id:int}")]
         [SwaggerOperation(
             OperationId = "Admin_GetUserById",
-            Summary = "Отримати користувача за ID (Admin)")]
+            Summary = "Get a user by ID (Admin)")]
         public async Task<IActionResult> GetUserById(int id)
         {
             var user = await _userService.GetByIdAsync(id);
@@ -44,7 +44,7 @@ namespace soundcloud_back.Controllers
         [HttpPut("users/{id:int}/role")]
         [SwaggerOperation(
             OperationId = "Admin_ChangeUserRole",
-            Summary = "Змінити роль користувача (Admin)")]
+            Summary = "Change a user's role (Admin)")]
         public async Task<IActionResult> ChangeRole(int id, [FromBody] ChangeRoleRequestDto dto)
         {
             await _userService.ChangeRoleAsync(id, dto.Role);
@@ -54,7 +54,7 @@ namespace soundcloud_back.Controllers
         [HttpPatch("users/{id:int}/block")]
         [SwaggerOperation(
             OperationId = "Admin_BlockUser",
-            Summary = "Заблокувати користувача (Admin)")]
+            Summary = "Block a user (Admin)")]
         public async Task<IActionResult> Block(int id)
         {
             var me = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -68,7 +68,7 @@ namespace soundcloud_back.Controllers
         [HttpPatch("users/{id:int}/unblock")]
         [SwaggerOperation(
             OperationId = "Admin_UnblockUser",
-            Summary = "Розблокувати користувача (Admin)")]
+            Summary = "Unblock a user (Admin)")]
         public async Task<IActionResult> Unblock(int id)
         {
             await _userService.UnblockAsync(id);
@@ -78,7 +78,7 @@ namespace soundcloud_back.Controllers
         [HttpDelete("users/{id:int}")]
         [SwaggerOperation(
             OperationId = "Admin_DeleteUser",
-            Summary = "Видалити користувача (Admin)")]
+            Summary = "Delete a user (Admin)")]
         public async Task<IActionResult> Delete(int id)
         {
             var me = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -93,7 +93,7 @@ namespace soundcloud_back.Controllers
         [HttpPut("users/{id:int}")]
         [SwaggerOperation(
         OperationId = "Admin_UpdateUser",
-        Summary = "Оновити будь-якого користувача (Admin)")]
+        Summary = "Update any user (Admin)")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserRequestDto dto)
         {
             var updated = await _userService.UpdateAsync(id, dto);

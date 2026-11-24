@@ -41,8 +41,8 @@ const GenresPage: React.FC = () => {
         <main className="catalog_page">
             <h1 className="catalog_title">Mood and genres</h1>
 
-            {loading && <div className="catalog_state">Завантаження…</div>}
-            {!loading && genres.length === 0 && <div className="catalog_state">Жанрів поки немає</div>}
+            {loading && <div className="catalog_state">Loading…</div>}
+            {!loading && genres.length === 0 && <div className="catalog_state">No genres yet</div>}
 
             <div className="genres_grid">
                 {genres.map((genre) => {
@@ -53,7 +53,7 @@ const GenresPage: React.FC = () => {
                             key={genre.id}
                             className={`genre_tile ${list.length === 0 ? "empty" : ""}`}
                             onClick={() => playGenre(genre)}
-                            title={list.length ? `${genre.name}: ${list.length} треків` : `${genre.name}: треків немає`}
+                            title={list.length ? `${genre.name}: ${list.length} tracks` : `${genre.name}: no tracks`}
                         >
                             {cover && <img className="genre_tile_bg" src={trackImageUrl(cover)} alt="" onError={(e) => (e.currentTarget.style.display = "none")} />}
                             <span className="genre_tile_name">{genre.name}</span>
