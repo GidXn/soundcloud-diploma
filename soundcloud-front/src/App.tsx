@@ -48,6 +48,7 @@ import TopYearPage from "./pages/main_pages/TopYearPage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
+import SupportPage from "./pages/support/SupportPage.tsx";
 
 
 export default function App() {
@@ -95,6 +96,7 @@ export default function App() {
                     </ProtectedRoute>
                 }>
                     <Route path="/home" element={<HomePage />} />
+                    <Route path="/support/:slug" element={<SupportPage />} />
                     <Route path="/music" element={<MusicPage />} />
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
 
