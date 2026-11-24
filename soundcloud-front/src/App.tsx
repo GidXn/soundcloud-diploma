@@ -49,6 +49,7 @@ import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
 import SupportPage from "./pages/support/SupportPage.tsx";
+import SubscriptionPage from "./pages/subscription/SubscriptionPage.tsx";
 
 
 export default function App() {
@@ -116,6 +117,7 @@ export default function App() {
                     <Route path="/set-password" element={<SetPassword />} />
                     <Route path="/genres" element={<GenresPage />} />
                     <Route path="/artists" element={<ArtistsPage />} />
+                    <Route path="/subscribe" element={<SubscriptionPage />} />
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
                     <Route path="/radio" element={<RadioPage />} />

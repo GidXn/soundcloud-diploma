@@ -6,6 +6,7 @@ import {logout} from "../../store/slices/userSlice.ts";
 import '../../styles/main_pages/header.css';
 import {IUser} from "../../types/user.ts";
 import {getCurrentUser} from "../../services/User/user_info.ts";
+import {useSubscriptionStore} from "../../store/subscription_store.ts";
 import {NotificationsMenu, ThemeIconButton, UserMenu} from "../people/HeaderMenus.tsx";
 
 
@@ -14,6 +15,7 @@ import {NotificationsMenu, ThemeIconButton, UserMenu} from "../people/HeaderMenu
 
 const Header: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
+    const isPro = useSubscriptionStore((s) => s.plan !== "free");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -72,7 +74,7 @@ const Header: React.FC = () => {
                                 <div className="hdr_right">
                                     <button className="hdr_get_pro" onClick={() => navigate("/subscribe")}>
                                         <img src="/inside/tabler-crown.svg" alt="" width={24} height={24}/>
-                                        <span>Get Pro</span>
+                                        <span>{isPro ? "Pro" : "Get Pro"}</span>
                                     </button>
                                     <div className="hdr_actions">
                                         <div className="hdr_icons">
