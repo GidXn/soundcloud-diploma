@@ -72,14 +72,15 @@
     background-color: #D786FF;
 }
 
-/* Design: Line 18, 8px stroke with round caps at the right edge */
+/* Design: Line 18 (8px, round caps) sits under the glass panel, so only a
+   4 x 34 pill shows at the right edge, next to the active icon. */
 .sidebar_indicator {
     position: absolute;
     right: 0;
     top: 50%;
-    width: 8px;
-    height: 42px;
-    border-radius: 4px;
+    width: 4px;
+    height: 34px;
+    border-radius: 0 4px 4px 0;
     background: #D786FF;
     transform: translateY(-50%);
     animation: sidebarIndicatorIn 0.25s ease;
