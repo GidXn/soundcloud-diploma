@@ -14,12 +14,14 @@ import white_arrow_down from "../../images/icons/white_arrow_down.png";
 import profile from "../../images/icons/profile.png";
 import search from "../../images/search_bar/search.png";
 import logout2 from "../../images/icons/logout.png";
+import {useSubscriptionStore} from "../../store/subscription_store.ts";
 
 
 const Header: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
 
     const [open, setOpen] = useState(false);
+    const isPro = useSubscriptionStore((s) => s.plan !== "free");
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -75,6 +77,16 @@ const Header: React.FC = () => {
                                                className="search_input_home_page"/>
                                     </div>
                                 </div>
+
+                                {/* PRO subscription */}
+                                <button type="button" className="header_get_pro"
+                                        onClick={() => navigate("/subscribe")}>
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                        <path d="M4 17.5 3 7.5l5 4 4-6 4 6 5-4-1 10H4Z"
+                                              stroke="#E5E16A" strokeWidth="2" strokeLinejoin="round"/>
+                                    </svg>
+                                    <span>{isPro ? "Pro" : "Get Pro"}</span>
+                                </button>
 
                                 {/* User profile on the far right */}
                                 <div className="baloo2 header_profile_image_container" style={{position: 'relative'}}>

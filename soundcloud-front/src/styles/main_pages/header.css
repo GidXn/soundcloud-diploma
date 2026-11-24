@@ -265,3 +265,30 @@
     top: 16.67%;
     bottom: 16.67%;
 }
+
+/* Кнопка "Get Pro" (Figma: 185×51, radius 10, іконка корони #E5E16A, текст 20px) */
+.header_get_pro {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    flex: none;
+    width: 185px;
+    height: 51px;
+    padding: 0 0 0 30px;
+    box-sizing: border-box;
+    white-space: nowrap;
+    font-family: "Space Grotesk", "Roboto", system-ui, sans-serif;
+    font-size: 20px;
+    line-height: 26px;
+    color: #FFF;
+    background: linear-gradient(90deg, rgba(42, 30, 96, 0.9) 0%, rgba(74, 36, 122, 0.9) 100%);
+    border: 1px solid rgba(122, 82, 214, 0.6);
+    border-radius: 10px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    transition: filter 0.2s;
+}
+
+.header_get_pro:hover {
+    filter: brightness(1.15);
+}

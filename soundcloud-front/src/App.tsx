@@ -42,6 +42,7 @@ import RadioPage from "./pages/main_pages/RadioPage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
+import SubscriptionPage from "./pages/subscription/SubscriptionPage.tsx";
 
 
 export default function App() {
@@ -93,6 +94,7 @@ export default function App() {
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
 
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/subscribe" element={<SubscriptionPage />} />
                     {/* <Route path="/library" element={<LibraryPage />} />
                     <Route path="/genres" element={<GenresPage />} /> */}
                     {/* <Route path="/feed" element={<FeedPage />} /> */}

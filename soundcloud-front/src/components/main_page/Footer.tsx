@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "../../styles/footer.css";
 import "../../styles/General.css";
 
@@ -26,7 +27,7 @@ const Footer: React.FC = () => {
                     </div>
                     <div className="allure-footer-column">
                         <a href="#">Privacy Policy</a>
-                        <a href="#">PRO Subscription</a>
+                        <Link to="/subscribe">PRO Subscription</Link>
                     </div>
                     <div className="allure-footer-column">
                         <a href="#">Advertising</a>
