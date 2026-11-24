@@ -50,7 +50,7 @@ namespace soundcloud_back.Controllers
         public async Task<IActionResult> GetFollowers(int id)
         {
             var followers = await _followService.GetFollowersAsync(id);
-            return Ok(followers);
+            return Ok(await ToDtoAsync(followers));
         }
 
         /// <summary>
@@ -60,7 +60,7 @@ namespace soundcloud_back.Controllers
         public async Task<IActionResult> GetFollowing(int id)
         {
             var following = await _followService.GetFollowingAsync(id);
-            return Ok(following);
+            return Ok(await ToDtoAsync(following));
         }
 
         /// <summary>
@@ -96,6 +96,24 @@ namespace soundcloud_back.Controllers
             return Ok(result);
         }
 
+
+
+        // Віддаємо лише публічні поля користувача (раніше йшла вся сутність з email і хешем пароля)
+        private async Task<List<FollowUserDto>> ToDtoAsync(List<soundcloud_back.Data.Entities.UserEntity> users)
+        {
+            var result = new List<FollowUserDto>(users.Count);
+            foreach (var u in users)
+            {
+                result.Add(new FollowUserDto
+                {
+                    Id = u.Id,
+                    Username = u.Username,
+                    AvatarUrl = u.AvatarUrl,
+                    FollowersCount = await _followService.GetFollowersCountAsync(u.Id),
+                });
+            }
+            return result;
+        }
 
     }
 }

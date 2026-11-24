@@ -42,6 +42,9 @@ import TrackPage from "./pages/detail/TrackPage";
 import { AlbumPage, ChartPage } from "./pages/detail/AlbumPage";
 import ArtistPage from "./pages/detail/ArtistPage";
 import GenrePage from "./pages/detail/GenrePage";
+import FavoritePage from "./pages/main_pages/FavoritePage";
+import FollowListPage from "./pages/main_pages/FollowListPage";
+import TopYearPage from "./pages/main_pages/TopYearPage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
@@ -102,6 +105,12 @@ export default function App() {
                     <Route path="/play-album/:id" element={<PlayAlbumPage />} />
                     <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
                     <Route path="/user/:id" element={<UserProfilePage />} />
+                    <Route path="/user/:id/following" element={<FollowListPage mode="following" />} />
+                    <Route path="/user/:id/followers" element={<FollowListPage mode="followers" />} />
+                    <Route path="/following" element={<FollowListPage mode="following" />} />
+                    <Route path="/followers" element={<FollowListPage mode="followers" />} />
+                    <Route path="/favorite" element={<FavoritePage />} />
+                    <Route path="/top/:year" element={<TopYearPage />} />
                     <Route path="/set-password" element={<SetPassword />} />
                     <Route path="/genres" element={<GenresPage />} />
                     <Route path="/artists" element={<ArtistsPage />} />

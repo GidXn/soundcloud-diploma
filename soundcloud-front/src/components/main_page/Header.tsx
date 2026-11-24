@@ -6,19 +6,14 @@ import {logout} from "../../store/slices/userSlice.ts";
 import '../../styles/main_pages/header.css';
 import {IUser} from "../../types/user.ts";
 import {getCurrentUser} from "../../services/User/user_info.ts";
+import {NotificationsMenu, ThemeIconButton, UserMenu} from "../people/HeaderMenus.tsx";
 
 
 // import logoWave from "../../images/logo/logo_WaveCloud.png";
-import people from "../../images/search_bar/people.png";
-import white_arrow_down from "../../images/icons/white_arrow_down.png";
-import profile from "../../images/icons/profile.png";
-import logout2 from "../../images/icons/logout.png";
 
 
 const Header: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
-
-    const [open, setOpen] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -30,14 +25,6 @@ const Header: React.FC = () => {
             .catch((err) => console.error(err));
     }, []);
 
-    const getUserImageUrl = (user?: IUser | null) => {
-        if (!user?.avatar) return "/default-cover.png";
-
-        return user.avatar.startsWith("http")
-            ? user.avatar
-            : `http://localhost:5122/${user.avatar}`;
-    };
-    console.log("Avatar "+ user?.avatar);
 
 
     useEffect(() => {
@@ -81,61 +68,19 @@ const Header: React.FC = () => {
                                     </div>
                                 </div>
 
-                                {/* User profile on the far right */}
-                                <div className="baloo2 header_profile_image_container" style={{position: 'relative'}}>
-                                    <div className="user_avatar">
-                                        {user?.avatar ? (
-                                            <img className="image_container_user" src={getUserImageUrl(user)}
-                                                 alt="people" width="48" height="48"/>
-                                        ) : (
-                                            <img className="image_container_user"
-                                                 src={people}
-                                                 alt="people" width="35" height="35"/>
-                                        )}
-                                    </div>
-                                    <div
-                                        className="user_drop_bar cursor-pointer"
-                                        onClick={() => setOpen((prev) => !prev)}
-                                    >
-                                        <img
-                                            src={white_arrow_down}
-                                            className="search_logo_home_page"
-                                            alt="arrow"
-                                            style={{width: '24px', height: '24px'}}
-                                        />
-                                    </div>
-                                    {open && (
-                                        <div className="absolute right-0 top-full mt-2 w-40 bg-darkpurple rounded-lg shadow-lg z-50">
-                                            <ul className="flex flex-col text-gray-800">
-                                                <li className="flex flex-row items-center gap-2 px-4 py-2
-                                                font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
-                                                    onClick={() => {
-                                                        navigate("/profile");
-                                                        setOpen(prev => !prev);
-                                                    }}>
-                                                    <img
-                                                        src={profile}
-                                                        width="22px"
-                                                        height="22px"
-                                                        alt="arrow"
-                                                    />
-                                                    Profile
-                                                </li>
-                                                <li className="flex flex-row items-center gap-2 px-4 py-2
-                                                font-semibold hover:bg-purple cursor-pointer rounded-lg text-lightpurple"
-                                                onClick={() => Logout()}
-                                                >
-                                                    <img
-                                                        src={logout2}
-                                                        width="22px"
-                                                        height="22px"
-                                                        alt="arrow"
-                                                    />
-                                                    Logout
-                                                </li>
-                                            </ul>
+                                {/* Права частина шапки з макету: Get Pro, тема, сповіщення, меню користувача */}
+                                <div className="hdr_right">
+                                    <button className="hdr_get_pro" onClick={() => navigate("/subscribe")}>
+                                        <img src="/inside/tabler-crown.svg" alt="" width={24} height={24}/>
+                                        <span>Get Pro</span>
+                                    </button>
+                                    <div className="hdr_actions">
+                                        <div className="hdr_icons">
+                                            <ThemeIconButton/>
+                                            <NotificationsMenu/>
                                         </div>
-                                    )}
+                                        <UserMenu user={user} onLogout={Logout}/>
+                                    </div>
                                 </div>
                             </>
                         ) : (
