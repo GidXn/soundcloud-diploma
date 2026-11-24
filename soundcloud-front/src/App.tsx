@@ -32,12 +32,12 @@ import {usePlayerStore} from "./store/player_store.tsx";
 import UserProfilePage from "./pages/profile/UserProfilePage.tsx";
 import ForgotPasswordPage from "./pages/ForgotPassword";
 import ResetPasswordPage from "./pages/login_signup/ResetPassword";
-// import GenresPage from "./pages/main_pages/GenresPage"; // заглушка, роут вимкнено
+import GenresPage from "./pages/main_pages/GenresPage";
 import AlbumsCollectionPage from "./pages/main_pages/AlbumsCollectionPage.tsx";
-// import ArtistsPage from "./pages/main_pages/ArtistsPage"; // заглушка, роут вимкнено
-// import ChartsPage from "./pages/main_pages/ChartsPage"; // заглушка, роут вимкнено
-// import Top100Page from "./pages/main_pages/Top100Page"; // заглушка, роут вимкнено
-// import RadioPage from "./pages/main_pages/RadioPage"; // заглушка, роут вимкнено
+import ArtistsPage from "./pages/main_pages/ArtistsPage";
+import ChartsPage from "./pages/main_pages/ChartsPage";
+import Top100Page from "./pages/main_pages/Top100Page";
+import RadioPage from "./pages/main_pages/RadioPage";
 import StartedPage from "./pages/started_page/StartedPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NotFoundPage from "./pages/not_found_page/NotFoundPage.tsx";
@@ -99,11 +99,11 @@ export default function App() {
                     <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
                     <Route path="/user/:id" element={<UserProfilePage />} />
                     <Route path="/set-password" element={<SetPassword />} />
-                    {/* <Route path="/genres" element={<GenresPage />} />
+                    <Route path="/genres" element={<GenresPage />} />
                     <Route path="/artists" element={<ArtistsPage />} />
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
-                    <Route path="/radio" element={<RadioPage />} /> */}
+                    <Route path="/radio" element={<RadioPage />} />
                 </Route>
 
                 {/*  Адмінка (ОКРЕМО, без Layout, Protected to Role 2) */}
