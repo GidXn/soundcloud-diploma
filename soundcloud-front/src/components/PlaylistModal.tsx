@@ -5,6 +5,7 @@ import {playlistService} from "../services/playlistApi.ts";
 import "../styles/playlist_modal.css"
 import {IUser} from "../types/user.ts";
 import {getCurrentUser} from "../services/User/user_info.ts";
+import { API_ORIGIN } from "../env/index";
 
 
 interface PlaylistModalProps {
@@ -81,7 +82,6 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
         if (!isOpen) return;
         playlistService.getAll()
             .then((data) => {
-                console.log("Playlists from API:", data);
                 setPlaylists(data);
             })
             .catch(console.error);
@@ -98,7 +98,6 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
             formData.append("name", playlistName);
 
             if (currentTrack.imageUrl) {
-                console.log("Image" + currentTrack.imageUrl);
                 formData.append("coverUrl", currentTrack.imageUrl);
             }
 
@@ -109,7 +108,7 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
             await playlistService.addTrack(newPlaylist.id, currentTrack.id);
 
             // Update local state
-            setPlaylists((prev: any) => [...prev, newPlaylist]);
+            setPlaylists((prev) => [...prev, newPlaylist]);
             setTrackCounts(prev => ({...prev, [newPlaylist.id]: 1}));
 
             // Clear the inputs and close the form
@@ -124,12 +123,12 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
 
     const getPlaylistImageUrl = (pl: IPlaylist) => {
         if (!pl.coverUrl) return "/default-cover.png";
-        return `http://localhost:5122${pl.coverUrl}`;
+        return `${API_ORIGIN}${pl.coverUrl}`;
     };
 
     const getCurrentTrackImageUrl = (track: ITrack | null): string | null => {
         if (!track) return null;
-        return track.imageUrl ? `http://localhost:5122${track.imageUrl}` : null;
+        return track.imageUrl ? `${API_ORIGIN}${track.imageUrl}` : null;
     };
 
     const handleAddToPlaylist = async (playlistId: number) => {

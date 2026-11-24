@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import "../../styles/login_signup/background.css";
 import "../../styles/login_signup/forgot_password.css";
+import { API_BASE_URL } from "../../env/index";
 
 const ForgotPasswordPage: React.FC = () => {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ const ForgotPasswordPage: React.FC = () => {
         e.preventDefault();
         try {
             setIsLoading(true);
-            await axios.post("http://localhost:5122/api/user/forgot-password", { email });
+            await axios.post(`${API_BASE_URL}/user/forgot-password`, { email });
             setIsLoading(false);
             alert("If the address is registered, you will receive an email with further instructions.");
             navigate("/login");

@@ -1,3 +1,6 @@
+/* NOT IN FIGMA — kept for reference, not routed. The old playlist player screen (absolute layout,
+   overflowed below 1920px). /play-playlist/:id now uses the playlist layout from Figma
+   «Charts when click»: see pages/detail/PlaylistPage.tsx. */
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
 import "../../styles/play_album/layout.css"
@@ -14,7 +17,7 @@ import play from "../../images/player/play_icon.png";
 import {playlistService} from "../../services/playlistApi.ts";
 import {IPlaylist} from "../../types/playlist.ts";
 
-const PlayPlaylistPage: React.FC = () => {
+const PlayPlaylistPageLegacy: React.FC = () => {
     const {id} = useParams<{ id: string }>();
     const [playlist, setPlaylist] = useState<IPlaylist | null>(null);
 
@@ -168,4 +171,4 @@ const PlayPlaylistPage: React.FC = () => {
     );
 };
 
-export default PlayPlaylistPage;
+export default PlayPlaylistPageLegacy;

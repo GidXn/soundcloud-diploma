@@ -11,11 +11,32 @@ import {NotificationsMenu, ThemeIconButton, UserMenu} from "../people/HeaderMenu
 
 
 // import logoWave from "../../images/logo/logo_WaveCloud.png";
+import MobileMenu from "./MobileMenu.tsx";
+import {avatarUrl} from "../people/peopleUtils";
+
+const PHONE_QUERY = "(max-width: 640px)";
 
 
 const Header: React.FC = () => {
     const [user, setUser] = useState<IUser | null>(null);
     const isPro = useSubscriptionStore((s) => s.plan !== "free");
+
+    const [open, setOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [isPhone, setIsPhone] = useState(
+        () => typeof window !== "undefined" && window.matchMedia(PHONE_QUERY).matches
+    );
+
+    useEffect(() => {
+        const mq = window.matchMedia(PHONE_QUERY);
+        const onChange = (e: MediaQueryListEvent) => {
+            setIsPhone(e.matches);
+            setOpen(false);
+            setSearchOpen(false);
+        };
+        mq.addEventListener("change", onChange);
+        return () => mq.removeEventListener("change", onChange);
+    }, []);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -39,20 +60,16 @@ const Header: React.FC = () => {
         logout();
         navigate("/");
     }
-    console.log("header user", user);
     return (
         <>
-            <div className="max-w-screen-full-xl">
-
-                <header className="header_container_main" style={{justifyContent: 'space-between'}}>
-                        <div className="header_logo">
-                            <img src="/logo_Allurew.png" alt="logo"/>
-                        </div>
+            <header className="header_container_main" style={{justifyContent: 'space-between'}}>
+                        {/* Figma: text logo «Allure», Princess Sofia 40 */}
+                        <div className="header_logo" aria-label="Allure">Allure</div>
 
                         {isLogin ? (
                             <>
                                 {/* Search section in the middle */}
-                                <div className="search_container_home_page">
+                                <div className={`search_container_home_page ${searchOpen ? "is-open" : ""}`}>
                                     <div className="search_bar_home_page">
                                         <img src="/inside/material-symbols-search.svg"
                                              className="search_logo_home_page"
@@ -60,13 +77,31 @@ const Header: React.FC = () => {
                                         <input type="text"
                                                placeholder="Search"
                                                className="search_input_home_page"
+                                               autoFocus={searchOpen}
                                                onKeyDown={(e) => {
                                                    const value = e.currentTarget.value.trim();
                                                    if (e.key === "Enter" && value) {
+                                                       setSearchOpen(false);
                                                        navigate(`/search-page?q=${encodeURIComponent(value)}`);
                                                    }
                                                }}/>
                                     </div>
+                                </div>
+
+                                {/* Phone-only actions (Figma mobile header): search toggle, notifications, avatar -> side menu */}
+                                <div className="header_mobile_actions">
+                                    <button type="button"
+                                            className="header_icon_btn"
+                                            aria-label="Search"
+                                            aria-expanded={searchOpen}
+                                            onClick={() => setSearchOpen(prev => !prev)}>
+                                        <img src="/inside/material-symbols-search.svg" alt=""/>
+                                    </button>
+                                    <NotificationsMenu/>
+                                    <button type="button" className="header_phone_avatar" aria-label="User menu"
+                                            onClick={() => setOpen(true)}>
+                                        <img src={avatarUrl(user?.avatar)} referrerPolicy="no-referrer" alt=""/>
+                                    </button>
                                 </div>
 
                                 {/* Right side of the header from the design: Get Pro, theme, notifications, user menu */}
@@ -98,8 +133,16 @@ const Header: React.FC = () => {
                                 </button>
                             </div>
                         )}
-                </header>
-            </div>
+            </header>
+            {isLogin && (
+                <MobileMenu
+                    open={open && isPhone}
+                    onClose={() => setOpen(false)}
+                    onLogout={() => { setOpen(false); Logout(); }}
+                    username={user?.username}
+                    avatarSrc={avatarUrl(user?.avatar)}
+                />
+            )}
         </>
     );
 };

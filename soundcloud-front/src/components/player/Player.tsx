@@ -4,9 +4,11 @@ import "../../styles/player/player.css";
 import { ITrack } from "../../types/track.ts";
 import { usePlayerStore } from "../../store/player_store.tsx";
 import api from "../../utilities/axiosInstance.ts";
-import { trackService } from "../../services/trackApi.ts";
+// used only by the commented-out like button (not in the design)
+// import { trackService } from "../../services/trackApi.ts";
 import { PlaylistModal } from "../PlaylistModal.tsx";
 import { TrackProgress } from "./TrackProgress";
+import { API_ORIGIN } from "../../env/index";
 
 interface PlayerProps {
     // kept for compatibility with Layout
@@ -55,12 +57,14 @@ const QueueIcon = () => (
         <circle cx="16" cy="17.5" r="2" fill="currentColor" />
     </svg>
 );
+/* Like button is not in the Figma player, see the commented-out button below.
 const HeartIcon = ({ filled }: { filled: boolean }) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor"
          strokeWidth="1.6" strokeLinejoin="round" aria-hidden>
         <path d="M12 20s-7.5-4.6-9.3-9.2C1.5 7.6 3.6 4.5 6.9 4.5c2 0 3.4 1.1 5.1 3 1.7-1.9 3.1-3 5.1-3 3.3 0 5.4 3.1 4.2 6.3C19.5 15.4 12 20 12 20z" />
     </svg>
 );
+*/
 const VolumeIcon = ({ muted }: { muted: boolean }) => (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
         <path d="M2 9.5A1.5 1.5 0 0 1 3.5 8H7l5.2-4.3c.7-.5 1.8 0 1.8.9v14.8c0 .9-1.1 1.4-1.8.9L7 16H3.5A1.5 1.5 0 0 1 2 14.5z" />
@@ -86,11 +90,11 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
     const volume = usePlayerStore((state) => state.volume);
     const setVolume = usePlayerStore((state) => state.setVolume);
     const refreshHistory = usePlayerStore((state) => state.refreshHistory);
-    const addToHistory = usePlayerStore((state) => state.addToHistory);
+    // const addToHistory = usePlayerStore((state) => state.addToHistory); // like button only
 
     const [modalOpen, setModalOpen] = useState(false);
     const [loop, setLoop] = useState(false);
-    const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]);
+    // const [likedTracksIds, setLikedTracksIds] = useState<number[]>([]); // like button not in the design
     const [lastVolume, setLastVolume] = useState(1);
 
     // Lock page scroll while the queue modal is open
@@ -105,16 +109,16 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
     useEffect(() => {
         if (!audioRef.current || !track) return;
         api.post(`/Track/${track.id}/play`).catch(() => undefined);
-        audioRef.current.src = `http://localhost:5122${track.url}`;
+        audioRef.current.src = `${API_ORIGIN}${track.url}`;
         audioRef.current.volume = volume;
-        audioRef.current.play().catch((err) => console.log(err));
+        audioRef.current.play().catch((err) => console.error(err));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [track]);
 
     // Pause/play control
     useEffect(() => {
         if (!audioRef.current) return;
-        if (isPlaying) audioRef.current.play().catch((err) => console.log(err));
+        if (isPlaying) audioRef.current.play().catch((err) => console.error(err));
         else audioRef.current.pause();
     }, [isPlaying, audioRef]);
 
@@ -122,16 +126,19 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
         refreshHistory();
     }, [refreshHistory]);
 
+    /* Like button is not in the Figma player: its state is commented out too.
     useEffect(() => {
         trackService.getAll()
             .then((data) => setLikedTracksIds(data.filter((t) => t.isLikedByCurrentUser).map((t) => t.id)))
             .catch((err) => console.error(err));
     }, []);
+    */
 
     if (!track) return null; // nothing is selected: no player
 
-    const getTrackImageUrl = (t: ITrack) => (t.imageUrl ? `http://localhost:5122${t.imageUrl}` : "/default-cover.png");
+    const getTrackImageUrl = (t: ITrack) => (t.imageUrl ? `${API_ORIGIN}${t.imageUrl}` : "/default-cover.png");
 
+    /* Like button is not in the Figma player.
     const isLiked = likedTracksIds.includes(track.id) || !!track.isLikedByCurrentUser;
 
     const toggleLike = async (t: ITrack) => {
@@ -150,6 +157,7 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
             console.error("Error liking track:", err);
         }
     };
+    */
 
     const toggleMute = () => {
         if (volume > 0) {
@@ -194,6 +202,8 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
                     <div className="player_right">
                         <TrackProgress audioRef={audioRef} track={track}>
                             <div className="player_actions">
+                                {/* Not in the Figma player (Frame 1104: repeat, shuffle, queue, volume only).
+                                    Commented out instead of removed; likes stay available in the track lists.
                                 <button
                                     className={`player_icon_btn${isLiked ? " is_active" : ""}`}
                                     onClick={() => toggleLike(track)}
@@ -203,6 +213,7 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
                                 >
                                     <HeartIcon filled={isLiked} />
                                 </button>
+                                */}
                                 <button
                                     className={`player_icon_btn${loop ? " is_active" : ""}`}
                                     onClick={() => setLoop((v) => !v)}

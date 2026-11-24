@@ -4,6 +4,7 @@ import { PlayerContextType } from "../types/player_context";
 import { ITrack } from "../types/track";
 import api from "../utilities/axiosInstance.ts";
 import { createRef } from "react";
+import { API_BASE_URL, API_ORIGIN } from "../env/index";
 
 export const usePlayerStore = create<PlayerContextType>((set, get) => ({
     track: null,
@@ -28,7 +29,7 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
         set({ track, isPlaying: false });
         const audio = get().audioRef.current;
         if (autoplay && audio && track) {
-            audio.src = `http://localhost:5122${track.url}`;
+            audio.src = `${API_ORIGIN}${track.url}`;
             audio.play().catch(console.error);
         }
     },
@@ -53,12 +54,12 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
         // 🔹 Autoplay via the global audioRef
         const audio = get().audioRef.current;
         if (audio) {
-            audio.src = `http://localhost:5122${track.url}`;
+            audio.src = `${API_ORIGIN}${track.url}`;
             audio.play().catch(console.error);
         }
 
         // A POST to /play can be added here if needed
-        api.post(`http://localhost:5122/api/Track/${track.id}/play`).catch(console.error);
+        api.post(`${API_BASE_URL}/Track/${track.id}/play`).catch(console.error);
     },
 
     playAlbum: (album, tracks = []) => {
@@ -78,11 +79,11 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
 
         const audio = get().audioRef.current;
         if (audio) {
-            audio.src = `http://localhost:5122${firstTrack.url}`;
+            audio.src = `${API_ORIGIN}${firstTrack.url}`;
             audio.play().catch(console.error);
         }
 
-        api.post(`http://localhost:5122/api/Track/${firstTrack.id}/play`).catch(console.error);
+        api.post(`${API_BASE_URL}/Track/${firstTrack.id}/play`).catch(console.error);
     },
 
     togglePlay: () => {
@@ -168,7 +169,7 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
 
         const audio = get().audioRef.current;
         if (audio) {
-            audio.src = `http://localhost:5122${track.url}`;
+            audio.src = `${API_ORIGIN}${track.url}`;
             audio.play().catch(console.error);
         }
     },
@@ -183,7 +184,7 @@ export const usePlayerStore = create<PlayerContextType>((set, get) => ({
 
         const audio = get().audioRef.current;
         if (audio) {
-            audio.src = `http://localhost:5122${track.url}`;
+            audio.src = `${API_ORIGIN}${track.url}`;
             audio.play().catch(console.error);
         }
     },

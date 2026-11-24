@@ -4,6 +4,7 @@ import Header from "./Header.tsx";
 import Footer from "./Footer.tsx";
 import Sidebar from "./Sidebar.tsx";
 import Player from "../player/Player.tsx";
+import MobileTabBar from "./MobileTabBar.tsx";
 import "../../styles/General.css";
 import "../../index.css";
 
@@ -14,7 +15,7 @@ const Layout: React.FC = () => {
     const getBackgroundImage = useMemo(() => {
         const path = location.pathname;
 
-        if (path.startsWith('/home')) return 'music-bg.png';
+        if (path.startsWith('/home')) return 'home-bg.png';
         if (path.startsWith('/music')) return 'music-bg.png';
         if (path.startsWith('/feed')) return 'music-bg.png'; // Using music-bg.png for feed
         if (path.startsWith('/library')) return 'music-bg.png'; // Using music-bg.png for library
@@ -39,7 +40,7 @@ const Layout: React.FC = () => {
             <Sidebar />
             <div className="layout_container">
                 <div className="main_content_wrapper" style={contentStyle}>
-                    <div>
+                    <div className="page_grid">
                         <Header/>
                     </div>
 
@@ -51,6 +52,7 @@ const Layout: React.FC = () => {
                     </div>
                     <Player footerSelector=".footer_container" />
                 </div>
+                <MobileTabBar />
             </div>
         </>
     );

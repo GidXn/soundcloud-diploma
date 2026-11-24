@@ -2,15 +2,16 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Space, message, Modal, Input, Form } from "antd";
 import { adminApi } from "../../services/adminApi";
+import { AdminAlbum } from "../../types/admin";
 
 const AlbumsPage = () => {
-    const [albums, setAlbums] = useState<any[]>([]);
+    const [albums, setAlbums] = useState<AdminAlbum[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [isEditModalVisible, setIsEditModalVisible] = useState(false);
     const [form] = Form.useForm();
     const [editForm] = Form.useForm();
-    const [editingAlbum, setEditingAlbum] = useState<any | null>(null);
+    const [editingAlbum, setEditingAlbum] = useState<AdminAlbum | null>(null);
 
     const loadAlbums = async () => {
         setLoading(true);
@@ -44,13 +45,13 @@ const AlbumsPage = () => {
             setIsModalVisible(false);
             form.resetFields();
             loadAlbums();
-        } catch (err) {
+        } catch {
             message.error("Failed to create album");
         }
     };
 
     // ===== Edit =====
-    const handleEditOpen = (album: any) => {
+    const handleEditOpen = (album: AdminAlbum) => {
         setEditingAlbum(album);
         editForm.setFieldsValue({
             title: album.title,
@@ -106,7 +107,7 @@ const AlbumsPage = () => {
         { title: "Owner", dataIndex: ["owner", "username"] },
         {
             title: "Actions",
-            render: (_: any, record: any) => (
+            render: (_: unknown, record: AdminAlbum) => (
                 <Space>
                     <Button onClick={() => handleEditOpen(record)}>Edit</Button>
                     <Button danger onClick={() => handleDelete(record.id)}>Delete</Button>
@@ -114,8 +115,8 @@ const AlbumsPage = () => {
                         onClick={() => {
                             const fileInput = document.createElement("input");
                             fileInput.type = "file";
-                            fileInput.onchange = (e: any) => {
-                                const file = e.target.files[0];
+                            fileInput.onchange = (e: Event) => {
+                                const file = (e.target as HTMLInputElement | null)?.files?.[0];
                                 if (file) handleUploadCover(record.id, file);
                             };
                             fileInput.click();

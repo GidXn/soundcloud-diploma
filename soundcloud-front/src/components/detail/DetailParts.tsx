@@ -281,15 +281,29 @@ export const ShowMoreButton: React.FC<{ onClick: () => void }> = ({ onClick }) =
     </button>
 );
 
+export const ChevronButton: React.FC<{
+    dir: "left" | "right";
+    onClick: () => void;
+    disabled?: boolean;
+    className?: string;
+    style?: React.CSSProperties;
+}> = ({ dir, onClick, disabled, className = "", style }) => (
+    <button className={`detail_carousel_arrow static ${className}`} style={style} onClick={onClick} disabled={disabled} aria-label={dir === "left" ? "Back" : "Next"}>
+        <ChevronIcon dir={dir} />
+    </button>
+);
+
 // ---------- Horizontal carousel with arrows and a progress bar ----------
 interface CarouselProps {
     title: string;
     action?: React.ReactNode;   // «See all» button to the right of the heading
     variant: "cards" | "cards-lg" | "artists";
+    className?: string;         // page-specific sizing (Home rows)
+    progress?: boolean;         // progress line under the row (not every row has it in the design)
     children: React.ReactNode;
 }
 
-export const Carousel: React.FC<CarouselProps> = ({ title, action, variant, children }) => {
+export const Carousel: React.FC<CarouselProps> = ({ title, action, variant, className = "", progress: showProgress = true, children }) => {
     const ref = useRef<HTMLDivElement>(null);
     const [progress, setProgress] = useState({ left: 0, width: 1 });
 
@@ -316,7 +330,7 @@ export const Carousel: React.FC<CarouselProps> = ({ title, action, variant, chil
     const scrollable = progress.width < 1;
 
     return (
-        <section className={`detail_section detail_carousel detail_carousel_${variant}`}>
+        <section className={`detail_section detail_carousel detail_carousel_${variant} ${className}`}>
             <div className="detail_section_head">
                 <h2 className="detail_section_title">{title}</h2>
                 {action}
@@ -336,9 +350,11 @@ export const Carousel: React.FC<CarouselProps> = ({ title, action, variant, chil
                     </>
                 )}
             </div>
-            <div className="detail_progress">
-                <span style={{ left: `${progress.left * 100}%`, width: `${progress.width * 100}%` }} />
-            </div>
+            {showProgress && (
+                <div className="detail_progress">
+                    <span style={{ left: `${progress.left * 100}%`, width: `${progress.width * 100}%` }} />
+                </div>
+            )}
         </section>
     );
 };
@@ -374,7 +390,7 @@ export const ArtistCard: React.FC<{ name: string; photo: string; onClick: () => 
 );
 
 // «Artists» block with a «See all» button, the same on all pages
-export const ArtistsCarousel: React.FC<{ tracks: ITrack[]; exclude?: string }> = ({ tracks, exclude }) => {
+export const ArtistsCarousel: React.FC<{ tracks: ITrack[]; exclude?: string; className?: string }> = ({ tracks, exclude, className }) => {
     const navigate = useNavigate();
     const artists = buildArtists(tracks).filter((a) => a.name !== exclude).slice(0, 18);
     if (artists.length === 0) return null;
@@ -382,6 +398,7 @@ export const ArtistsCarousel: React.FC<{ tracks: ITrack[]; exclude?: string }> =
         <Carousel
             title="Artists"
             variant="artists"
+            className={className}
             action={<button className="detail_see_all" onClick={() => navigate("/artists")}>See all</button>}
         >
             {artists.map((a) => (

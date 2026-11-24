@@ -1,0 +1,456 @@
+/* Profiles from Figma (1920px frames, content column 1528px):
+   «profile» 2304:19314 (own profile = settings) and «profile PEOPLE» 2649:647 (another user). */
+
+.profile_figma_page {
+    display: flex;
+    flex-direction: column;
+    color: #FFF;
+}
+.profile_figma_page button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+/* ---------- Hero: banner 1528 x 250 r 20, avatar 142 overlapping by 52 ---------- */
+.profile_hero {
+    position: relative;
+    height: 340px;
+    flex-shrink: 0;
+}
+.profile_hero_banner {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    border-radius: 20px;
+}
+.profile_hero_avatar {
+    position: absolute;
+    top: 198px;
+    left: 49px;
+    width: 142px;
+    height: 142px;
+}
+.profile_hero_own .profile_hero_avatar { left: 64px; }
+.profile_hero_avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    background: #FFF;
+}
+.profile_hero_online {
+    position: absolute;
+    left: 105px;
+    top: 119px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00FF00;
+}
+/* name row: PEOPLE 205 from the left, Follow 58 from the right, 51 high at y 266;
+   own profile: name at x 222, y 260 */
+.profile_hero_row {
+    position: absolute;
+    left: 205px;
+    right: 58px;
+    top: 266px;
+    height: 51px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+}
+.profile_hero_own .profile_hero_row {
+    left: 222px;
+    top: 260px;
+    height: 26px;
+}
+.profile_hero_name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 26px;
+}
+
+/* Follow: 185 x 51, r 10, «gradien» #6D28D9 -> #1D4ED8 at 30% + glass */
+.profile_figma_page .profile_follow_btn {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 185px;
+    height: 51px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(109, 40, 217, 0.3) 0%, rgba(29, 78, 216, 0.3) 100%);
+    backdrop-filter: blur(4px);
+    font-size: 20px;
+    line-height: 26px;
+    transition: filter 0.15s ease;
+}
+.profile_figma_page .profile_follow_btn:hover { filter: brightness(1.4); }
+.profile_figma_page .profile_follow_btn.is_following { background: rgba(255, 255, 255, 0.2); }
+
+/* ---------- Tabs: Regular 20, 64 apart, 32 under the hero ---------- */
+.profile_tabs {
+    display: flex;
+    gap: 64px;
+    margin-top: 32px;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.profile_tabs::-webkit-scrollbar { display: none; }
+.profile_figma_page .profile_tab {
+    flex-shrink: 0;
+    font-size: 20px;
+    line-height: 26px;
+    white-space: nowrap;
+    opacity: 0.85;
+}
+.profile_figma_page .profile_tab:hover { opacity: 1; }
+.profile_figma_page .profile_tab.active {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+}
+
+/* ---------- Content (1132) + people panel (332), 64 apart, 40 under the tabs ---------- */
+.profile_body {
+    display: flex;
+    align-items: flex-start;
+    gap: 64px;
+    margin-top: 40px;
+}
+.profile_main {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+.profile_body .people_panel { flex-shrink: 0; }
+.profile_cards {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 28px;
+}
+.profile_cards .detail_card { width: auto; }
+.profile_cards .detail_card_title { max-width: 100%; }
+
+/* ---------- Recent card ---------- */
+.recent_card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 32px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(155, 93, 229, 0.3) 0%, rgba(241, 91, 181, 0.3) 100%);
+    backdrop-filter: blur(4px);
+}
+.recent_head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+.recent_label { font-size: 20px; line-height: 26px; }
+.recent_date { font-size: 15px; line-height: 19px; }
+
+.recent_row {
+    display: flex;
+    gap: 24px;
+}
+.profile_figma_page .recent_cover {
+    flex-shrink: 0;
+    width: 173px;
+    height: 173px;
+    border-radius: 13px;
+    overflow: hidden;
+}
+.recent_cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.recent_info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 23px;
+}
+.recent_top { display: flex; flex-direction: column; gap: 32px; }
+.recent_title_row { display: flex; align-items: center; gap: 21px; min-width: 0; }
+
+/* play: 55 circle, #FFF -> #999 at 30% + glass, triangle #53007F */
+.profile_figma_page .recent_play {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(153, 153, 153, 0.3) 100%);
+    backdrop-filter: blur(4px);
+    transition: filter 0.15s ease;
+}
+.profile_figma_page .recent_play:hover { filter: brightness(1.3); }
+.profile_figma_page .recent_play:disabled { opacity: 0.5; cursor: default; }
+
+.recent_names { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.recent_owner, .recent_title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recent_owner { font-size: 20px; line-height: 26px; }
+.recent_title { font-size: 15px; font-weight: 700; line-height: 19px; }
+
+/* progress: 2px black line, 4px gradient fill, 14px knob */
+.recent_progress {
+    position: relative;
+    height: 14px;
+}
+.recent_progress::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 6px;
+    height: 2px;
+    background: #000;
+}
+.recent_progress_fill {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    height: 4px;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #6D28D9 0%, #1D4ED8 100%);
+}
+.recent_progress_knob {
+    position: absolute;
+    top: 0;
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    border-radius: 50%;
+    background: #D9D9D9;
+}
+
+/* tracks: rows 48 (8 + 32 + 8), line #64707C; author column 601 from the left, time at the right */
+.recent_tracks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.recent_track {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 226px 44px;
+    align-items: center;
+    height: 48px;
+    border-bottom: 1px solid #64707C;
+}
+.recent_track:last-child { border-bottom: 0; }
+.profile_figma_page .recent_track_main {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+    text-align: left;
+}
+.recent_track_index { width: 13px; flex-shrink: 0; font-size: 14px; font-weight: 500; line-height: 18px; }
+.recent_track_cover { width: 32px; height: 32px; border-radius: 9px; object-fit: cover; flex-shrink: 0; }
+.recent_track_title {
+    margin-left: 8px; /* 16 from the cover */
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.recent_track_main:hover .recent_track_title { text-decoration: underline; }
+.recent_track.active .recent_track_title { color: #D786FF; }
+.recent_track_author,
+.recent_track_time {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.recent_track_time { text-align: right; }
+
+.recent_footer { display: flex; flex-direction: column; gap: 20px; }
+.profile_figma_page .recent_view_all {
+    align-self: flex-start;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 18px;
+}
+.profile_figma_page .recent_view_all:hover { text-decoration: underline; }
+.recent_actions { display: flex; gap: 16px; }
+.profile_figma_page .recent_action {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 32px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);
+    transition: background 0.15s ease;
+}
+.profile_figma_page .recent_action:hover { background: rgba(255, 255, 255, 0.3); }
+.profile_figma_page .recent_action.on { background: rgba(215, 134, 255, 0.45); }
+
+/* ---------- Own profile: settings list (Figma «profile», Frame 506) ---------- */
+.profile_own_page .profile_hero { margin-top: -6px; } /* banner 58 under the header in this frame */
+.profile_settings {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 64px;
+}
+.settings_list {
+    border: 1px solid #3A3146;
+    border-radius: 20px;
+    background: rgba(46, 38, 56, 0.5);
+    backdrop-filter: blur(4px);
+    overflow: hidden;
+}
+.settings_item + .settings_item { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.profile_figma_page .settings_head {
+    width: 100%;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px;
+    text-align: left;
+}
+.settings_head_left { display: flex; align-items: center; gap: 15px; min-width: 0; }
+.settings_icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(209, 50, 255, 0.4);
+    backdrop-filter: blur(4px);
+}
+.settings_title { font-size: 14px; line-height: 17px; color: #F6F4F4; }
+.settings_chevron { flex-shrink: 0; transition: transform 0.2s ease; }
+.settings_item.open .settings_chevron { transform: rotate(90deg); }
+
+/* The expanded state is not drawn in Figma: fields reuse the design's input (subscribe promo code) */
+.settings_body {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 30px 24px 85px;
+}
+.settings_field { display: flex; flex-direction: column; gap: 8px; max-width: 452px; }
+.settings_field_label { font-size: 14px; line-height: 17px; color: #B8B8B8; }
+.settings_input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 51px;
+    padding: 11px 12px;
+    font: inherit;
+    font-size: 16px;
+    color: #FFF;
+    background: rgba(26, 21, 33, 0.5);
+    border: 1px solid #524A63;
+    border-radius: 10px;
+    outline: none;
+    order: 0;
+}
+.settings_input:focus { border-color: #C238EB; }
+textarea.settings_input { height: 102px; resize: vertical; }
+.settings_file { display: flex; align-items: center; gap: 16px; font-size: 14px; color: #B8B8B8; }
+.profile_figma_page .settings_file_btn {
+    height: 40px;
+    padding: 0 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.2);
+    color: #FFF;
+}
+.settings_note { margin: 0; font-size: 14px; line-height: 18px; color: #B8B8B8; }
+.settings_check { display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer; }
+.settings_check input { order: 0; width: 18px; height: 18px; accent-color: #D132FF; }
+
+.settings_actions { display: flex; align-items: center; gap: 16px; }
+
+/* Send: 220 x 50, r 10, «gradien» at 30% */
+.profile_figma_page .settings_send {
+    width: 220px;
+    height: 50px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(109, 40, 217, 0.3) 0%, rgba(29, 78, 216, 0.3) 100%);
+    backdrop-filter: blur(4px);
+    font-size: 20px;
+    line-height: 26px;
+    transition: filter 0.15s ease;
+}
+.profile_figma_page .settings_send:hover { filter: brightness(1.4); }
+.profile_figma_page .settings_send:disabled { opacity: 0.5; cursor: default; }
+.settings_status { font-size: 14px; color: #B8B8B8; }
+.settings_status.error { color: #FF6B8B; }
+
+/* ---------- Narrower screens ---------- */
+@media (max-width: 1600px) {
+    .profile_cards { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 1279px) {
+    .profile_body { flex-direction: column; align-items: stretch; }
+    .profile_body .people_panel { width: 100%; }
+    .profile_tabs { gap: 32px; }
+}
+@media (max-width: 900px) {
+    .recent_track { grid-template-columns: minmax(0, 1fr) 140px 36px; }
+    .profile_cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 640px) {
+    .profile_hero { height: auto; display: flex; flex-direction: column; align-items: center; }
+    .profile_hero_banner { height: 140px; }
+    .profile_hero_avatar,
+    .profile_hero_own .profile_hero_avatar {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 112px;
+        height: 112px;
+        margin-top: -56px;
+    }
+    .profile_hero_online { left: 82px; top: 92px; width: 16px; height: 16px; }
+    .profile_hero_row,
+    .profile_hero_own .profile_hero_row {
+        position: static;
+        height: auto;
+        margin-top: 12px;
+        flex-direction: column;
+        gap: 12px;
+    }
+    .profile_tabs { gap: 24px; margin-top: 24px; }
+    .profile_figma_page .profile_tab { font-size: 16px; line-height: 20px; }
+    .profile_body { margin-top: 24px; gap: 32px; }
+    .recent_card { padding: 16px; }
+    .recent_row { flex-direction: column; }
+    .profile_figma_page .recent_cover { width: 100%; height: auto; aspect-ratio: 1; }
+    .recent_track { grid-template-columns: minmax(0, 1fr) 36px; }
+    .recent_track_author { display: none; }
+    .profile_cards { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .profile_figma_page .settings_head { padding: 0 16px; }
+    .settings_body { padding: 0 16px 20px; }
+}

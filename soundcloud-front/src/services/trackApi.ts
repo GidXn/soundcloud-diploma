@@ -66,7 +66,6 @@ export const trackService = {
             formData.append("Cover", cover);
             formData.append("GenreId", genreId.toString());
 
-            console.log("Uploading track:", { title, albumIds, file, cover, genreId });
 
             const res = await api.post("/Track/create-file", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -83,7 +82,6 @@ export const trackService = {
             headers: { "Content-Type": "multipart/form-data" },
 
         });
-        console.log(formData)
         return data;
     },
 
@@ -100,6 +98,11 @@ export const trackService = {
             console.error(`Failed to delete track with id ${id}`, error);
             throw error;
         }
+    },
+    // Liked tracks of any user (LIKES block in another user's profile)
+    async getLikedByUser(userId: number): Promise<ITrack[]> {
+        const res = await api.get<ITrack[]>(`/Track/liked/${userId}`);
+        return res.data;
     },
     async getLikedTracks(): Promise<ITrack[]> {
         try {

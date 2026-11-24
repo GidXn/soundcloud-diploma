@@ -2,9 +2,10 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Space, message, Modal, Input, Form } from "antd";
 import { adminApi } from "../../services/adminApi";
+import { AdminPlaylist } from "../../types/admin";
 
 const PlaylistsPage = () => {
-    const [playlists, setPlaylists] = useState<any[]>([]);
+    const [playlists, setPlaylists] = useState<AdminPlaylist[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [form] = Form.useForm();
@@ -40,7 +41,7 @@ const PlaylistsPage = () => {
             setIsModalVisible(false);
             form.resetFields();
             loadPlaylists();
-        } catch (err) {
+        } catch {
             message.error("Failed to create playlist");
         }
     };
@@ -69,15 +70,15 @@ const PlaylistsPage = () => {
         { title: "Owner", dataIndex: ["owner", "username"] },
         {
             title: "Actions",
-            render: (_: any, record: any) => (
+            render: (_: unknown, record: AdminPlaylist) => (
                 <Space>
                     <Button danger onClick={() => handleDelete(record.id)}>Delete</Button>
                     <Button
                         onClick={() => {
                             const fileInput = document.createElement("input");
                             fileInput.type = "file";
-                            fileInput.onchange = (e: any) => {
-                                const file = e.target.files[0];
+                            fileInput.onchange = (e: Event) => {
+                                const file = (e.target as HTMLInputElement | null)?.files?.[0];
                                 if (file) handleUploadCover(record.id, file);
                             };
                             fileInput.click();

@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { Table, Button, Space, message, Modal, Form, Input, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { adminApi } from "../../services/adminApi";
+import { AdminCategory } from "../../types/admin";
 
 const CategoriesPage = () => {
-    const [categories, setCategories] = useState<any[]>([]);
+    const [categories, setCategories] = useState<AdminCategory[]>([]);
     const [loading, setLoading] = useState(false);
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editingCategory, setEditingCategory] = useState<any | null>(null);
+    const [editingCategory, setEditingCategory] = useState<AdminCategory | null>(null);
     const [form] = Form.useForm();
 
     const loadCategories = async () => {
@@ -50,7 +51,7 @@ const CategoriesPage = () => {
             form.resetFields();
             setEditingCategory(null);
             loadCategories();
-        } catch (err) {
+        } catch {
             message.error("Failed to save category");
         }
     };
@@ -76,7 +77,7 @@ const CategoriesPage = () => {
         },
         {
             title: "Actions",
-            render: (_: any, record: any) => (
+            render: (_: unknown, record: AdminCategory) => (
                 <Space>
                     <Button
                         type="primary"

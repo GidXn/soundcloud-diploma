@@ -5,7 +5,7 @@ import "../../styles/General.css";
 
 const Footer: React.FC = () => {
     return (
-        <footer className="footer_container allure-footer">
+        <footer className="allure-footer page_grid">
             <div className="allure-footer-inner">
                 <div className="allure-footer-copy">
                     <p>© 2026 Music online platform “Allure”.</p>

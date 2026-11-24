@@ -1,6 +1,7 @@
 import { ITrack } from "../../types/track";
+import { API_ORIGIN } from "../../env/index";
 
-export const API_ORIGIN = "http://localhost:5122";
+export { API_ORIGIN };
 
 export const trackImageUrl = (track?: ITrack | null): string => {
     if (!track || !track.imageUrl) return "/default-cover.png";

@@ -5,12 +5,14 @@ import Layout_login_page from "./components/login_signup_components/Layout_login
 import HomePage from "./pages/main_pages/HomePage";
 import Login from "./pages/login_signup/Login";
 import Signup from "./pages/login_signup/Signup";
-import LibraryPage from "./pages/main_pages/LibraryPage.tsx";
+// Not in the Figma design, route commented out below:
+// import LibraryPage from "./pages/main_pages/LibraryPage.tsx";
 import ProfilePage from "./pages/profile/ProfilePage.tsx";
-import PlayAlbumPage from "./pages/play_album/PlayAlbumPage.tsx";
-import PlayPlaylistPage from "./pages/play_playlist/PlayPlaylistPage.tsx";
+// import PlayAlbumPage from "./pages/play_album/PlayAlbumPage.tsx";
+// The old playlist screen (not in Figma) is kept in pages/play_playlist/PlayPlaylistPageLegacy.tsx
+import PlaylistPage from "./pages/detail/PlaylistPage.tsx";
 import './index.css';
-import FeedPage from "./pages/main_pages/FeedPage.tsx";
+// import FeedPage from "./pages/main_pages/FeedPage.tsx";
 import MusicPage from "./pages/main_pages/MusicPage.tsx";
 import {useDispatch} from "react-redux";
 import React, {useEffect} from "react";
@@ -63,7 +65,6 @@ export default function App() {
             if (user) {
                 dispatch(setUser({ user, token }));
             }
-            console.log("init user", user);
         }
         setIsInitializing(false);
     }, [dispatch]);
@@ -102,11 +103,14 @@ export default function App() {
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
 
                     <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/library" element={<LibraryPage />} />
-                    <Route path="/feed" element={<FeedPage />} />
+                    {/* Library: no screen in the Figma design. Commented out, not removed.
+                    <Route path="/library" element={<LibraryPage />} /> */}
+                    {/* Feed: no screen in the Figma design. Commented out, not removed.
+                    <Route path="/feed" element={<FeedPage />} /> */}
                     <Route path="/search-page" element={<SearchPage/>}/>
-                    <Route path="/play-album/:id" element={<PlayAlbumPage />} />
-                    <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
+                    {/* opened only from Library; albums open on /album/:id from the design. Commented out, not removed.
+                    <Route path="/play-album/:id" element={<PlayAlbumPage />} /> */}
+                    <Route path="/play-playlist/:id" element={<PlaylistPage />} />
                     <Route path="/user/:id" element={<UserProfilePage />} />
                     <Route path="/user/:id/following" element={<FollowListPage mode="following" />} />
                     <Route path="/user/:id/followers" element={<FollowListPage mode="followers" />} />

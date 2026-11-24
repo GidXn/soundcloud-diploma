@@ -3,16 +3,17 @@ import { useEffect, useState } from "react";
 import {Table, Button, Space, message, Upload, Form, Input, Modal, InputNumber} from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { adminApi } from "../../services/adminApi";
+import { AdminTrack, TrackFormValues } from "../../types/admin";
 
 const TracksPage = () => {
-    const [tracks, setTracks] = useState<any[]>([]);
+    const [tracks, setTracks] = useState<AdminTrack[]>([]);
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const [editingTrack, setEditingTrack] = useState<any>(null);
+    const [editingTrack, setEditingTrack] = useState<AdminTrack | null>(null);
 
 // Open the modal for editing
-    const handleEdit = (track: any) => {
+    const handleEdit = (track: AdminTrack) => {
         setEditingTrack(track);
         setIsModalVisible(true);
         form.setFieldsValue({
@@ -23,7 +24,7 @@ const TracksPage = () => {
             // files are not set, they have to be selected again
         });
     };
-    const handleSave = async (values: any) => {
+    const handleSave = async (values: TrackFormValues) => {
         try {
             const { title, duration, albumId, file, cover, genreId } = values;
 
@@ -53,8 +54,8 @@ const TracksPage = () => {
                     title,
                     duration,
                     albumIdNumber,
-                    file[0].originFileObj,
-                    cover[0].originFileObj,
+                    file?.[0]?.originFileObj as File,
+                    cover?.[0]?.originFileObj as File,
                     genreIdNumber
                 );
                 message.success("Track created");
@@ -85,7 +86,7 @@ const TracksPage = () => {
         loadTracks();
     }, []);
 
-    // const handleCreate = async (values: any) => {
+    // const handleCreate = async (values: TrackFormValues) => {
     //     try {
     //         const { title, duration, albumId, file } = values;
     //         const realFile = file[0].originFileObj; // correct access
@@ -130,7 +131,7 @@ const TracksPage = () => {
         }
     };
 
-    const normFile = (e: any) => {
+    const normFile = (e: { fileList?: unknown[] } | unknown[]) => {
         if (Array.isArray(e)) {
             return e;
         }
@@ -144,11 +145,11 @@ const TracksPage = () => {
         { title: "Genre", dataIndex: "genreId" },
         {
             title: "Status",
-            render: (_: any, record: any) => (record.hidden ? "Hidden" : "Visible"),
+            render: (_: unknown, record: AdminTrack) => (record.hidden ? "Hidden" : "Visible"),
         },
         {
             title: "Actions",
-            render: (_: any, record: any) => (
+            render: (_: unknown, record: AdminTrack) => (
                 <Space>
                     <Button type="primary" onClick={() => handleEdit(record)}>
                         Edit
@@ -156,7 +157,7 @@ const TracksPage = () => {
                     <Button danger onClick={() => handleDelete(record.id)}>
                         Delete
                     </Button>
-                    <Button onClick={() => handleHideUnhide(record.id, record.hidden)}>
+                    <Button onClick={() => handleHideUnhide(record.id, !!record.hidden)}>
                         {record.hidden ? "Unhide" : "Hide"}
                     </Button>
                     <Upload

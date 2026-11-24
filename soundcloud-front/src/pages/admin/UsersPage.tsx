@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Space, message, Modal, Form, Input, Select } from "antd";
 import { adminApi } from "../../services/adminApi";
+import { AdminUser } from "../../types/admin";
 
 const { Option } = Select;
 
 const UsersPage = () => {
-    const [users, setUsers] = useState<any[]>([]);
+    const [users, setUsers] = useState<AdminUser[]>([]);
     const [loading, setLoading] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [form] = Form.useForm();
-    const [editingUser, setEditingUser] = useState<any>(null);
+    const [editingUser, setEditingUser] = useState<AdminUser | null>(null);
 
     const loadUsers = async () => {
         setLoading(true);
@@ -32,7 +33,7 @@ const UsersPage = () => {
         loadUsers();
     };
 
-    const handleEdit = (user: any) => {
+    const handleEdit = (user: AdminUser) => {
         setEditingUser(user);
         form.setFieldsValue({
             username: user.username,
@@ -48,7 +49,9 @@ const UsersPage = () => {
             const values = await form.validateFields();
 
             if (editingUser) {
-                const { password, confirmPassword, role, ...updateData } = values;
+                // password fields are not sent on update: the password is changed by the user via «Forgot password»
+                const { role, ...rest } = values;
+                const updateData = Object.fromEntries(Object.entries(rest).filter(([k]) => k !== "password" && k !== "confirmPassword"));
 
                 // Update the main data
                 await adminApi.updateUser(editingUser.id, updateData);
@@ -89,7 +92,7 @@ const UsersPage = () => {
             loadUsers();
         } catch (error) {
             message.error("Operation failed");
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -100,7 +103,7 @@ const UsersPage = () => {
         { title: "Role", dataIndex: "role" },
         {
             title: "Actions",
-            render: (_: any, record: any) => (
+            render: (_: unknown, record: AdminUser) => (
                 <Space>
                     <Button onClick={() => handleEdit(record)}>Edit</Button>
                     <Button danger onClick={() => handleDelete(record.id)}>Delete</Button>

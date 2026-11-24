@@ -6,7 +6,8 @@
     --detail-muted: #C3C4C5;
     --detail-line: #64707C;
     --detail-accent: #9E7FCF;
-    --detail-gradient: linear-gradient(90deg, #6D28D9 0%, #1D4ED8 100%);
+    /* Figma buttons (See all, Listen, «…»): «gradien» fill at 30% opacity + glass */
+    --detail-gradient: linear-gradient(90deg, rgba(109, 40, 217, 0.3) 0%, rgba(29, 78, 216, 0.3) 100%);
     --detail-glass: rgba(255, 255, 255, 0.24);
     display: flex;
     flex-direction: column;
@@ -109,11 +110,11 @@
     height: 50px;
     border-radius: 10px;
     background: var(--detail-gradient) !important;
-    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(4px);
     transition: filter 0.15s ease;
 }
 .detail_listen:hover,
-.detail_more:hover { filter: brightness(1.15); }
+.detail_more:hover { filter: brightness(1.4); }
 .detail_listen:disabled { opacity: 0.5; cursor: default; filter: none; }
 
 .detail_listen {
@@ -255,11 +256,12 @@
     padding: 16px !important;
     border-radius: 10px;
     background: var(--detail-gradient) !important;
+    backdrop-filter: blur(4px);
     font-size: 20px;
     line-height: 26px;
     transition: filter 0.15s ease;
 }
-.detail_see_all:hover { filter: brightness(1.15); }
+.detail_see_all:hover { filter: brightness(1.4); }
 
 .detail_empty {
     padding: 8px 0;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IUser } from "../../types/user";
 import { trackService } from "../../services/trackApi";
 import {
-    avatarUrl, CloseIcon, CrownIcon, FeedIcon, LibraryIcon, HeartIcon, LogoutIcon, PeopleIcon, PersonIcon, SunIcon,
+    avatarUrl, CloseIcon, CrownIcon, HeartIcon, LogoutIcon, PeopleIcon, PersonIcon, SunIcon, // FeedIcon, LibraryIcon: for the commented-out menu items
 } from "./peopleUtils";
 import "../../styles/main_pages/people/layout.css";
 
@@ -106,13 +106,15 @@ export const UserMenu: React.FC<UserMenuProps> = ({ user, onLogout }) => {
                         <button className="user_menu_item" role="menuitem" onClick={() => go("/following")}>
                             <PeopleIcon size={18} /><span>Following</span>
                         </button>
-                        {/* Library and Feed are not in the design menu; added so the pages have an entry point */}
+                        {/* Library and Feed are not in the Figma user menu (2509:176) and have no screens
+                            in the design, so the items are commented out together with their routes (App.tsx).
                         <button className="user_menu_item" role="menuitem" onClick={() => go("/library")}>
                             <LibraryIcon size={18} /><span>Library</span>
                         </button>
                         <button className="user_menu_item" role="menuitem" onClick={() => go("/feed")}>
                             <FeedIcon size={18} /><span>Feed</span>
                         </button>
+                        */}
                         <button className="user_menu_item user_menu_item_wide" role="menuitem" onClick={() => go("/favorite")}>
                             <span className="user_menu_item_main"><HeartIcon size={18} /><span>Favorite</span></span>
                             <span>({favCount})</span>

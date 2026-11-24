@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import axios from "axios";
 import "../../styles/login_signup/background.css";
 import "../../styles/login_signup/reset_password.css";
+import { API_BASE_URL } from "../../env/index";
 
 const ResetPasswordPage: React.FC = () => {
     const navigate = useNavigate();
@@ -47,16 +48,17 @@ const ResetPasswordPage: React.FC = () => {
 
         try {
             setIsLoading(true);
-            await axios.post("http://localhost:5122/api/user/reset-password", {
+            await axios.post(`${API_BASE_URL}/user/reset-password`, {
                 token,
                 newPassword,
                 confirmPassword
             });
             alert("Password has been reset successfully. You can now log in with your new password.");
             navigate("/login");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error(err);
-            setError(err.response?.data?.error || err.response?.data?.message || "Failed to reset password. The link may have expired.");
+            const data = axios.isAxiosError(err) ? (err.response?.data as { error?: string; message?: string } | undefined) : undefined;
+            setError(data?.error || data?.message || "Failed to reset password. The link may have expired.");
         } finally {
             setIsLoading(false);
         }

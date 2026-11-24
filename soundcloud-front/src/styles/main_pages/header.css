@@ -1,185 +1,33 @@
-
+/* Header of the inner pages. Figma «Frame 306»: 1528 x 60 at x=250, y=64 (1920 frame).
+   Logo 86 x 60, 43 gap, search 423 x 51 ... Get Pro 185 x 51, 43 gap, icons, 58 gap, avatar.
+   Horizontal offsets come from the shared page grid (General.css: --page-pl / --page-pr). */
 .header_container_main {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    height: 100px;
-    padding: 0 0px;
-    gap: 24px;
+    box-sizing: border-box;
+    max-width: 1528px;
+    height: 124px;
+    /* 14px: the right group ends 14px before the content edge in the design */
+    padding: 64px 14px 0 0;
+    gap: 43px;
 }
 
 .header_logo {
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-shrink: 0;
+    width: 86px;
+    height: 60px;
+    color: #FFFFFF;
+    font-family: var(--font-logo);
+    font-size: 40px;
+    font-weight: 400;
+    line-height: 60px;
+    white-space: nowrap;
+    user-select: none;
 }
 
-.header_logo img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-}
-
-.header_logo_main {
-    /* Logo */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: start;
-    padding: 0px;
-
-    width: 398px;
-    height: 32px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
-
-.header_buttons_main {
-    /* Frame 26080043 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    padding: 0px;
-    gap: 38px;
-    width: 290px;
-    height: 32px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
-}
-
-.header_profile_container_main {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 0px;
-    gap: 24px;
-    width: 398px;
-    height: 44px;
-    margin-left:120px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 2;
-    flex-grow: 0;
-}
-
-.header_profile_image_container{
-    /* Frame 26080085 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0px;
-    gap: 16px;
-
-    width: 144px;
-    height: 56px;
-    margin-right: 32px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-
-}
-.user_avatar{
-    width: 48px;
-    height: 48px;
-
-    background: #C9D4FF;
-    border-radius: 50%; /* make it round */
-    overflow: hidden;
-    /* Inside auto layout */
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-    align-content: center;
-    justify-items: center;
-}
-.image_container_user{
-    width: 100%;
-    height: 100%;
-    object-fit: cover; /* the image fills the container and is cropped */
-    display: block;
-}
-.image_container_user_not_login{
-    width: 32px;
-    height: 32px;
-    display: block;
-}
-.user_drop_bar{
-    /* ic:outline-keyboard-arrow-down */
-
-    width: 40px;
-    height: 40px;
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-}
-.user_drop_bar:hover{
-    cursor: pointer;
-}
-.user_side_bar{
-    flex-direction: row;
-}
-.message_information_container{
-    /* Frame 26080064 */
-
-    /* Auto layout */
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 0px;
-    gap: 24px;
-
-    width: 109px;
-    height: 32px;
-
-
-    /* Inside auto layout */
-    flex: none;
-    order: 1;
-    flex-grow: 0;
-
-}
-
-
-
-
-.button_hover_signup:hover{
-    background-color: #abbcff;
-}
-.button_hover_create_account:hover{
-    background-color: #6f5ddd;
-}
 .search_container_home_page {
     display: flex;
     align-items: center;
@@ -247,20 +95,10 @@
     filter: brightness(0) saturate(100%) invert(100%);
 }
 
-.people_container {
-    width: 56px;
-    height: 56px;
-    background: #C9D4FF;
-    border-radius: 60px;
-    flex: none;
-    order: 0;
-    flex-grow: 0;
-}
 
-.image_container {
-    position: relative;
-    left: 9px;
-    right: 16.67%;
-    top: 16.67%;
-    bottom: 16.67%;
+.button_hover_signup:hover {
+    background-color: #abbcff;
+}
+.button_hover_create_account:hover {
+    background-color: #6f5ddd;
 }
