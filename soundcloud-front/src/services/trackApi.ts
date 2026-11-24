@@ -1,17 +1,8 @@
 import { ITrack } from "../types/track";
 import api from "../utilities/axiosInstance";
-import axios from "axios";
-import { TokenService } from "../utilities/tokenService.ts";
 
-const API_URL = "http://localhost:5122/api";
 
-const axiosInstance = axios.create({
-    baseURL: API_URL,
-    headers: {
-        Authorization: `Bearer ${TokenService.getAccessToken()}`,
-        "Content-Type": "application/json",
-    },
-});
+
 
 export const trackService = {
 
@@ -97,10 +88,10 @@ export const trackService = {
     },
 
     async like(trackId: number) {
-        return axiosInstance.post(`/Track/${trackId}/like`);
+        return api.post(`/Track/${trackId}/like`); // api бере актуальний токен на кожен запит
     },
     async unlike(trackId: number) {
-        return axiosInstance.delete(`/Track/${trackId}/like`);
+        return api.delete(`/Track/${trackId}/like`);
     },
     deleteTrack: async (id: number): Promise<void> => {
         try {

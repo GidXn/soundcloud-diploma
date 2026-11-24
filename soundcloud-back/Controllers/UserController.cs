@@ -25,15 +25,31 @@ namespace soundcloud_back.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
         {
-            var response = await _authService.RegisterAsync(model);
-            return Ok(response);
+            try
+            {
+                var response = await _authService.RegisterAsync(model);
+                return Ok(response);
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Email/ім'я вже зайняті — 409 з повідомленням (фронт показує його користувачу)
+                return Conflict(new { message = ex.Message });
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto model)
         {
-            var response = await _authService.LoginAsync(model);
-            return Ok(response);
+            try
+            {
+                var response = await _authService.LoginAsync(model);
+                return Ok(response);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                // Невірний email/пароль — 401 замість 500 (фронт показує зрозуміле повідомлення)
+                return Unauthorized(new { message = ex.Message });
+            }
         }
 
         [Authorize]
@@ -72,6 +88,42 @@ namespace soundcloud_back.Controllers
             int userId = int.Parse(userIdClaim);
             var updated = await _userService.UpdateAsync(userId, dto);
             return Ok(updated);
+        }
+
+        /// <summary>
+        /// Топ авторів за сумою прослуховувань їхніх треків (для Feed → Top creators).
+        /// </summary>
+        [HttpGet("top")]
+        public async Task<IActionResult> GetTop([FromQuery] int take = 4)
+        {
+            var top = await _userService.GetTopUsersAsync(Math.Clamp(take, 1, 50));
+            return Ok(top);
+        }
+
+        /// <summary>
+        /// Публічний профіль користувача (без email та службових полів).
+        /// </summary>
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetPublicProfile(int id)
+        {
+            try
+            {
+                var u = await _userService.GetByIdAsync(id);
+                return Ok(new
+                {
+                    Id = id,
+                    u.Username,
+                    u.AvatarUrl,
+                    u.BannerUrl,
+                    u.Bio,
+                    u.CreatedAt,
+                    u.Role,
+                });
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
 
         [AllowAnonymous]

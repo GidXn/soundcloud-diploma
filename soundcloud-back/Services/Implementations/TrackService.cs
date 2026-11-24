@@ -218,6 +218,7 @@ namespace soundcloud_back.Services.Implementations
                 .Include(t => t.Genre)
                 .Include(t => t.AlbumTracks)
                     .ThenInclude(at => at.Album)
+                        .ThenInclude(a => a.Owner) // без цього OwnerName падав з NullReference (500 на like/unlike)
                 .Include(t => t.TrackLikes)
                 .FirstOrDefaultAsync(t => t.Id == id);
 

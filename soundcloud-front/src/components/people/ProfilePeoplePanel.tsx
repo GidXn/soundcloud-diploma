@@ -1,3 +1,5 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { followService } from "../../services/followApi";
@@ -24,6 +26,8 @@ const FOLLOWING_PREVIEW = 2;
 // Права панель профілю з макету «profile PEOPLE»:
 // Followers / Following / Tracks, LIKES, аватари підписників, список підписок з кнопкою Follow.
 const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, followersVersion = 0 }) => {
+    // не показуємо кнопку Follow навпроти самого себе (бек відповідає 400)
+    const myId = useSelector((state: RootState) => state.user.user?.id);
     const navigate = useNavigate();
     const [followers, setFollowers] = useState<IUserFollow[]>([]);
     const [following, setFollowing] = useState<IUserFollow[]>([]);
@@ -166,7 +170,7 @@ const ProfilePeoplePanel: React.FC<Props> = ({ userId, isOwn, tracksCount, follo
                                         </span>
                                     </span>
                                 </button>
-                                {localStorage.getItem("token") && (
+                                {localStorage.getItem("token") && u.id !== myId && (
                                     <button
                                         className={`people_follow_btn ${followed[u.id] ? "is_following" : ""}`}
                                         onClick={() => toggleFollow(u)}

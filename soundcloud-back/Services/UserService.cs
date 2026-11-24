@@ -290,18 +290,21 @@ namespace soundcloud_back.Services
         }
         public async Task<IEnumerable<AuthorStatsDto>> GetTopUsersAsync(int take)
         {
-            var topUsers = await _db.TrackListens
-                    .Include(x => x.User) 
-                    .GroupBy(x => x.UserId)
-                    .Select(g => new AuthorStatsDto
-                    {
-                        UserId = g.Key,
-                        Username = g.First().User.Username,
-                        AvatarUrl = g.First().User.AvatarUrl,
-                        TotalPlays = g.Sum(x => x.PlayCount)
-                    })
+            // Автори з найбільшою сумою прослуховувань своїх треків
+            var topUsers = await _db.Tracks
+                    .Where(t => !t.IsHidden)
+                    .GroupBy(t => t.AuthorId)
+                    .Select(g => new { UserId = g.Key, TotalPlays = g.Sum(t => t.PlayCount) })
                     .OrderByDescending(x => x.TotalPlays)
                     .Take(take)
+                    .Join(_db.Users, x => x.UserId, u => u.Id, (x, u) => new AuthorStatsDto
+                    {
+                        UserId = x.UserId,
+                        Username = u.Username,
+                        AvatarUrl = u.AvatarUrl,
+                        TotalPlays = x.TotalPlays
+                    })
+                    .OrderByDescending(x => x.TotalPlays)
                     .ToListAsync();
 
             return topUsers;

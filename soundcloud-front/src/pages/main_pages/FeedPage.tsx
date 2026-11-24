@@ -1,7 +1,8 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../store/store";
 import React, {useEffect, useRef, useState} from 'react';
 import {ITrack} from "../../types/track";
 import {trackService} from "../../services/trackApi.ts";
-import {TokenService} from "../../utilities/tokenService.ts";
 import {usePlayerStore} from "../../store/player_store.tsx";
 import "../../styles/main_pages/feed_page/layout.css"
 import {IUser} from "../../types/user.ts";
@@ -15,6 +16,7 @@ import {useNavigate} from "react-router-dom";
 
 
 const FeedPage: React.FC = ()=> {
+    const myId = useSelector((state: RootState) => state.user.user?.id);
     const playTrack = usePlayerStore(state => state.playTrack);
     const pauseTrack = usePlayerStore((state) => state.pauseTrack);
 
@@ -51,7 +53,6 @@ const FeedPage: React.FC = ()=> {
             .then((data) => setTracks(data))
             .catch((err) => console.error(err));
     }, []);
-    console.log("Token Service "+TokenService.getAccessToken());
     const getUserAvatarUrl = (user: IUser) => {
         if (!user.avatar) return "/default-cover.png"; // запасна картинка
         return `http://localhost:5122${user.avatar}`;
@@ -250,6 +251,7 @@ const FeedPage: React.FC = ()=> {
                             <div className="top_creators_author_container">
                                 {user.username}
                             </div>
+                            {user.id !== myId && (
                             <button
                                 className={user.isFollowing ? "top_creators_unfollow_button_container" : "top_creators_follow_button_container"}
                                 onClick={() => toggleFollow(user.id)}
@@ -258,6 +260,7 @@ const FeedPage: React.FC = ()=> {
                                                 {user.isFollowing ? "Unfollow" : "Follow"}
                                             </span>
                             </button>
+                            )}
                         </li>
                     ))}
                 </div>
@@ -277,6 +280,7 @@ const FeedPage: React.FC = ()=> {
                             <div className="recommended_for_you_author_container">
                                 {user.username}
                             </div>
+                            {user.id !== myId && (
                             <button
                                 className={user.isFollowing ? "top_creators_unfollow_button_container" : "top_creators_follow_button_container"}
                                 onClick={() => toggleFollow(user.id)}
@@ -285,6 +289,7 @@ const FeedPage: React.FC = ()=> {
                                                 {user.isFollowing ? "Unfollow" : "Follow"}
                                             </span>
                             </button>
+                            )}
                         </li>
                     ))}
                 </div>

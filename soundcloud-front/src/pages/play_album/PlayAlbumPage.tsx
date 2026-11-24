@@ -5,6 +5,7 @@ import {IAlbum} from "../../types/album.ts";
 import "../../styles/play_album/layout.css"
 import {ITrack} from "../../types/track.ts";
 import {usePlayerStore} from "../../store/player_store.tsx";
+import {mediaUrl} from "../../components/catalog/catalogUtils.ts";
 
 import play_icon from "../../images/player/play_big.png";
 import pause_icon from "../../images/player/pause_big.png";
@@ -97,7 +98,7 @@ const AlbumPage: React.FC = () => {
                             {currentTrack?.genre ? `${currentTrack.genre}` : ""}
                         </div>
                         <img className="image_style"
-                             src={currentTrack?.imageUrl ? `http://localhost:5122/${currentTrack.imageUrl}` : `http://localhost:5122/${album.coverUrl}`}/>
+                             src={mediaUrl(currentTrack?.imageUrl || album.coverUrl)}/>
                     </div>
                 </div>
                 <div className="play_album_track_list_container">
@@ -128,7 +129,7 @@ const AlbumPage: React.FC = () => {
                                              style={{display: "flex", alignItems: "center", gap: "16px"}}>
                                             <img
                                                 className="img_style"
-                                                src={`http://localhost:5122/${track.imageUrl}`}
+                                                src={mediaUrl(track.imageUrl)}
                                                 onClick={() => playTrack(track, tracks, album.id)}
                                             />
                                             <div className="track_info track_text">

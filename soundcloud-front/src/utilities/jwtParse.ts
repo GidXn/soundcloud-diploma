@@ -8,7 +8,6 @@ export const jwtParse = (token: string) => {
                 .map((c) => "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2))
                 .join("")
         );
-        console.log(jsonPayload);
         return JSON.parse(jsonPayload);
     } catch (e) {
         console.error("JWT parse error", e);

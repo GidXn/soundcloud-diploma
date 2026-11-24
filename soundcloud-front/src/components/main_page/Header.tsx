@@ -40,7 +40,6 @@ const Header: React.FC = () => {
         navigate("/");
     }
     console.log("header user", user);
-    console.log("Token service", localStorage.getItem("token"));
     return (
         <>
             <div className="max-w-screen-full-xl">

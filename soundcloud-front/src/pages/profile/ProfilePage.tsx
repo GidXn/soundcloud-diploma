@@ -710,9 +710,8 @@ const ProfilePage: React.FC = () => {
             {/* Tabs */}
             <div className="profile_tabs_container">
                 {tabs.map((tab) => (
-                    <div className="profile_tab_buttons_container  text-white baloo2">
+                    <div key={tab} className="profile_tab_buttons_container  text-white baloo2">
                         <button
-                            key={tab}
                             onClick={() => setActiveTab(tab)}
                             className={`${
                                 activeTab === tab
