@@ -150,7 +150,6 @@ const LoginSignup: React.FC = () => {
         // DEBUG only in dev:
         if (import.meta.env.DEV) {
             // console.debug("[GSI] idToken len=", idToken.length, "sample=", idToken.slice(0, 30), "...");
-            console.debug("[GSI] idToken =", idToken); // FULL token
         }
 
         let res: Response;

@@ -48,7 +48,6 @@ const FeedPage: React.FC = ()=> {
 
 
     const { track: currentTrack, isPlaying } = usePlayerStore();
-    console.log(tracks);
     useEffect(() => {
         trackService.getAll()
             .then((data) => setTracks(data))

@@ -66,7 +66,6 @@ export const trackService = {
             formData.append("Cover", cover);
             formData.append("GenreId", genreId.toString());
 
-            console.log("Uploading track:", { title, albumIds, file, cover, genreId });
 
             const res = await api.post("/Track/create-file", formData, {
                 headers: { "Content-Type": "multipart/form-data" },
@@ -83,7 +82,6 @@ export const trackService = {
             headers: { "Content-Type": "multipart/form-data" },
 
         });
-        console.log(formData)
         return data;
     },
 

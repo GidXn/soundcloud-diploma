@@ -81,7 +81,6 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
         if (!isOpen) return;
         playlistService.getAll()
             .then((data) => {
-                console.log("Playlists from API:", data);
                 setPlaylists(data);
             })
             .catch(console.error);
@@ -98,7 +97,6 @@ export const PlaylistModal: React.FC<PlaylistModalProps> = ({isOpen, onClose, ge
             formData.append("name", playlistName);
 
             if (currentTrack.imageUrl) {
-                console.log("Image" + currentTrack.imageUrl);
                 formData.append("coverUrl", currentTrack.imageUrl);
             }
 

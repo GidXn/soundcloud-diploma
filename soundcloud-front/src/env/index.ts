@@ -6,5 +6,4 @@ const APP_ENV = {
     ACCESS_KEY,
 }
 
-console.log('REMOTE_BASE_URL:', REMOTE_BASE_URL);
 export { APP_ENV };

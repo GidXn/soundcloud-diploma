@@ -46,7 +46,6 @@ const UserProfilePage: React.FC = () => {
     const pauseTrack = usePlayerStore((state) => state.pauseTrack);
 
     const { track: currentTrack, isPlaying,currentAlbumId } = usePlayerStore();
-    console.log(tracks);
     useEffect(() => {
         trackService.getAll()
             .then((data) => setTracks(data))
@@ -173,7 +172,6 @@ const UserProfilePage: React.FC = () => {
                 setFollowersCount(followers);
                 setFollowingCount(following);
 
-                console.log("Followers:", followers, "Following:", following);
             } catch (error) {
                 console.error("Failed to get following counts:", error);
             }

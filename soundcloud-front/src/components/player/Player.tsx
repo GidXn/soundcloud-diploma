@@ -110,14 +110,14 @@ export default function Player({ footerSelector: _footerSelector }: PlayerProps)
         api.post(`/Track/${track.id}/play`).catch(() => undefined);
         audioRef.current.src = `http://localhost:5122${track.url}`;
         audioRef.current.volume = volume;
-        audioRef.current.play().catch((err) => console.log(err));
+        audioRef.current.play().catch((err) => console.error(err));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [track]);
 
     // Pause/play control
     useEffect(() => {
         if (!audioRef.current) return;
-        if (isPlaying) audioRef.current.play().catch((err) => console.log(err));
+        if (isPlaying) audioRef.current.play().catch((err) => console.error(err));
         else audioRef.current.pause();
     }, [isPlaying, audioRef]);
 

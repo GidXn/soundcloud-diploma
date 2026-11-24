@@ -151,7 +151,6 @@ const ProfilePage: React.FC = () => {
     };
 
     const { track: currentTrack, isPlaying,currentAlbumId } = usePlayerStore();
-    console.log(tracks);
     useEffect(() => {
         trackService.getAll()
             .then((data) => setTracks(data))
@@ -271,7 +270,6 @@ const ProfilePage: React.FC = () => {
     };
     const getUserBannerUrl = (user?: IUser | null) => {
         if (!user || !user.banner) return "src/images/profile/banner.png";
-        console.log(user)
         return `http://localhost:5122${user.banner}`;
     };
     const handleUpload = async () => {
@@ -378,7 +376,6 @@ const ProfilePage: React.FC = () => {
                     const tracksByAlbum: { [albumId: number]: ITrack[] } = {};
                     for (const a of userAlbums) {
                         tracksByAlbum[a.id] = await albumService.getTracks(a.id);
-                        console.log(albumService.getTracks(a.id))
                     }
 
                     setAlbumTracks(tracksByAlbum);
@@ -489,7 +486,6 @@ const ProfilePage: React.FC = () => {
         }
     };
     useEffect(() => {
-        console.log("Current user:", user);
     }, [user]);
 
 
@@ -561,7 +557,6 @@ const ProfilePage: React.FC = () => {
                 setFollowersCount(followers);
                 setFollowingCount(following);
 
-                console.log("Followers:", followers, "Following:", following);
             } catch (error) {
                 console.error("Failed to get following counts:", error);
             }

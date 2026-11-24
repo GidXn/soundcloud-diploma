@@ -89,7 +89,7 @@ const UsersPage = () => {
             loadUsers();
         } catch (error) {
             message.error("Operation failed");
-            console.log(error);
+            console.error(error);
         }
     };
 

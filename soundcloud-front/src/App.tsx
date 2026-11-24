@@ -64,7 +64,6 @@ export default function App() {
             if (user) {
                 dispatch(setUser({ user, token }));
             }
-            console.log("init user", user);
         }
         setIsInitializing(false);
     }, [dispatch]);
