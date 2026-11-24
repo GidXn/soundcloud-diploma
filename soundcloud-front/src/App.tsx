@@ -93,13 +93,13 @@ export default function App() {
                     <Route path="/albums" element={<AlbumsCollectionPage />} />
 
                     <Route path="/profile" element={<ProfilePage />} />
-                    {/* <Route path="/library" element={<LibraryPage />} />
-                    <Route path="/genres" element={<GenresPage />} /> */}
+                    {/* <Route path="/library" element={<LibraryPage />} /> */}
+                    <Route path="/genres" element={<GenresPage />} />
                     {/* <Route path="/feed" element={<FeedPage />} /> */}
-                    {/* <Route path="/artists" element={<ArtistsPage />} />
+                    <Route path="/artists" element={<ArtistsPage />} />
                     <Route path="/charts" element={<ChartsPage />} />
                     <Route path="/top-100" element={<Top100Page />} />
-                    <Route path="/radio" element={<RadioPage />} /> */}
+                    <Route path="/radio" element={<RadioPage />} />
 
                     {/* <Route path="/play-album/:id" element={<PlayAlbumPage />} />
                     <Route path="/play-playlist/:id" element={<PlayPlaylistPage />} />
